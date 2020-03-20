@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/action_home"
+        android:title="@string/home_text"
+        android:icon="@drawable/ic_home"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_closet"
+        android:title="@string/closet_text"
+        android:icon="@drawable/closet"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_model"
+        android:title="@string/model_text"
+        android:icon="@drawable/model"
+        app:showAsAction="ifRoom"/>
+
+
+    <item
+        android:id="@+id/action_runway"
+        android:title="@string/runway_text"
+        android:icon="@drawable/outfit"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_collection"
+        android:title="@string/collection_text"
+        android:icon="@drawable/collection"
+        app:showAsAction="ifRoom"/>
+
+</menu>
