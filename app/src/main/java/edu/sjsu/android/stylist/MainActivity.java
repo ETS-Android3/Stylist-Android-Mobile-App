@@ -1,14 +1,15 @@
 package edu.sjsu.android.stylist;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import android.app.Activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends Activity implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     BottomNavigationView bottomNavigation;
 
@@ -36,5 +37,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 //
 //            }
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.closet_button:
+                break;
+            case R.id.model_button:
+                break;
+            case R.id.runway_button:
+                break;
+            case R.id.collection_button:
+                break;
+        }
     }
 }

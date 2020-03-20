@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Stylist</string>
     <string name="main">STYLIST</string>
+    <string name="closet">CLOSET</string>
+    <string name="runway">RUNWAY</string>
+    <string name="collection">COLLECTION</string>
     <string name="home_text">Home</string>
     <string name="closet_text">Closet</string>
     <string name="runway_text">Runway</string>
