@@ -9,4 +9,6 @@
     <string name="runway_text">Runway</string>
     <string name="collection_text">Collection</string>
     <string name="model_text">Model</string>
+    <string name="tops_text">Tops</string>
+    <string name="bottoms_text">Bottoms</string>
 </resources>

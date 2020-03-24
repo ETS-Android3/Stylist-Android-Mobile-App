@@ -3,6 +3,7 @@ package edu.sjsu.android.stylist;
 import androidx.annotation.NonNull;
 import android.app.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,15 +28,16 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
             if (itemId == R.id.action_home) {
 
             }
-//            else if (itemId == R.id.action_closet) {
-//
-//            } else if (itemId == R.id.action_model) {
-//
-//            } else if (itemId == R.id.action_runway) {
-//
-//            } else if (itemId == R.id.action_collection) {
-//
-//            }
+            else if (itemId == R.id.action_closet) {
+                Intent closetIntent = new Intent(this, ClosetActivity.class);
+                startActivity(closetIntent);
+            } else if (itemId == R.id.action_model) {
+
+            } else if (itemId == R.id.action_runway) {
+
+            } else if (itemId == R.id.action_collection) {
+
+            }
         return true;
     }
 
@@ -43,7 +45,11 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.closet_button:
+            {
+                Intent closetIntent = new Intent(this, ClosetActivity.class);
+                startActivity(closetIntent);
                 break;
+            }
             case R.id.model_button:
                 break;
             case R.id.runway_button:
