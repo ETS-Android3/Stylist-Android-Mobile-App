@@ -7,12 +7,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends Activity implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     BottomNavigationView bottomNavigation;
+    Button button_closet;
+    Button button_model;
+    Button button_runway;
+    Button button_collection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +25,17 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
         setContentView(R.layout.activity_main);
         bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_bar);
         bottomNavigation.setOnNavigationItemSelectedListener(this);
+
+        button_closet = (Button) findViewById(R.id.closet_button);
+        button_model = (Button) findViewById(R.id.model_button);
+        button_runway = (Button) findViewById(R.id.runway_button);
+        button_collection = (Button) findViewById(R.id.collection_button);
+
+        // Attach listeners to buttons
+        button_closet.setOnClickListener(this);
+        button_model.setOnClickListener(this);
+        button_runway.setOnClickListener(this);
+        button_collection.setOnClickListener(this);
     }
 
     @Override
