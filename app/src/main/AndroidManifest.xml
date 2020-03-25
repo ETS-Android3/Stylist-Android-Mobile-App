@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ClosetActivity"></activity>
+        <activity android:name=".ClosetDetailsActivity"></activity>
     </application>
 
 </manifest>

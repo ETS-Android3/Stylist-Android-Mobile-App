@@ -1,5 +1,6 @@
 package edu.sjsu.android.stylist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,19 +17,21 @@ public class ClosetActivity extends MainActivity {
         button_tops = (Button)findViewById(R.id.button_closet_tops);
         button_bottoms = (Button)findViewById(R.id.button_closet_bottoms);
 
-//        button_tops.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-//
-//        button_bottoms.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        button_tops.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent closetDetailIntent = new Intent(ClosetActivity.this, ClosetDetailsActivity.class);
+                startActivity(closetDetailIntent);
+            }
+        });
+
+        button_bottoms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent closetDetailIntent = new Intent(ClosetActivity.this, ClosetDetailsActivity.class);
+                startActivity(closetDetailIntent);
+            }
+        });
     }
 
 }
