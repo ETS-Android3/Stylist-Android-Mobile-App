@@ -18,6 +18,7 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
     Button button_model;
     Button button_runway;
     Button button_collection;
+    DatabaseHelper dh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +32,15 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
         button_runway = (Button) findViewById(R.id.runway_button);
         button_collection = (Button) findViewById(R.id.collection_button);
 
+        dh = new DatabaseHelper(this);
+
+        // TODO push the database helper variable to the new activities
         // Attach listeners to buttons
         button_closet.setOnClickListener(this);
         button_model.setOnClickListener(this);
         button_runway.setOnClickListener(this);
         button_collection.setOnClickListener(this);
+
     }
 
     @Override
