@@ -8,6 +8,7 @@ public class Top
 
     public Top(String n, String il, String i)
     {
+        // TODO Have this push into the database
         name = n;
         image_location = il;
         id = i;

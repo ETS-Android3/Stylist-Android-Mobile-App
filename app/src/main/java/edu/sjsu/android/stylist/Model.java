@@ -8,6 +8,7 @@ public class Model
 
     public Model(String n, String il, String i)
     {
+        // TODO push this into the database
         name = n;
         image_location = il;
         id = i;

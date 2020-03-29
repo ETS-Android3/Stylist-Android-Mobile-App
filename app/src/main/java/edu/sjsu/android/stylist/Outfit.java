@@ -9,6 +9,7 @@ public class Outfit
 
     public Outfit(String n, Top t, Bottom b, String i)
     {
+        // TODO Push this into the database
         name = n;
         top = t;
         bottom = b;
