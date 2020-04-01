@@ -55,7 +55,8 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
             } else if (itemId == R.id.action_model) {
 
             } else if (itemId == R.id.action_runway) {
-
+                Intent runwayIntent = new Intent(this, RunwayActivity.class);
+                startActivity(runwayIntent);
             } else if (itemId == R.id.action_collection) {
 
             }
@@ -74,6 +75,8 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
             case R.id.model_button:
                 break;
             case R.id.runway_button:
+                Intent runwayIntent = new Intent(this, RunwayActivity.class);
+                startActivity(runwayIntent);
                 break;
             case R.id.collection_button:
                 break;

@@ -1,6 +1,6 @@
 package edu.sjsu.android.stylist;
 
-public class Bottom
+public class Bottom extends Clothing
 {
     String name;
     String image_location;
@@ -9,9 +9,10 @@ public class Bottom
     public Bottom(String n, String il, String i)
     {
         // TODO have this push forward into the database
-        name = n;
-        image_location = il;
-        id = i;
+        super(n, il, i);
+//        name = n;
+//        image_location = il;
+//        id = i;
     }
 
     public String getName()
