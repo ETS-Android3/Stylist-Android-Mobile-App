@@ -13,4 +13,5 @@
     <string name="model_text">Model</string>
     <string name="tops_text">Tops</string>
     <string name="bottoms_text">Bottoms</string>
+    <string name="photo">PHOTO</string>
 </resources>

@@ -3,10 +3,10 @@ package edu.sjsu.android.stylist;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentProviderClient;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -37,10 +37,10 @@ public class ClosetDetailsActivity extends Activity {
     GridView gridClosetDetails;
     FloatingActionButton fabAddPhoto;
     TextView viewTitle;
-    ImageView viewImage;
     String pathToFile = null;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int PERMISSION_REQUEST_CODE = 2;
+    static final int REQUEST_IMAGE_PICK = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,6 @@ public class ClosetDetailsActivity extends Activity {
 
         // This is just an empty gridview since I'm not sure what else I should add - Phoenix
         gridClosetDetails = (GridView) findViewById(R.id.grid_closet_details);
-        viewImage = (ImageView) findViewById(R.id.view_photo);
         viewTitle = (TextView) findViewById(R.id.title_closet_details);
 
         fabAddPhoto = (FloatingActionButton) findViewById(R.id.fab_add_photo);
@@ -62,11 +61,6 @@ public class ClosetDetailsActivity extends Activity {
         fabAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                try {
-//                    dispatchTakePhotoIntent();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
                 final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
@@ -83,7 +77,9 @@ public class ClosetDetailsActivity extends Activity {
 
                         }
                         else if (options[which].equals("Choose from Gallery"))
-                        {       
+                        {
+                            Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(pickPhotoIntent, REQUEST_IMAGE_PICK);
 
                         }
                         else if (options[which].equals("Cancel"))
@@ -138,9 +134,26 @@ public class ClosetDetailsActivity extends Activity {
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bitmap myBitmap = BitmapFactory.decodeFile(pathToFile);
-            viewImage.setImageBitmap(myBitmap);
+
         }
+        else if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK)
+        {
+            Uri selectedPhoto = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            if (selectedPhoto != null)
+            {
+                Cursor cursor = getContentResolver().query(selectedPhoto, filePathColumn, null, null, null);
+                if (cursor != null)
+                {
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    pathToFile = cursor.getString(columnIndex);
+                    cursor.close();
+                }
+            }
+        }
+        displayPhoto();
     }
 
     @Override
@@ -148,13 +161,19 @@ public class ClosetDetailsActivity extends Activity {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    //Granted.
-
+                    // Granted.
                 }
                 else{
-                    //Denied.
+                    // Denied.
                 }
                 break;
         }
+    }
+
+    private void displayPhoto()
+    {
+        Intent displayPhotoIntent = new Intent(this, PhotoDisplayActivity.class);
+        displayPhotoIntent.putExtra("photoPath", pathToFile);
+        startActivity(displayPhotoIntent);
     }
 }
