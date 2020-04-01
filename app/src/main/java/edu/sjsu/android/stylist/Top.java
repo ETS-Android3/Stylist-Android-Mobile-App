@@ -1,6 +1,6 @@
 package edu.sjsu.android.stylist;
 
-public class Top
+public class Top extends Clothing
 {
     String name;
     String image_location;
@@ -9,9 +9,10 @@ public class Top
     public Top(String n, String il, String i)
     {
         // TODO Have this push into the database
-        name = n;
-        image_location = il;
-        id = i;
+        super(n, il, i);
+//        name = n;
+//        image_location = il;
+//        id = i;
     }
 
     public String getName()

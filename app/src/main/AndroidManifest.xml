@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".ClosetActivity"></activity>
         <activity android:name=".ClosetDetailsActivity"></activity>
+        <activity android:name=".RunwayActivity"></activity>
+        <activity android:name=".RunwayDetailsActivity"></activity>
     </application>
 
 </manifest>
