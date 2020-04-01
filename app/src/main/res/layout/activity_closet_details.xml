@@ -10,11 +10,16 @@
         android:textSize="50sp"
         android:background="@color/main_color"
         android:gravity="center"/>
+    <ImageView
+        android:id="@+id/view_photo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/title_closet_details"/>
     <GridView
         android:id="@+id/grid_closet_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_closet_details"
+        android:layout_below="@id/view_photo"
         android:gravity="center"
         android:columnWidth="128dp"
         android:numColumns="auto_fit"
