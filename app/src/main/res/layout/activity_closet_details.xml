@@ -10,6 +10,7 @@
         android:textSize="50sp"
         android:background="@color/main_color"
         android:gravity="center"/>
+
     <GridView
         android:id="@+id/grid_closet_details"
         android:layout_width="match_parent"
