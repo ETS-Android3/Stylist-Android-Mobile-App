@@ -37,6 +37,8 @@ public class ClosetDetailsActivity extends Activity {
     GridView gridClosetDetails;
     FloatingActionButton fabAddPhoto;
     TextView viewTitle;
+
+    // contains the full path of photo, can be used to retrieve photo and save to database?
     String pathToFile = null;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int PERMISSION_REQUEST_CODE = 2;
@@ -96,6 +98,9 @@ public class ClosetDetailsActivity extends Activity {
         });
     }
 
+    // After a photo file is created, create an intent to take photo
+    // Contains pathToFile which is the full path of the photo
+    // and photo's URI in photoUri
     private void dispatchTakePhotoIntent() throws IOException {
         Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePhotoIntent.resolveActivity(getPackageManager()) != null)
@@ -113,6 +118,8 @@ public class ClosetDetailsActivity extends Activity {
             }
         }
     }
+
+    // Create a photo file in the chosen storage directory and return the file
     private File createPhotoFile() throws IOException
     {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -170,6 +177,7 @@ public class ClosetDetailsActivity extends Activity {
         }
     }
 
+    // Create a new intent that sends the full path of the photo to PhotoDisplayActivity to display
     private void displayPhoto()
     {
         Intent displayPhotoIntent = new Intent(this, PhotoDisplayActivity.class);

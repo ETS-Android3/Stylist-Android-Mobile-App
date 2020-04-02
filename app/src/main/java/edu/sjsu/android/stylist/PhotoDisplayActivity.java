@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+
+// This activity displays the photo user has chosen from gallery or taken
+// from camera. Useful for testing. Can be removed later I think - Phoenix
 public class PhotoDisplayActivity extends Activity {
     ImageView viewPhotoDisplay;
     Button buttonOK;
