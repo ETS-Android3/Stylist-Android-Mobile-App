@@ -53,10 +53,13 @@ public class ClosetDetailsActivity extends Activity {
     TextView viewTitle;
     ArrayList<Top> tops;
     ArrayList<Bottom> bottoms;
+    Bitmap updatedImage = null;
 
-    // contains the full path of photo, can be used to retrieve photo and save to database?
+    // pathToFile contains full path to unedited file
     String pathToFile = null;
+    // updatedPathToFile contains full path to the file with removed background 
     String updatedPathToFile = null;
+
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int PERMISSION_REQUEST_CODE = 2;
     static final int REQUEST_IMAGE_PICK = 3;
@@ -80,7 +83,6 @@ public class ClosetDetailsActivity extends Activity {
         // This is just an empty gridview since I'm not sure what else I should add - Phoenix
         gridClosetDetails = (GridView) findViewById(R.id.grid_closet_details);
         viewTitle = (TextView) findViewById(R.id.title_closet_details);
-
         fabAddPhoto = (FloatingActionButton) findViewById(R.id.fab_add_photo);
 
 
@@ -154,7 +156,6 @@ public class ClosetDetailsActivity extends Activity {
         File photo = null;
         try {
             photo =  File.createTempFile(photoFileName, ".jpg", storageDir);
-            photo = new File(storageDir, photoFileName + ".jpg");
         } catch (IOException e)
         {
             Log.d("log", "Exception" + e.toString());
@@ -186,8 +187,8 @@ public class ClosetDetailsActivity extends Activity {
                 }
             }
         }
+        removeBackground();
 
-        displayPhoto();
     }
 
     @Override
@@ -208,7 +209,7 @@ public class ClosetDetailsActivity extends Activity {
     private void displayPhoto()
     {
         Intent displayPhotoIntent = new Intent(this, PhotoDisplayActivity.class);
-        displayPhotoIntent.putExtra("photoPath", pathToFile);
+        displayPhotoIntent.putExtra("photoPath", updatedPathToFile);
         startActivity(displayPhotoIntent);
     }
 
@@ -224,16 +225,23 @@ public class ClosetDetailsActivity extends Activity {
         // TODO pull bottoms from the database
     }
 
+    // Create a requestbody from the chosen image using its path
+    // Post API request to RemoveBG using API-Key and requestbody
+    // On successful call, decode the response to produce Bitmap image
+    // Create a new png file path to save the Bitmap image
     private void removeBackground()
     {
-        CountingFileRequestBody filePart = new CountingFileRequestBody(new File(pathToFile), "image/png");
+        // Create RequestBody using image file
+        CountingFileRequestBody filePart = new CountingFileRequestBody(new File(pathToFile), "image/jpg");
+
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("size", "auto")
                 .addFormDataPart("image_file", "image_file", filePart).build();
 
+        // Build POST call with URL, API key and RequestBody
         Request request = new Request.Builder().url("https://api.remove.bg/v1.0/removebg")
-              .addHeader("X-Api_Key", "SjTN2PtMBNomPqVRAGPrsBRy")
+              .addHeader("X-Api-Key", "SjTN2PtMBNomPqVRAGPrsBRy")
                 .post(requestBody).build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -244,22 +252,24 @@ public class ClosetDetailsActivity extends Activity {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                Log.d("log", "is response successful " + response.isSuccessful());
                 if (response.isSuccessful())
                 {
-                    InputStream inputStream = response.body().byteStream();
-                    Bitmap image = BitmapFactory.decodeStream(inputStream);
+                    updatedImage = BitmapFactory.decodeStream(response.body().byteStream());
 
+                    // Create a new file to save the png image with file name and save directory
                     String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                    String photoFileName = "JPG_stylist_" + timeStamp + "_";
+                    String photoFileName = "PNG_stylist_" + timeStamp + "_";
                     File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                    File updatedPhotoFile = new File(storageDir, photoFileName);
-                    FileOutputStream fOut = new FileOutputStream(updatedPhotoFile);
+                    File updatedPhotoFile =  File.createTempFile(photoFileName, ".png", storageDir);
 
-                    image.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+                    // Save bitmap image into file using compression
                     updatedPathToFile = updatedPhotoFile.getAbsolutePath();
+                    FileOutputStream fOut = new FileOutputStream(updatedPhotoFile);
+                    updatedImage.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+
                     fOut.flush();
                     fOut.close();
+                    displayPhoto();
 
 
                 }
@@ -271,6 +281,5 @@ public class ClosetDetailsActivity extends Activity {
 
             }
         });
-
     }
 }
