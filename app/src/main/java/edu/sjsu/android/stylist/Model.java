@@ -24,25 +24,7 @@ public class Model
         return image_location;
     }
 
-    public String getId()
-    {
-        return id;
-    }
 
-    public void setName(String newName)
-    {
-        // TODO send this off to the database
-    }
-
-    public void setImageLocation(String newImageLocation)
-    {
-        // TODO send this off to the database
-    }
-
-    public void setId(String newID)
-    {
-        // TODO send this off to the database
-    }
 
 
 }

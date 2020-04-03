@@ -34,7 +34,6 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
 
         dh = new DatabaseHelper(this);
 
-        // TODO push the database helper variable to the new activities
         // Attach listeners to buttons
         button_closet.setOnClickListener(this);
         button_model.setOnClickListener(this);

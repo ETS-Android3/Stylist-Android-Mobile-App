@@ -5,15 +5,15 @@ public class Outfit
     String name;
     Top top;
     Bottom bottom;
-    String id;
+    DatabaseHelper dh;
 
-    public Outfit(String n, Top t, Bottom b, String i)
+    public Outfit(String n, Top t, Bottom b, DatabaseHelper d)
     {
-        // TODO Push this into the database
         name = n;
         top = t;
         bottom = b;
-        id = i;
+        dh = d;
+        dh.insertOutfitDetails(n ,t , b);
     }
 
     public String getName()
@@ -30,31 +30,4 @@ public class Outfit
     {
         return bottom;
     }
-
-    public String getId()
-    {
-        return id;
-    }
-
-    public void setName(String newName)
-    {
-        // TODO send this off to the database
-    }
-
-    public void setTop(Top newTop)
-    {
-        // TODO send this off to the database
-    }
-
-    public void setBottom(Bottom newBottom)
-    {
-        // TODO send this off to the database
-    }
-
-    public void setId(String newID)
-    {
-        // TODO send this off to the database
-    }
-
-
 }

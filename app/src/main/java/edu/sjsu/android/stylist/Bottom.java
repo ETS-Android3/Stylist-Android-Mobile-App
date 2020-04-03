@@ -2,48 +2,9 @@ package edu.sjsu.android.stylist;
 
 public class Bottom extends Clothing
 {
-    String name;
-    String image_location;
-    String id;
-
-    public Bottom(String n, String il, String i)
+    public Bottom(String n, String il, DatabaseHelper d)
     {
-        // TODO have this push forward into the database
-        super(n, il, i);
-//        name = n;
-//        image_location = il;
-//        id = i;
+        super(n, il, d);
+        dh.insertBottomDetails(n, il);
     }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public String getImageLocation()
-    {
-        return image_location;
-    }
-
-    public String getId()
-    {
-        return id;
-    }
-
-    public void setName(String newName)
-    {
-        // TODO send this off to the database
-    }
-
-    public void setImageLocation(String newImageLocation)
-    {
-        // TODO send this off to the database
-    }
-
-    public void setId(String newID)
-    {
-        // TODO send this off to the database
-    }
-
-
 }

@@ -59,14 +59,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
         onCreate(db);
     }
 
-    void insertOutfitDetails(String name, String top, String bottom)
+    void insertOutfitDetails(String name, Top top, Bottom bottom)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues cValues = new ContentValues();
         cValues.put(KEY_NAME, name);
-        cValues.put("top", top);
-        cValues.put("bottom", bottom);
+        cValues.put("top", top.getName());
+        cValues.put("bottom", bottom.getName());
 
         long newRowId = db.insert(TABLE_outfits, null, cValues);
         db.close();

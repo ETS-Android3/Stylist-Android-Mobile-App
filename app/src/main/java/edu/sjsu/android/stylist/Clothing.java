@@ -1,16 +1,17 @@
 package edu.sjsu.android.stylist;
 
+import android.app.Application;
+
 public class Clothing {
         String name;
         String image_location;
-        String id;
+        DatabaseHelper dh;
 
-        public Clothing(String n, String il, String i)
+        public Clothing(String n, String il, DatabaseHelper d)
         {
-            // TODO Have this push into the database
             name = n;
             image_location = il;
-            id = i;
+            dh = d;
         }
 
         public String getName()
@@ -22,28 +23,6 @@ public class Clothing {
         {
             return image_location;
         }
-
-        public String getId()
-        {
-            return id;
-        }
-
-        public void setName(String newName)
-        {
-            // TODO send this off to the database
-        }
-
-        public void setImageLocation(String newImageLocation)
-        {
-            // TODO send this off to the database
-        }
-
-        public void setId(String newID)
-        {
-            // TODO send this off to the database
-        }
-
-
 }
 
 
