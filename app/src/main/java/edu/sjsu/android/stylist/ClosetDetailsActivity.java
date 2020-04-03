@@ -17,18 +17,31 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+
 
 // This is to display the images for both Tops and Bottoms
 // Can change the viewTitle's text to Tops or Bottoms depends
@@ -40,18 +53,25 @@ public class ClosetDetailsActivity extends Activity {
     TextView viewTitle;
     ArrayList<Top> tops;
     ArrayList<Bottom> bottoms;
+    Bitmap updatedImage = null;
 
-    // contains the full path of photo, can be used to retrieve photo and save to database?
+    // pathToFile contains full path to unedited file
     String pathToFile = null;
+    // updatedPathToFile contains full path to the file with removed background
+    String updatedPathToFile = null;
+
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int PERMISSION_REQUEST_CODE = 2;
     static final int REQUEST_IMAGE_PICK = 3;
+
+    OkHttpClient client = new OkHttpClient();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_closet_details);
-        
+
         populateTops();
         populateBottoms();
 
@@ -63,7 +83,6 @@ public class ClosetDetailsActivity extends Activity {
         // This is just an empty gridview since I'm not sure what else I should add - Phoenix
         gridClosetDetails = (GridView) findViewById(R.id.grid_closet_details);
         viewTitle = (TextView) findViewById(R.id.title_closet_details);
-
         fabAddPhoto = (FloatingActionButton) findViewById(R.id.fab_add_photo);
 
 
@@ -137,7 +156,6 @@ public class ClosetDetailsActivity extends Activity {
         File photo = null;
         try {
             photo =  File.createTempFile(photoFileName, ".jpg", storageDir);
-            photo = new File(storageDir, photoFileName + ".jpg");
         } catch (IOException e)
         {
             Log.d("log", "Exception" + e.toString());
@@ -169,7 +187,8 @@ public class ClosetDetailsActivity extends Activity {
                 }
             }
         }
-        displayPhoto();
+        removeBackground();
+
     }
 
     @Override
@@ -190,7 +209,7 @@ public class ClosetDetailsActivity extends Activity {
     private void displayPhoto()
     {
         Intent displayPhotoIntent = new Intent(this, PhotoDisplayActivity.class);
-        displayPhotoIntent.putExtra("photoPath", pathToFile);
+        displayPhotoIntent.putExtra("photoPath", updatedPathToFile);
         startActivity(displayPhotoIntent);
     }
 
@@ -204,5 +223,63 @@ public class ClosetDetailsActivity extends Activity {
     {
         bottoms = new ArrayList<>();
         // TODO pull bottoms from the database
+    }
+
+    // Create a requestbody from the chosen image using its path
+    // Post API request to RemoveBG using API-Key and requestbody
+    // On successful call, decode the response to produce Bitmap image
+    // Create a new png file path to save the Bitmap image
+    private void removeBackground()
+    {
+        // Create RequestBody using image file
+        CountingFileRequestBody filePart = new CountingFileRequestBody(new File(pathToFile), "image/jpg");
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("size", "auto")
+                .addFormDataPart("image_file", "image_file", filePart).build();
+
+        // Build POST call with URL, API key and RequestBody
+        Request request = new Request.Builder().url("https://api.remove.bg/v1.0/removebg")
+              .addHeader("X-Api-Key", "SjTN2PtMBNomPqVRAGPrsBRy")
+                .post(requestBody).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful())
+                {
+                    updatedImage = BitmapFactory.decodeStream(response.body().byteStream());
+
+                    // Create a new file to save the png image with file name and save directory
+                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                    String photoFileName = "PNG_stylist_" + timeStamp + "_";
+                    File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                    File updatedPhotoFile =  File.createTempFile(photoFileName, ".png", storageDir);
+
+                    // Save bitmap image into file using compression
+                    updatedPathToFile = updatedPhotoFile.getAbsolutePath();
+                    FileOutputStream fOut = new FileOutputStream(updatedPhotoFile);
+                    updatedImage.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+
+                    fOut.flush();
+                    fOut.close();
+                    displayPhoto();
+
+
+                }
+                else
+                {
+                    Log.d("log", response.body().toString());
+
+                }
+
+            }
+        });
     }
 }
