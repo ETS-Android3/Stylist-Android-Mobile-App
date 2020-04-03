@@ -52,49 +52,5 @@ public class CountingFileRequestBody extends RequestBody {
 
     }
 }
-//    private ProgressListener listener;
-//
-//    public CountingFileRequestBody(File f, String c, ProgressListener l)
-//    {
-//        file = f;
-//        contentType = c;
-//        listener = l;
-//    }
-//    private static final int SEGMENT_SIZE = 2048;
-//
-//    public long contentLength()
-//    {
-//        return file.length();
-//    }
-//
-//    public MediaType contentType()
-//    {
-//        return MediaType.parse(contentType);
-//    }
-//
-//    public void writeTo(BufferedSink sink) throws IOException
-//    {
-//        Source source = null;
-//        try
-//        {
-//            source = Okio.source(file);
-//            long total = 0;
-//            long read = -1;
-//
-//            while ((read = source.read(sink.getBuffer(), SEGMENT_SIZE)) != -1)
-//            {
-//                total += read;
-//                sink.flush();
-//                int percentage = (int)((total * 100) / contentLength());
-//            }
-//
-//        } finally {
-//            Util.closeQuietly(source);
-//        }
-//    }
-//
-//    interface ProgressListener
-//    {
-//        public void transferred(float percentage);
-//    }
+
 

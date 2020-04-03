@@ -57,7 +57,7 @@ public class ClosetDetailsActivity extends Activity {
 
     // pathToFile contains full path to unedited file
     String pathToFile = null;
-    // updatedPathToFile contains full path to the file with removed background 
+    // updatedPathToFile contains full path to the file with removed background
     String updatedPathToFile = null;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
