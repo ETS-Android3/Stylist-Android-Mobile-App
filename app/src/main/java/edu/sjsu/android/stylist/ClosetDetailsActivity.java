@@ -17,18 +17,31 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+
 
 // This is to display the images for both Tops and Bottoms
 // Can change the viewTitle's text to Tops or Bottoms depends
@@ -43,15 +56,19 @@ public class ClosetDetailsActivity extends Activity {
 
     // contains the full path of photo, can be used to retrieve photo and save to database?
     String pathToFile = null;
+    String updatedPathToFile = null;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int PERMISSION_REQUEST_CODE = 2;
     static final int REQUEST_IMAGE_PICK = 3;
+
+    OkHttpClient client = new OkHttpClient();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_closet_details);
-        
+
         populateTops();
         populateBottoms();
 
@@ -169,6 +186,7 @@ public class ClosetDetailsActivity extends Activity {
                 }
             }
         }
+
         displayPhoto();
     }
 
@@ -204,5 +222,55 @@ public class ClosetDetailsActivity extends Activity {
     {
         bottoms = new ArrayList<>();
         // TODO pull bottoms from the database
+    }
+
+    private void removeBackground()
+    {
+        CountingFileRequestBody filePart = new CountingFileRequestBody(new File(pathToFile), "image/png");
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("size", "auto")
+                .addFormDataPart("image_file", "image_file", filePart).build();
+
+        Request request = new Request.Builder().url("https://api.remove.bg/v1.0/removebg")
+              .addHeader("X-Api_Key", "SjTN2PtMBNomPqVRAGPrsBRy")
+                .post(requestBody).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                Log.d("log", "is response successful " + response.isSuccessful());
+                if (response.isSuccessful())
+                {
+                    InputStream inputStream = response.body().byteStream();
+                    Bitmap image = BitmapFactory.decodeStream(inputStream);
+
+                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                    String photoFileName = "JPG_stylist_" + timeStamp + "_";
+                    File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                    File updatedPhotoFile = new File(storageDir, photoFileName);
+                    FileOutputStream fOut = new FileOutputStream(updatedPhotoFile);
+
+                    image.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+                    updatedPathToFile = updatedPhotoFile.getAbsolutePath();
+                    fOut.flush();
+                    fOut.close();
+
+
+                }
+                else
+                {
+                    Log.d("log", response.body().toString());
+
+                }
+
+            }
+        });
+
     }
 }
