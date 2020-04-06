@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Stylist</string>
     <string name="main">STYLIST</string>
-    <string name="closet">CLOSET</string>
+    <string name="closet">Closet</string>
     <string name="runway">RUNWAY</string>
     <string name="tops">TOPS</string>
     <string name="bottoms">BOTTOMS</string>

@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
     tools:context=".MainActivity">
 
     <TextView
@@ -12,63 +13,64 @@
         android:layout_height="wrap_content"
         android:text="@string/main"
         android:textSize="50sp"
-        android:background="@color/main_color"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
         android:gravity="center"/>
 
     <Button
         android:id="@+id/closet_button"
         android:layout_width="300dp"
         android:layout_height="75dp"
-        android:background="@drawable/button_rounded"
-        android:backgroundTint="@color/blue"
         android:layout_marginStart="50dp"
         android:layout_marginTop="150dp"
         android:layout_marginBottom="30dp"
-        android:text="@string/closet_text"
-        android:textSize="30sp"/>
+        android:background="@drawable/button_bordered_rounded"
+        android:text="@string/closet"
+        android:textColor="@color/colorWhite"
+        android:textSize="25sp" />
 
     <Button
         android:id="@+id/model_button"
         android:layout_width="300dp"
         android:layout_height="75dp"
-        android:background="@drawable/button_rounded"
-        android:backgroundTint="@color/green"
+        android:background="@drawable/button_bordered_rounded"
         android:layout_below="@+id/closet_button"
         android:layout_marginStart="50dp"
         android:layout_marginBottom="30dp"
         android:text="@string/model_text"
-        android:textSize="30sp"/>
+        android:textColor="@color/colorWhite"
+        android:textSize="25sp"/>
 
     <Button
         android:id="@+id/runway_button"
         android:layout_width="300dp"
         android:layout_height="75dp"
-        android:background="@drawable/button_rounded"
-        android:backgroundTint="@color/yellow"
         android:layout_below="@+id/model_button"
         android:layout_marginStart="50dp"
         android:layout_marginBottom="30dp"
+        android:background="@drawable/button_bordered_rounded"
         android:text="@string/runway_text"
-        android:textSize="30sp"/>
+        android:textColor="@color/colorWhite"
+        android:textSize="25sp" />
 
     <Button
         android:id="@+id/collection_button"
         android:layout_width="300dp"
         android:layout_height="75dp"
-        android:background="@drawable/button_rounded"
-        android:backgroundTint="@color/red"
         android:layout_below="@+id/runway_button"
         android:layout_marginStart="50dp"
         android:layout_marginBottom="30dp"
+        android:background="@drawable/button_bordered_rounded"
         android:text="@string/collection_text"
-        android:textSize="30sp"/>
+        android:textColor="@color/colorWhite"
+        android:textSize="25sp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/main_color"
+        android:background="@color/colorWhite"
         app:menu="@menu/toolbar" />
 
 </RelativeLayout>
