@@ -82,6 +82,26 @@ public class PhotoDisplayActivity extends Activity implements AdapterView.OnItem
         startActivity(returnIntent);
     }
 
+    // Clothing type is 0 for top, 1 for bottom.
+    private void addToDatabase(String photoPath, String name, int clothingType)
+    {
+        DatabaseHelper dh = new DatabaseHelper(getApplicationContext());
+
+        switch(clothingType)
+        {
+            // Case for tops
+            case 0:
+            {
+                dh.insertTopDetails(name, photoPath);
+            }
+            // Case for bottoms
+            case 1:
+            {
+                dh.insertBottomDetails(name, photoPath);
+            }
+        }
+    }
+
     // Populate spinner with types of clothing
     private void populateSpinner()
     {
