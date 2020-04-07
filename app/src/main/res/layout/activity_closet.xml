@@ -21,7 +21,7 @@
         android:layout_centerInParent="true"
         android:layout_above="@+id/button_closet_bottoms"
         android:backgroundTint="@color/main_color"
-        android:drawableLeft="@drawable/shirt"/>
+        android:drawableLeft="@drawable/shirt" />
 
     <Button
         android:id="@+id/button_closet_bottoms"
