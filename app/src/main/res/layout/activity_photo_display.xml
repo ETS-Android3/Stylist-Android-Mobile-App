@@ -19,12 +19,25 @@
         android:layout_marginTop="200dp"
         android:layout_marginBottom="20dp"
         android:layout_below="@id/photo_title"/>
+
+    <EditText
+        android:id="@+id/edit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Add Name"
+        android:layout_below="@id/view_photo_display"/>
+
+    <Spinner
+        android:id="@+id/spinner_clothing_types"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_name"/>
     <Button
         android:id="@+id/button_photo_ok"
         android:text="OK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_below="@id/view_photo_display"/>
+        android:layout_below="@id/spinner_clothing_types"/>
 
 </RelativeLayout>
