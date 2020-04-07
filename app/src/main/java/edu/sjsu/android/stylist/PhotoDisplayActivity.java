@@ -26,6 +26,7 @@ public class PhotoDisplayActivity extends Activity implements AdapterView.OnItem
     EditText editName;
     Spinner spinnerClothingTypes;
 
+    // Properties for a Top/Bottom object
     String photoPath;
     String clothingType;
     String name;
@@ -69,23 +70,24 @@ public class PhotoDisplayActivity extends Activity implements AdapterView.OnItem
             viewPhotoDisplay.setImageBitmap(myBitmap);
         }
     }
+
     private void dispatchReturnIntent()
     {
         name = editName.getText().toString();
 
         // TODO save this to database
         //addToDatabase(photoPath, name, clothingType);
-        Log.d("log", "command " + photoPath + " " + name + " " + clothingType);
 
         Intent returnIntent = new Intent(this, ClosetDetailsActivity.class);
         startActivity(returnIntent);
     }
 
+    // Populate spinner with types of clothing
     private void populateSpinner()
     {
         clothingTypes = new ArrayList<String>();
-        clothingTypes.add("Tops");
-        clothingTypes.add("Bottoms");
+        clothingTypes.add("Top");
+        clothingTypes.add("Bottom");
     }
 
     @Override

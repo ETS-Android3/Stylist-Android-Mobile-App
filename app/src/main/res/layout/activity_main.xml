@@ -7,24 +7,33 @@
     android:background="@color/colorPrimary"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/main_title"
-        android:layout_width="match_parent"
+<!--    <TextView-->
+<!--        android:id="@+id/main_title"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/main"-->
+<!--        android:textSize="50sp"-->
+<!--        android:background="@color/colorPrimary"-->
+<!--        android:textColor="@color/colorWhite"-->
+<!--        android:gravity="center"/>-->
+
+    <ImageView
+        android:id="@+id/view_logo"
+        android:layout_width="250dp"
+        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
-        android:text="@string/main"
-        android:textSize="50sp"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/colorWhite"
-        android:gravity="center"/>
+        android:src="@drawable/stylist_logo"
+        android:layout_marginBottom="10dp"/>
 
     <Button
         android:id="@+id/closet_button"
         android:layout_width="300dp"
         android:layout_height="75dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="-20dp"
         android:layout_marginBottom="30dp"
         android:background="@drawable/button_bordered_rounded"
+        android:layout_below="@id/view_logo"
         android:text="@string/closet"
         android:textColor="@color/colorWhite"
         android:textSize="25sp" />
