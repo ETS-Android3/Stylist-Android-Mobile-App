@@ -21,9 +21,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
 
+    Context c;
+
     public DatabaseHelper(Context context)
     {
         super(context, DB_NAME, null, DB_VERSION);
+        c = context;
     }
 
     @Override
@@ -129,44 +132,38 @@ public class DatabaseHelper extends SQLiteOpenHelper
         return outfitList;
     }
 
-    public ArrayList<HashMap<String, String>> getTops()
+    public ArrayList<Top> getTops()
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        ArrayList<HashMap<String, String>> topList = new ArrayList<>();
+
+        ArrayList<Top> tops = new ArrayList<>();
 
         String query = "SELECT name, image_location FROM " + TABLE_tops;
         Cursor cursor = db.rawQuery(query, null);
 
         while(cursor.moveToNext())
         {
-            HashMap<String, String> top = new HashMap<>();
-            top.put("name", cursor.getString(cursor.getColumnIndex(KEY_NAME)));
-            top.put("image_location", cursor.getString(cursor.getColumnIndex("image_location")));
-
-            topList.add(top);
+            tops.add(new Top(cursor.getString(cursor.getColumnIndex(KEY_NAME)), cursor.getString(cursor.getColumnIndex("image_location")), c));
         }
 
-        return topList;
+        return tops;
     }
 
-    public ArrayList<HashMap<String, String>> getBottoms()
+    public ArrayList<Bottom> getBottoms()
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        ArrayList<HashMap<String, String>> bottomList = new ArrayList<>();
+
+        ArrayList<Bottom> bottoms = new ArrayList<>();
 
         String query = "SELECT name, image_location FROM " + TABLE_bottoms;
         Cursor cursor = db.rawQuery(query, null);
 
         while(cursor.moveToNext())
         {
-            HashMap<String, String> bottom = new HashMap<>();
-            bottom.put("name", cursor.getString(cursor.getColumnIndex(KEY_NAME)));
-            bottom.put("image_location", cursor.getString(cursor.getColumnIndex("image_location")));
-
-            bottomList.add(bottom);
+            bottoms.add(new Bottom(cursor.getString(cursor.getColumnIndex(KEY_NAME)), cursor.getString(cursor.getColumnIndex("image_location")), c));
         }
 
-        return bottomList;
+        return bottoms;
     }
 
     public ArrayList<HashMap<String, String>> getModels()

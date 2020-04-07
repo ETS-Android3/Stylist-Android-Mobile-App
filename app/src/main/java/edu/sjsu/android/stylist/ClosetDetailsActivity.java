@@ -215,14 +215,18 @@ public class ClosetDetailsActivity extends Activity {
 
     private void populateTops()
     {
-        tops = new ArrayList<>();
-        // TODO pull tops from the database
+        DatabaseHelper dh = new DatabaseHelper(getApplicationContext());
+        tops = dh.getTops();
+        // TODO Do something with tops
     }
 
     private void populateBottoms()
     {
-        bottoms = new ArrayList<>();
-        // TODO pull bottoms from the database
+
+        DatabaseHelper dh = new DatabaseHelper(getApplicationContext());
+        bottoms = dh.getBottoms();
+
+        // TODO Do something with bottoms
     }
 
     // Create a requestbody from the chosen image using its path

@@ -1,17 +1,18 @@
 package edu.sjsu.android.stylist;
 
 import android.app.Application;
+import android.content.Context;
 
 public class Clothing {
         String name;
         String image_location;
-        DatabaseHelper dh;
+        Context context;
 
-        public Clothing(String n, String il, DatabaseHelper d)
+        public Clothing(String n, String il, Context c)
         {
             name = n;
             image_location = il;
-            dh = d;
+            context = c;
         }
 
         public String getName()
