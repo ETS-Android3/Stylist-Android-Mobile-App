@@ -28,7 +28,7 @@ public class PhotoDisplayActivity extends Activity implements AdapterView.OnItem
 
     // Properties for a Top/Bottom object
     String photoPath;
-    String clothingType;
+    int clothingType;
     String name;
 
     List<String> clothingTypes;
@@ -76,7 +76,7 @@ public class PhotoDisplayActivity extends Activity implements AdapterView.OnItem
         name = editName.getText().toString();
 
         // TODO save this to database
-        //addToDatabase(photoPath, name, clothingType);
+        addToDatabase(photoPath, name, clothingType);
 
         Intent returnIntent = new Intent(this, ClosetDetailsActivity.class);
         startActivity(returnIntent);
@@ -112,7 +112,15 @@ public class PhotoDisplayActivity extends Activity implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        clothingType = parent.getItemAtPosition(position).toString();
+        String clothingTypeString = parent.getItemAtPosition(position).toString();
+        if (clothingTypeString.equals("Top"))
+        {
+            clothingType = 0;
+        }
+        else if (clothingTypeString.equals("Bottom"))
+        {
+            clothingType = 1;
+        }
 
     }
 
