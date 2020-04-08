@@ -42,12 +42,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
     {
         SQLiteDatabase database = getWritableDatabase();
         database.execSQL("INSERT INTO " + TOPS_TABLE + " VALUES('" + name + "', '" + filepath + "');");
+        database.close();
     }
 
     public void insertIntoBottoms(String name, String filepath)
     {
         SQLiteDatabase database = getWritableDatabase();
         database.execSQL("INSERT INTO " + TOPS_TABLE + " VALUES('" + name + "', '" + filepath + "');");
+        database.close();
     }
 
     public ArrayList<Top> getAllTops()
