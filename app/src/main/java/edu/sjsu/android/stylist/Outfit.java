@@ -13,7 +13,6 @@ public class Outfit
         top = t;
         bottom = b;
         dh = d;
-        dh.insertOutfitDetails(n ,t , b);
     }
 
     public String getName()

@@ -32,7 +32,7 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
         button_runway = (Button) findViewById(R.id.runway_button);
         button_collection = (Button) findViewById(R.id.collection_button);
 
-        dh = new DatabaseHelper(getApplicationContext());
+        dh = new DatabaseHelper(this);
 
         // Attach listeners to buttons
         button_closet.setOnClickListener(this);

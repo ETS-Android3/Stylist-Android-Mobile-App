@@ -4,11 +4,8 @@ import android.content.Context;
 
 public class Bottom extends Clothing
 {
-    public Bottom(String n, String il, Context c)
+    public Bottom(String n, String il)
     {
-        super(n, il, c);
-
-        DatabaseHelper dh = new DatabaseHelper(c);
-        dh.insertBottomDetails(n, il);
+        super(n, il);
     }
 }

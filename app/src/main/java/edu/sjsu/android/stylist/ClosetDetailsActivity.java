@@ -215,16 +215,16 @@ public class ClosetDetailsActivity extends Activity {
 
     private void populateTops()
     {
-        DatabaseHelper dh = new DatabaseHelper(getApplicationContext());
-        tops = dh.getTops();
+        DatabaseHelper dh = new DatabaseHelper(this);
+        tops = dh.getAllTops();
         // TODO Do something with tops
     }
 
     private void populateBottoms()
     {
 
-        DatabaseHelper dh = new DatabaseHelper(getApplicationContext());
-        bottoms = dh.getBottoms();
+        DatabaseHelper dh = new DatabaseHelper(this);
+        bottoms = dh.getAllBottoms();
 
         // TODO Do something with bottoms
     }

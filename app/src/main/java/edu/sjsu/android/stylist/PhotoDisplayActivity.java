@@ -85,19 +85,19 @@ public class PhotoDisplayActivity extends Activity implements AdapterView.OnItem
     // Clothing type is 0 for top, 1 for bottom.
     private void addToDatabase(String photoPath, String name, int clothingType)
     {
-        DatabaseHelper dh = new DatabaseHelper(getApplicationContext());
+        DatabaseHelper dh = new DatabaseHelper(this);
 
         switch(clothingType)
         {
             // Case for tops
             case 0:
             {
-                dh.insertTopDetails(name, photoPath);
+                dh.insertIntoTops(name, photoPath);
             }
             // Case for bottoms
             case 1:
             {
-                dh.insertBottomDetails(name, photoPath);
+                dh.insertIntoBottoms(name, photoPath);
             }
         }
     }
