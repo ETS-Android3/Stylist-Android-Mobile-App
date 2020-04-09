@@ -28,6 +28,7 @@ public class RunwayActivity extends MainActivity {
 
         // the selected model is loaded into this image view
         model_image = (ImageView) findViewById(R.id.model_runway);
+        model_image.setImageResource(R.drawable.my_model);
         // Image loaded_image =
         // model_image.setImage(loaded_image);
 

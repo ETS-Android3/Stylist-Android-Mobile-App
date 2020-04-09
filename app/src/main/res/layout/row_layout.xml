@@ -7,8 +7,9 @@
     <ImageView
         android:id="@+id/rowImage"
         android:layout_margin="4dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:foregroundGravity="center_horizontal"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="6dip"
