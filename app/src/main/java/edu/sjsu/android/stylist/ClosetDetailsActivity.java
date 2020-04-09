@@ -3,12 +3,14 @@ package edu.sjsu.android.stylist;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,8 +18,13 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
@@ -28,7 +35,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,6 +60,8 @@ public class ClosetDetailsActivity extends Activity {
     ArrayList<Top> tops;
     ArrayList<Bottom> bottoms;
     Bitmap updatedImage = null;
+    String source;
+    GridviewAdapter gridviewAdapter;
 
     // pathToFile contains full path to unedited file
     String pathToFile = null;
@@ -72,8 +80,7 @@ public class ClosetDetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_closet_details);
 
-        populateTops();
-        populateBottoms();
+
 
         if (Build.VERSION.SDK_INT >= 23)
         {
@@ -82,6 +89,20 @@ public class ClosetDetailsActivity extends Activity {
 
         // This is just an empty gridview since I'm not sure what else I should add - Phoenix
         gridClosetDetails = (GridView) findViewById(R.id.grid_closet_details);
+
+
+
+        gridviewAdapter = new GridviewAdapter(this);
+
+        populateGridview();
+        gridClosetDetails.setAdapter(gridviewAdapter);
+        gridClosetDetails.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getBaseContext(), "Clicked " + (position + 1), Toast.LENGTH_LONG).show();
+            }
+        });
+
         viewTitle = (TextView) findViewById(R.id.title_closet_details);
         fabAddPhoto = (FloatingActionButton) findViewById(R.id.fab_add_photo);
 
@@ -124,6 +145,15 @@ public class ClosetDetailsActivity extends Activity {
 
             }
         });
+
+
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        populateGridview();
     }
 
     // After a photo file is created, create an intent to take photo
@@ -215,9 +245,10 @@ public class ClosetDetailsActivity extends Activity {
 
     private void populateTops()
     {
+        Log.d("log", "Populate tops");
         DatabaseHelper dh = new DatabaseHelper(this);
         tops = dh.getAllTops();
-        if (tops.get(0) != null)
+        if (tops.size() > 0 && tops.get(0) != null)
         {
             Log.d("log", tops.get(0).getName());
         }
@@ -226,11 +257,32 @@ public class ClosetDetailsActivity extends Activity {
 
     private void populateBottoms()
     {
-
+        Log.d("log", "Populate bottoms");
         DatabaseHelper dh = new DatabaseHelper(this);
         bottoms = dh.getAllBottoms();
 
         // TODO Do something with bottoms
+    }
+
+    private void populateGridview()
+    {
+        Log.d("log", "source from populateGridView " + source);
+        if (getIntent() != null)
+        {
+            if ((getIntent().getStringExtra("Source")) != null)
+            {
+                source = getIntent().getStringExtra("Source");
+            }
+        }
+        if (source.equals("ButtonTops")) {
+            populateTops();
+            gridviewAdapter.updateView(tops);
+            Log.d("log", "source from Tops");
+        } else if (source.equals("ButtonBottoms")) {
+            populateBottoms();
+            gridviewAdapter.updateView(bottoms);
+            Log.d("log", "source from Bottoms");
+        }
     }
 
     // Create a requestbody from the chosen image using its path
@@ -244,7 +296,7 @@ public class ClosetDetailsActivity extends Activity {
 
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("size", "auto")
+                .addFormDataPart("size", "preview")
                 .addFormDataPart("image_file", "image_file", filePart).build();
 
         // Build POST call with URL, API key and RequestBody
@@ -289,5 +341,76 @@ public class ClosetDetailsActivity extends Activity {
 
             }
         });
+    }
+
+
+
+    public class GridviewAdapter extends BaseAdapter
+    {
+        private Context context;
+        ArrayList sourceList;
+
+        public GridviewAdapter(Context context)
+        {
+            this.context = context;
+        }
+        @Override
+        public int getCount() {
+            if (source.equals("ButtonTops"))
+            {
+                sourceList = tops;
+            }
+            else if (source.equals("ButtonBottoms"))
+            {
+                sourceList = bottoms;
+            }
+            return sourceList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ImageView photoView;
+            if (convertView == null)
+            {
+                photoView = new ImageView(context);
+                photoView.setLayoutParams(new GridView.LayoutParams(433, 577));
+                photoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                photoView.setPadding(16, 16, 16, 16);
+            }
+            else
+            {
+                photoView = (ImageView) convertView;
+            }
+
+            Clothing item = (Clothing) sourceList.get(position);
+            photoView.setBackgroundColor(Color.WHITE);
+            photoView.setImageBitmap(BitmapFactory.decodeFile(item.getImageLocation()));
+            if (sourceList != null)
+            {
+                for (int i = 0; i < sourceList.size(); i++)
+                {
+                    Clothing clothing = (Clothing) sourceList.get(i);
+                    Log.d("log", "item " + clothing.getName() + " " + clothing.getImageLocation());
+                }
+            }
+
+            return photoView;
+        }
+
+        public void updateView(ArrayList newSourceList)
+        {
+            sourceList = newSourceList;
+            notifyDataSetChanged();
+        }
     }
 }

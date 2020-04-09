@@ -21,6 +21,7 @@ public class ClosetActivity extends MainActivity {
             @Override
             public void onClick(View v) {
                 Intent closetDetailIntent = new Intent(ClosetActivity.this, ClosetDetailsActivity.class);
+                closetDetailIntent.putExtra("Source", "ButtonTops");
                 startActivity(closetDetailIntent);
             }
         });
@@ -29,6 +30,7 @@ public class ClosetActivity extends MainActivity {
             @Override
             public void onClick(View v) {
                 Intent closetDetailIntent = new Intent(ClosetActivity.this, ClosetDetailsActivity.class);
+                closetDetailIntent.putExtra("Source", "ButtonBottoms");
                 startActivity(closetDetailIntent);
             }
         });
