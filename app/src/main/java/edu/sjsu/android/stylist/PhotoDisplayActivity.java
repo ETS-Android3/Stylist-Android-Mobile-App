@@ -77,9 +77,7 @@ public class PhotoDisplayActivity extends Activity implements AdapterView.OnItem
 
         // TODO save this to database
         addToDatabase(photoPath, name, clothingType);
-
-        Intent returnIntent = new Intent(this, ClosetDetailsActivity.class);
-        startActivity(returnIntent);
+        finish();
     }
 
     // Clothing type is 0 for top, 1 for bottom.
@@ -87,18 +85,15 @@ public class PhotoDisplayActivity extends Activity implements AdapterView.OnItem
     {
         DatabaseHelper dh = new DatabaseHelper(this);
 
-        switch(clothingType)
+        if (clothingType == 0)
         {
-            // Case for tops
-            case 0:
-            {
+            Log.d("log", "inserting to tops" + clothingType);
                 dh.insertIntoTops(name, photoPath);
-            }
-            // Case for bottoms
-            case 1:
-            {
-                dh.insertIntoBottoms(name, photoPath);
-            }
+        }
+        else if (clothingType == 1)
+        {
+            Log.d("log", "inserting to bottoms" + clothingType);
+            dh.insertIntoBottoms(name, photoPath);
         }
     }
 

@@ -48,7 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
     public void insertIntoBottoms(String name, String filepath)
     {
         SQLiteDatabase database = getWritableDatabase();
-        database.execSQL("INSERT INTO " + TOPS_TABLE + " VALUES('" + name + "', '" + filepath + "');");
+        database.execSQL("INSERT INTO " + BOTTOMS_TABLE + " VALUES('" + name + "', '" + filepath + "');");
         database.close();
     }
 
@@ -65,6 +65,8 @@ public class DatabaseHelper extends SQLiteOpenHelper
             tops.add(new Top(resultSet.getString(0), resultSet.getString(1)));
             resultSet.moveToNext();
         }
+        resultSet.close();
+        database.close();
 
         return tops;
     }
@@ -82,6 +84,8 @@ public class DatabaseHelper extends SQLiteOpenHelper
             bottoms.add(new Bottom(resultSet.getString(0), resultSet.getString(1)));
             resultSet.moveToNext();
         }
+        resultSet.close();
+        database.close();
 
         return bottoms;
     }
