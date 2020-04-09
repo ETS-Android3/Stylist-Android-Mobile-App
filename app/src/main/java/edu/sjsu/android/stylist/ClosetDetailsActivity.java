@@ -217,6 +217,10 @@ public class ClosetDetailsActivity extends Activity {
     {
         DatabaseHelper dh = new DatabaseHelper(this);
         tops = dh.getAllTops();
+        if (tops.get(0) != null)
+        {
+            Log.d("log", tops.get(0).getName());
+        }
         // TODO Do something with tops
     }
 

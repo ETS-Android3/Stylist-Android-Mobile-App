@@ -63,6 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         while(!resultSet.isAfterLast())
         {
             tops.add(new Top(resultSet.getString(0), resultSet.getString(1)));
+            resultSet.moveToNext();
         }
 
         return tops;
@@ -79,6 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         while(!resultSet.isAfterLast())
         {
             bottoms.add(new Bottom(resultSet.getString(0), resultSet.getString(1)));
+            resultSet.moveToNext();
         }
 
         return bottoms;
