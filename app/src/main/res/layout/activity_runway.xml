@@ -3,13 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/model_runway"
+    <RelativeLayout
+        android:id="@+id/my_drag_view"
         android:layout_width="220dp"
-        android:layout_height="480dp"
+        android:layout_height="500dp"
         android:layout_marginTop="130dp"
         android:layout_marginStart="100dp"
-        android:foregroundGravity="center"/>
+        android:layout_marginLeft="100dp">
+
+        <ImageView
+            android:id="@+id/model_runway"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:foregroundGravity="center"
+            android:padding="10dp"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/runway_title"
@@ -37,12 +45,12 @@
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
         android:backgroundTint="@color/main_color"
-        android:src="@drawable/shirt"
+        android:src="@drawable/new_shirt"
         android:layout_marginTop="150dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:scaleType="fitCenter"
-        android:padding="5dp"
+        android:padding="7dp"
         android:onClick="onClick"/>
 
     <ImageButton
@@ -52,12 +60,12 @@
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
         android:backgroundTint="@color/main_color"
-        android:src="@drawable/bottom"
+        android:src="@drawable/new_bottom"
         android:layout_below="@+id/top_button"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:scaleType="fitCenter"
-        android:padding="5dp"
+        android:padding="7dp"
         android:onClick="onClick"/>
 
     <ImageButton
@@ -69,7 +77,7 @@
         android:backgroundTint="@color/main_color"
         android:src="@drawable/dress"
         android:layout_below="@+id/bottom_button"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:scaleType="fitCenter"
         android:padding="5dp"

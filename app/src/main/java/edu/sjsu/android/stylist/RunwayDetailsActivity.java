@@ -3,10 +3,12 @@ package edu.sjsu.android.stylist;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -30,24 +32,34 @@ public class RunwayDetailsActivity extends MainActivity {
     private ImageButton button_dress;
     private ImageButton button_accessories;
     private ImageView model_img;
-    private ImageView item_img;
-    private RelativeLayout view;
+    private ImageView top_img;
+    private ImageView bottom_img;
+    private ImageView accessories_img;
+    private RelativeLayout top_view;
+    private RelativeLayout bottom_view;
     private boolean inTop;
     private boolean inBottom;
     private float imgTouchX;
     private float imgTouchY;
     ArrayList<ClothingTest> tops;
     ArrayList<ClothingTest> bottoms;
+    ScaleGestureDetector scaleGestureDetector;
+    Matrix matrix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runway_details);
 
+        matrix = new Matrix();
         imgTouchX = 0.0f;
         imgTouchY = 0.0f;
-        view = (RelativeLayout) findViewById(R.id.my_drag_view);
-        item_img = (ImageView) findViewById(R.id.item_image);
+        top_view = (RelativeLayout) findViewById(R.id.my_top_view);
+        bottom_view = (RelativeLayout) findViewById(R.id.my_bottom_view);
+        top_img = (ImageView) findViewById(R.id.top_image);
+        bottom_img = (ImageView) findViewById(R.id.bottom_image);
+
+        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
         backButton = (ImageButton) findViewById(R.id.back_button);
         button_top = (ImageButton) findViewById(R.id.top_button);
@@ -79,6 +91,12 @@ public class RunwayDetailsActivity extends MainActivity {
         final ArrayList<ClothingTest> cur_tops = new ArrayList<>();
         cur_tops.add(new TopTest(R.drawable.top1));
         cur_tops.add(new TopTest(R.drawable.top2));
+        cur_tops.add(new TopTest(R.drawable.top1));
+        cur_tops.add(new TopTest(R.drawable.top2));
+        cur_tops.add(new TopTest(R.drawable.top1));
+        cur_tops.add(new TopTest(R.drawable.top2));
+        cur_tops.add(new TopTest(R.drawable.top1));
+        cur_tops.add(new TopTest(R.drawable.top2));
         tops = (ArrayList) cur_tops.clone();
 
         final ArrayList<ClothingTest> cur_bottoms = new ArrayList<>();
@@ -98,7 +116,7 @@ public class RunwayDetailsActivity extends MainActivity {
             recyclerView.setAdapter(mAdapter);
         }
 
-        view.setOnDragListener(new View.OnDragListener() {
+        top_view.setOnDragListener(new View.OnDragListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onDrag(final View v, DragEvent event) {
@@ -113,58 +131,12 @@ public class RunwayDetailsActivity extends MainActivity {
                         final float dropX = event.getX();
                         final float dropY = event.getY();
                         final DragData state = (DragData) event.getLocalState();
-                        if (isInView(view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
-                            // need to load image in here
-                            item_img.setImageResource(state.item.getImage());
-                            item_img.setX(dropX - (float) item_img.getWidth() / 2.0f);
-                            item_img.setY(dropY - (float) item_img.getHeight() / 2.0f);
-
-                            item_img.setOnTouchListener(new View.OnTouchListener() {
-                                @Override
-                                public boolean onTouch(View v, MotionEvent event) {
-                                    switch (event.getAction() & ACTION_MASK) {
-                                        case MotionEvent.ACTION_DOWN:
-                                            int[] imgVals = new int[2];
-                                            item_img.getLocationOnScreen(imgVals);
-                                            float xValOrig = event.getRawX();
-                                            float yValOrig = event.getRawY();
-                                            imgTouchX = xValOrig - imgVals[0];
-                                            imgTouchY = yValOrig - imgVals[1];
-                                            break;
-                                        case MotionEvent.ACTION_UP:
-                                            break;
-                                        case MotionEvent.ACTION_MOVE:
-                                            float xVal = event.getRawX();
-                                            float yVal = event.getRawY();
-                                            int[] relVals = new int[2];
-                                            view.getLocationOnScreen(relVals);
-
-                                            float newX = xVal - relVals[0] - imgTouchX;
-                                            float newY = yVal - relVals[1] - imgTouchY;
-                                            // if touch position is out of left bound, set x to left edge of parent view
-                                            if (xVal - imgTouchX < relVals[0]) {
-                                                newX = 0;
-                                            }
-                                            // if touch position is out of right bound, set x to right edge of parent view
-                                            if (xVal - imgTouchX + item_img.getWidth() > relVals[0] + view.getWidth()) {
-                                                newX = view.getWidth() - item_img.getWidth();
-                                            }
-                                            // if touch position is out of top bound, set y to top edge of parent view
-                                            if (yVal - imgTouchY < relVals[1]) {
-                                                newY = 0;
-                                            }
-                                            // if touch position is out of bottom bound, set y to bottom edge of parent view
-                                            if (yVal - imgTouchY + item_img.getHeight() > relVals[1] + view.getHeight()) {
-                                                newY = view.getHeight() - item_img.getHeight();
-                                            }
-
-                                            item_img.setX(newX);
-                                            item_img.setY(newY);
-                                            break;
-                                    }
-                                    return true;
-                                }
-                            });
+                        // tops, and bottoms have their own view
+                        if (inTop) {
+                            dragItem(top_view, top_img, dropX, dropY, state);
+                        }
+                        if (inBottom) {
+                            dragItem(bottom_view, bottom_img, dropX, dropY, state);
                         }
                         break;
                     }
@@ -174,7 +146,24 @@ public class RunwayDetailsActivity extends MainActivity {
                 return true;
             }
         });
-        
+
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        scaleGestureDetector.onTouchEvent(event);
+        return true;
+    }
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            float scaleFactor = detector.getScaleFactor();
+            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 0.5f));
+            matrix.setScale(scaleFactor, scaleFactor);
+            top_img.setImageMatrix(matrix);
+            return true;
+        }
     }
 
     @Override
@@ -210,7 +199,6 @@ public class RunwayDetailsActivity extends MainActivity {
                 }
                 break;
             case R.id.dress_button:
-                break;
             case R.id.accessories_button:
                 break;
         }
@@ -244,5 +232,66 @@ public class RunwayDetailsActivity extends MainActivity {
             return true;
         }
         return false;
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void dragItem(final RelativeLayout view, final ImageView item_img, float dropX, float dropY, DragData state) {
+        if (isInView(top_view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
+            // need to load image in here
+            item_img.setImageResource(state.item.getImage());
+            item_img.setX(dropX - (float) item_img.getWidth() / 2.0f);
+            item_img.setY(dropY - (float) item_img.getHeight() / 2.0f);
+
+            item_img.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction() & ACTION_MASK) {
+                        case MotionEvent.ACTION_DOWN:
+                            // bring image to front on click
+                            view.bringToFront();
+                            view.invalidate();
+                            int[] imgVals = new int[2];
+                            item_img.getLocationOnScreen(imgVals);
+                            float xValOrig = event.getRawX();
+                            float yValOrig = event.getRawY();
+                            imgTouchX = xValOrig - imgVals[0];
+                            imgTouchY = yValOrig - imgVals[1];
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            float xVal = event.getRawX();
+                            float yVal = event.getRawY();
+                            int[] relVals = new int[2];
+                            top_view.getLocationOnScreen(relVals);
+
+                            float newX = xVal - relVals[0] - imgTouchX;
+                            float newY = yVal - relVals[1] - imgTouchY;
+                            // if touch position is out of left bound, set x to left edge of parent view
+                            if (xVal - imgTouchX < relVals[0]) {
+                                newX = 0;
+                            }
+                            // if touch position is out of right bound, set x to right edge of parent view
+                            if (xVal - imgTouchX + item_img.getWidth() > relVals[0] + top_view.getWidth()) {
+                                newX = top_view.getWidth() - item_img.getWidth();
+                            }
+                            // if touch position is out of top bound, set y to top edge of parent view
+                            if (yVal - imgTouchY < relVals[1]) {
+                                newY = 0;
+                            }
+                            // if touch position is out of bottom bound, set y to bottom edge of parent view
+                            if (yVal - imgTouchY + item_img.getHeight() > relVals[1] + top_view.getHeight()) {
+                                newY = top_view.getHeight() - item_img.getHeight();
+                            }
+
+                            item_img.setX(newX);
+                            item_img.setY(newY);
+                            break;
+                    }
+                    return true;
+                }
+            });
+        }
+
     }
 }

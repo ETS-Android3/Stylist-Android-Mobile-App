@@ -7,26 +7,17 @@
 
     <include layout="@layout/activity_runway"/>
 
-<!--    <TextView-->
-<!--        android:id="@+id/runway_title"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/runway"-->
-<!--        android:textSize="50sp"-->
-<!--        android:background="@color/main_color"-->
-<!--        android:gravity="center"/>-->
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"
-        android:layout_width="70dp"
-        android:layout_height="400dp"
+        android:layout_width="100dp"
+        android:layout_height="380dp"
         android:layout_marginTop="150dp"
+        android:background="@drawable/scroll_view_stroke"
         android:scrollbars="vertical" />
 
     <RelativeLayout
-        android:id="@+id/my_drag_view"
         android:layout_width="220dp"
-        android:layout_height="480dp"
+        android:layout_height="500dp"
         android:layout_marginTop="130dp"
         android:layout_marginStart="100dp"
         android:layout_marginLeft="100dp">
@@ -35,13 +26,30 @@
             android:id="@+id/model_runway"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:foregroundGravity="center"/>
+            android:foregroundGravity="center"
+            android:padding="10dp"/>
 
-        <ImageView
-            android:id="@+id/item_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:onClick="onClick"/>
+        <RelativeLayout
+            android:id="@+id/my_top_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/top_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:onClick="onClick"
+                android:scaleType="matrix"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/my_bottom_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/bottom_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"/>
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>
