@@ -235,7 +235,7 @@ public class RunwayDetailsActivity extends MainActivity {
             //PhotoViewAttacher mAttacher = new PhotoViewAttacher(item_img);
             Bitmap myBitmap = BitmapFactory.decodeFile(state.item.getImageLocation());
             item_img.setImageBitmap(myBitmap);
-            mAttacher.update();
+//            mAttacher.update();
             item_img.setX(dropX - (float) item_img.getWidth() / 2.0f);
             item_img.setY(dropY - (float) item_img.getHeight() / 2.0f);
 

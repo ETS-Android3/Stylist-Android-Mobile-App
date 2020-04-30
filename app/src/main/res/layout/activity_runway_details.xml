@@ -36,12 +36,9 @@
 
             <ImageView
                 android:id="@+id/top_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:scaleType="centerInside"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/top2"
                 android:onClick="onClick"/>
 
 <!--                android:scaleType="matrix"/>-->
