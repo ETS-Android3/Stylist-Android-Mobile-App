@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     // Other types of clothes inherited from Clothing, so they all can use this adapter
     private List list;
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
         public View layout;
@@ -28,6 +30,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     public void add(int position, Clothing item) {
         list.add(position, item);
+
         notifyItemInserted(position);
     }
 
@@ -37,6 +40,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     public MyAdapter(List myDataset) {
+
         list = myDataset;
     }
 
@@ -56,6 +60,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 return true;
             }
         });
+
         return vh;
     }
     @Override
@@ -64,6 +69,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 //        holder.imageView.setImageResource(clothing.getImage());
             Bitmap myBitmap = BitmapFactory.decodeFile(clothing.getImageLocation());
             holder.imageView.setImageBitmap(myBitmap);
+
     }
 
     @Override

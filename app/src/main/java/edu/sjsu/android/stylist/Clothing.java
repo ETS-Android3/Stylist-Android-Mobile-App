@@ -22,7 +22,6 @@ public class Clothing {
         {
             return image_location;
         }
-
 }
 
 

@@ -5,14 +5,11 @@ public class Outfit
     String name;
     Top top;
     Bottom bottom;
-    DatabaseHelper dh;
-
-    public Outfit(String n, Top t, Bottom b, DatabaseHelper d)
+    public Outfit(String n, Top t, Bottom b)
     {
         name = n;
         top = t;
         bottom = b;
-        dh = d;
     }
 
     public String getName()

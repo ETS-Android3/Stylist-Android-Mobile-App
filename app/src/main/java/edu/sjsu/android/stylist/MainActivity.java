@@ -58,6 +58,9 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
                 startActivity(runwayIntent);
             } else if (itemId == R.id.action_collection) {
 
+                Intent collectionIntent = new Intent(this, CollectionActivity.class);
+                startActivity(collectionIntent);
+
             }
         return true;
     }

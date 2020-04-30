@@ -9,6 +9,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"
+
         android:layout_width="80dp"
         android:layout_height="380dp"
         android:layout_marginTop="150dp"
@@ -51,5 +52,6 @@
                 android:layout_height="100dp"/>
         </RelativeLayout>
     </RelativeLayout>
+
 
 </RelativeLayout>
