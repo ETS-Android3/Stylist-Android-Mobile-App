@@ -45,6 +45,7 @@ public class RunwayDetailsActivity extends MainActivity {
     ArrayList<ClothingTest> bottoms;
     ScaleGestureDetector scaleGestureDetector;
     Matrix matrix;
+    float scaleFactor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class RunwayDetailsActivity extends MainActivity {
 
         // the selected model is loaded into this image view
         model_img = (ImageView) findViewById(R.id.model_runway);
-        model_img.setImageResource(R.drawable.my_model);
+//        model_img.setImageResource(R.drawable.my_model);
 
         //populateTops();
         // populateBottoms();
@@ -124,14 +125,11 @@ public class RunwayDetailsActivity extends MainActivity {
                     case DragEvent.ACTION_DRAG_ENTERED:
                     case DragEvent.ACTION_DRAG_EXITED:
                     case DragEvent.ACTION_DRAG_ENDED:
-//                        v.setBackgroundColor(Color.RED);
-                        break;
                     case DragEvent.ACTION_DROP: {
                         // coordinates of drop position
                         final float dropX = event.getX();
                         final float dropY = event.getY();
                         final DragData state = (DragData) event.getLocalState();
-                        // tops, and bottoms have their own view
                         if (inTop) {
                             dragItem(top_view, top_img, dropX, dropY, state);
                         }
@@ -158,10 +156,10 @@ public class RunwayDetailsActivity extends MainActivity {
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            float scaleFactor = detector.getScaleFactor();
+            scaleFactor = detector.getScaleFactor();
             scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 0.5f));
             matrix.setScale(scaleFactor, scaleFactor);
-            top_img.setImageMatrix(matrix);
+//            model_img.setImageMatrix(matrix);
             return true;
         }
     }

@@ -8,8 +8,9 @@
         android:layout_width="220dp"
         android:layout_height="500dp"
         android:layout_marginTop="130dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp">
+        android:layout_marginStart="90dp"
+        android:layout_marginLeft="90dp"
+        android:background="@drawable/scroll_view_stroke">
 
         <ImageView
             android:id="@+id/model_runway"
@@ -40,7 +41,7 @@
 
     <ImageButton
         android:id="@+id/top_button"
-        android:layout_width="80dp"
+        android:layout_width="70dp"
         android:layout_height="65dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
@@ -55,7 +56,7 @@
 
     <ImageButton
         android:id="@+id/bottom_button"
-        android:layout_width="80dp"
+        android:layout_width="70dp"
         android:layout_height="65dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
@@ -70,7 +71,7 @@
 
     <ImageButton
         android:id="@+id/dress_button"
-        android:layout_width="80dp"
+        android:layout_width="70dp"
         android:layout_height="65dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
@@ -85,7 +86,7 @@
 
     <ImageButton
         android:id="@+id/accessories_button"
-        android:layout_width="80dp"
+        android:layout_width="70dp"
         android:layout_height="65dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
@@ -96,5 +97,15 @@
         android:scaleType="fitCenter"
         android:padding="12dp"
         android:onClick="onClick"/>
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_rounded"
+        android:backgroundTint="@color/main_color"
+        android:layout_marginTop="620dp"
+        android:text="SAVE"
+        android:textSize="18dp"/>
 
 </RelativeLayout>

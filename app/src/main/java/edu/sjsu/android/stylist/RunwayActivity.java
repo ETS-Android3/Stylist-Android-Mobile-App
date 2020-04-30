@@ -28,7 +28,7 @@ public class RunwayActivity extends MainActivity {
 
         // the selected model is loaded into this image view
         model_image = (ImageView) findViewById(R.id.model_runway);
-        model_image.setImageResource(R.drawable.my_model);
+//        model_image.setImageResource(R.drawable.my_model);
         // Image loaded_image =
         // model_image.setImage(loaded_image);
 
@@ -58,7 +58,6 @@ public class RunwayActivity extends MainActivity {
                 startActivity(bottomIntent);
                 break;
             case R.id.dress_button:
-                break;
             case R.id.accessories_button:
                 break;
         }
