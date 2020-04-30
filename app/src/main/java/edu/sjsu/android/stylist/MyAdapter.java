@@ -5,6 +5,8 @@ import java.util.List;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,7 @@ import android.widget.ImageView;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     // Other types of clothes inherited from Clothing, so they all can use this adapter
-    private List<ClothingTest> list;
+    private List list;
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
         public View layout;
@@ -24,7 +26,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         }
     }
 
-    public void add(int position, ClothingTest item) {
+    public void add(int position, Clothing item) {
         list.add(position, item);
         notifyItemInserted(position);
     }
@@ -34,7 +36,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         notifyItemRemoved(position);
     }
 
-    public MyAdapter(List<ClothingTest> myDataset) {
+    public MyAdapter(List myDataset) {
         list = myDataset;
     }
 
@@ -47,7 +49,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                ClothingTest item = list.get(vh.getAdapterPosition());
+                Clothing item = (Clothing) list.get(vh.getAdapterPosition());
                 DragData state = new DragData(item, image.getWidth(), image.getHeight());
                 View.DragShadowBuilder shadow = new View.DragShadowBuilder(image);
                 ViewCompat.startDragAndDrop(image, null, shadow, state, 0);
@@ -58,9 +60,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        final ClothingTest clothing = list.get(position);
-        holder.imageView.setImageResource(clothing.getImage());
-
+        final Clothing clothing = (Clothing) list.get(position);
+//        holder.imageView.setImageResource(clothing.getImage());
+            Bitmap myBitmap = BitmapFactory.decodeFile(clothing.getImageLocation());
+            holder.imageView.setImageBitmap(myBitmap);
     }
 
     @Override

@@ -2,6 +2,8 @@ package edu.sjsu.android.stylist;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Bundle;
@@ -41,8 +43,8 @@ public class RunwayDetailsActivity extends MainActivity {
     private boolean inBottom;
     private float imgTouchX;
     private float imgTouchY;
-    ArrayList<ClothingTest> tops;
-    ArrayList<ClothingTest> bottoms;
+    ArrayList<Top> tops;
+    ArrayList<Bottom> bottoms;
     ScaleGestureDetector scaleGestureDetector;
     Matrix matrix;
     float scaleFactor;
@@ -84,36 +86,21 @@ public class RunwayDetailsActivity extends MainActivity {
         model_img = (ImageView) findViewById(R.id.model_runway);
 //        model_img.setImageResource(R.drawable.my_model);
 
-        //populateTops();
-        // populateBottoms();
+        populateTops();
+        populateBottoms();
 
         Intent intent = getIntent();
         int tag = intent.getIntExtra("tag", 0);
-        final ArrayList<ClothingTest> cur_tops = new ArrayList<>();
-        cur_tops.add(new TopTest(R.drawable.top1));
-        cur_tops.add(new TopTest(R.drawable.top2));
-        cur_tops.add(new TopTest(R.drawable.top1));
-        cur_tops.add(new TopTest(R.drawable.top2));
-        cur_tops.add(new TopTest(R.drawable.top1));
-        cur_tops.add(new TopTest(R.drawable.top2));
-        cur_tops.add(new TopTest(R.drawable.top1));
-        cur_tops.add(new TopTest(R.drawable.top2));
-        tops = (ArrayList) cur_tops.clone();
-
-        final ArrayList<ClothingTest> cur_bottoms = new ArrayList<>();
-        cur_bottoms.add(new BottomTest(R.drawable.pants));
-        cur_bottoms.add(new BottomTest(R.drawable.skirt));
-        bottoms = (ArrayList) cur_bottoms.clone();
 
         if (tag == 0) {
             inTop = true;
             inBottom = false;
-            mAdapter = new MyAdapter(cur_tops);
+            mAdapter = new MyAdapter(tops);
             recyclerView.setAdapter(mAdapter);
         } else if (tag == 1) {
             inBottom = true;
             inTop = false;
-            mAdapter = new MyAdapter(cur_bottoms);
+            mAdapter = new MyAdapter(bottoms);
             recyclerView.setAdapter(mAdapter);
         }
 
@@ -204,13 +191,15 @@ public class RunwayDetailsActivity extends MainActivity {
 
     // pull from database to show in recycler view
     private void populateTops() {
-//        tops = new ArrayList<>();
+        DatabaseHelper dh = new DatabaseHelper(this);
+        tops = dh.getAllTops();
         // TODO pull tops from the database
     }
 
     // pull from database to show in recycler view
     private void populateBottoms() {
-        bottoms = new ArrayList<>();
+        DatabaseHelper dh = new DatabaseHelper(this);
+        bottoms = dh.getAllBottoms();
         // TODO pull bottoms from the database
     }
 
@@ -236,7 +225,9 @@ public class RunwayDetailsActivity extends MainActivity {
     private void dragItem(final RelativeLayout view, final ImageView item_img, float dropX, float dropY, DragData state) {
         if (isInView(top_view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
             // need to load image in here
-            item_img.setImageResource(state.item.getImage());
+//            item_img.setImageResource(state.item.getImage());
+            Bitmap myBitmap = BitmapFactory.decodeFile(state.item.getImageLocation());
+            item_img.setImageBitmap(myBitmap);
             item_img.setX(dropX - (float) item_img.getWidth() / 2.0f);
             item_img.setY(dropY - (float) item_img.getHeight() / 2.0f);
 
