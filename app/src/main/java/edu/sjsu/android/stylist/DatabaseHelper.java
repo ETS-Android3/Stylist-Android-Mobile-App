@@ -12,6 +12,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
     private static final String DATABASE_NAME = "stylist-database.db";
     private static final String TOPS_TABLE = "tops";
     private static final String BOTTOMS_TABLE = "bottoms";
+    private static final String OUTFITS_TABLE = "outfits";
     private static final int DATABASE_VERSION = 1;
 
     public DatabaseHelper(Context context)
@@ -36,6 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
     {
         database.execSQL("CREATE TABLE IF NOT EXISTS " + TOPS_TABLE + "(Name VARCHAR, FilePath VARCHAR);");
         database.execSQL("CREATE TABLE IF NOT EXISTS " + BOTTOMS_TABLE + "(Name VARCHAR, FilePath VARCHAR);");
+        database.execSQL("CREATE TABLE IF NOT EXISTS " + OUTFITS_TABLE + "(Name VARCHAR, Top VARCHAR, Bottom VARCHAR);");
     }
 
     public void insertIntoTops(String name, String filepath)
@@ -49,6 +51,13 @@ public class DatabaseHelper extends SQLiteOpenHelper
     {
         SQLiteDatabase database = getWritableDatabase();
         database.execSQL("INSERT INTO " + BOTTOMS_TABLE + " VALUES('" + name + "', '" + filepath + "');");
+        database.close();
+    }
+
+    public void insertIntoOutfits(String name, Top top, Bottom bottom)
+    {
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL("INSERT INTO " + OUTFITS_TABLE + " VALUES('" + name + "', '" + top.getName() + "', '" + bottom.getName() +"');");
         database.close();
     }
 
@@ -88,6 +97,52 @@ public class DatabaseHelper extends SQLiteOpenHelper
         database.close();
 
         return bottoms;
+    }
+
+    public ArrayList<Outfit> getAllOutfits()
+    {
+        ArrayList<Top> tops = getAllTops();
+        ArrayList<Bottom> bottoms = getAllBottoms();
+        ArrayList<Outfit> outfits = new ArrayList<>();
+        SQLiteDatabase database = getWritableDatabase();
+
+        Cursor resultSet = database.rawQuery("SELECT * FROM " + OUTFITS_TABLE, null);
+        resultSet.moveToFirst();
+
+        while(!resultSet.isAfterLast())
+        {
+            Top top = null;
+            Bottom bottom = null;
+
+            for(int x = 0; x < tops.size(); x++)
+            {
+                top = tops.get(x);
+                if(top.getName().equals(resultSet.getString(1)))
+                {
+                    x = tops.size();
+                }
+                else
+                {
+                    top = null;
+                }
+            }
+            for(int x = 0; x < bottoms.size(); x++)
+            {
+                bottom = bottoms.get(x);
+                if(bottom.getName().equals(resultSet.getString(2)))
+                {
+                    x = bottoms.size();
+                }
+                else
+                {
+                    bottom = null;
+                }
+            }
+
+            outfits.add(new Outfit(resultSet.getString(0), top, bottom));
+        }
+
+        return outfits;
     }
 
 }
