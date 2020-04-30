@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.view.MotionEvent.ACTION_MASK;
+
 
 public class RunwayDetailsActivity extends MainActivity {
     private RecyclerView recyclerView;
@@ -69,7 +71,6 @@ public class RunwayDetailsActivity extends MainActivity {
         button_dress = (ImageButton) findViewById(R.id.dress_button);
         button_accessories = (ImageButton) findViewById(R.id.accessories_button);
 
-        // list of items
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -84,6 +85,7 @@ public class RunwayDetailsActivity extends MainActivity {
         // the selected model is loaded into this image view
         model_img = (ImageView) findViewById(R.id.model_runway);
 //        model_img.setImageResource(R.drawable.my_model);
+
 
         populateTops();
         populateBottoms();
@@ -131,6 +133,7 @@ public class RunwayDetailsActivity extends MainActivity {
             }
         });
 
+
     }
 
     @Override
@@ -157,6 +160,7 @@ public class RunwayDetailsActivity extends MainActivity {
                 Intent backIntent = new Intent(this, MainActivity.class);
                 startActivity(backIntent);
             case R.id.top_button:
+
                 // if the recycler view is showing tops, make it invisible
                 // otherwise, show the list of tops
                 if (!inTop) {
@@ -170,6 +174,7 @@ public class RunwayDetailsActivity extends MainActivity {
                     recyclerView.setVisibility(View.INVISIBLE);
                 }
                 break;
+
             case R.id.bottom_button:
                 if (!inBottom) {
                     inBottom = true;
@@ -183,8 +188,10 @@ public class RunwayDetailsActivity extends MainActivity {
                 }
                 break;
             case R.id.dress_button:
+                break;
             case R.id.accessories_button:
                 // save outfit
+                break;
             case R.id.save_button:
                 break;
         }
@@ -194,6 +201,7 @@ public class RunwayDetailsActivity extends MainActivity {
     private void populateTops() {
         DatabaseHelper dh = new DatabaseHelper(this);
         tops = dh.getAllTops();
+
         // TODO pull tops from the database
     }
 

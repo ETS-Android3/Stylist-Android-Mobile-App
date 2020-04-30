@@ -20,6 +20,7 @@
             android:padding="10dp"/>
     </RelativeLayout>
 
+
     <TextView
         android:id="@+id/runway_title"
         android:layout_width="match_parent"
@@ -41,7 +42,9 @@
 
     <ImageButton
         android:id="@+id/top_button"
+
         android:layout_width="70dp"
+
         android:layout_height="65dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
@@ -52,33 +55,42 @@
         android:gravity="center"
         android:scaleType="fitCenter"
         android:padding="7dp"
+
         android:onClick="onClick"/>
 
     <ImageButton
         android:id="@+id/bottom_button"
+
         android:layout_width="70dp"
+
         android:layout_height="65dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
         android:backgroundTint="@color/main_color"
+
         android:src="@drawable/new_bottom"
         android:layout_below="@+id/top_button"
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:scaleType="fitCenter"
         android:padding="7dp"
+
         android:onClick="onClick"/>
 
     <ImageButton
         android:id="@+id/dress_button"
+
         android:layout_width="70dp"
+
         android:layout_height="65dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
         android:backgroundTint="@color/main_color"
         android:src="@drawable/dress"
         android:layout_below="@+id/bottom_button"
+
         android:layout_marginBottom="20dp"
+
         android:gravity="center"
         android:scaleType="fitCenter"
         android:padding="5dp"
@@ -86,7 +98,9 @@
 
     <ImageButton
         android:id="@+id/accessories_button"
+
         android:layout_width="70dp"
+
         android:layout_height="65dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
