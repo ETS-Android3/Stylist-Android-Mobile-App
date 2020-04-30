@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -155,7 +154,7 @@ public class RunwayDetailsActivity extends MainActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back_button:
-                Intent backIntent = new Intent(this, RunwayActivity.class);
+                Intent backIntent = new Intent(this, MainActivity.class);
                 startActivity(backIntent);
             case R.id.top_button:
                 // if the recycler view is showing tops, make it invisible
@@ -225,7 +224,7 @@ public class RunwayDetailsActivity extends MainActivity {
 
     @SuppressLint("ClickableViewAccessibility")
     private void dragItem(final RelativeLayout view, final ImageView item_img, float dropX, float dropY, DragData state) {
-        if (isInView(top_view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
+        if (isInView(view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
             // need to load image in here
 //            item_img.setImageResource(state.item.getImage());
             Bitmap myBitmap = BitmapFactory.decodeFile(state.item.getImageLocation());
