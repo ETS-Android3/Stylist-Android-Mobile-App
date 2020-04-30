@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -93,6 +94,8 @@ public class ClosetDetailsActivity extends Activity {
 
 
         gridviewAdapter = new GridviewAdapter(this);
+        viewTitle = (TextView) findViewById(R.id.title_closet_details);
+        fabAddPhoto = (FloatingActionButton) findViewById(R.id.fab_add_photo);
 
         populateGridview();
         gridClosetDetails.setAdapter(gridviewAdapter);
@@ -102,9 +105,6 @@ public class ClosetDetailsActivity extends Activity {
                 Toast.makeText(getBaseContext(), "Clicked " + (position + 1), Toast.LENGTH_LONG).show();
             }
         });
-
-        viewTitle = (TextView) findViewById(R.id.title_closet_details);
-        fabAddPhoto = (FloatingActionButton) findViewById(R.id.fab_add_photo);
 
 
         // TODO populate the gridview with tops and bottoms
@@ -278,9 +278,11 @@ public class ClosetDetailsActivity extends Activity {
             populateTops();
             gridviewAdapter.updateView(tops);
             Log.d("log", "source from Tops");
+            viewTitle.setText("Tops");
         } else if (source.equals("ButtonBottoms")) {
             populateBottoms();
             gridviewAdapter.updateView(bottoms);
+            viewTitle.setText("Bottoms");
             Log.d("log", "source from Bottoms");
         }
     }
@@ -379,22 +381,27 @@ public class ClosetDetailsActivity extends Activity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView photoView;
             if (convertView == null)
             {
-                photoView = new ImageView(context);
-                photoView.setLayoutParams(new GridView.LayoutParams(433, 577));
-                photoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                photoView.setPadding(16, 16, 16, 16);
+                LayoutInflater layoutInflater = LayoutInflater.from(context);
+                convertView = layoutInflater.inflate(R.layout.clothes_layout, null);
+//                photoView = new ImageView(context);
+//                photoView.setLayoutParams(new GridView.LayoutParams(433, 577));
+//                photoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//                photoView.setPadding(16, 16, 16, 16);
             }
-            else
-            {
-                photoView = (ImageView) convertView;
-            }
+//            else
+//            {
+//                photoView = (ImageView) convertView;
+//            }
 
             Clothing item = (Clothing) sourceList.get(position);
-            photoView.setBackgroundColor(Color.WHITE);
-            photoView.setImageBitmap(BitmapFactory.decodeFile(item.getImageLocation()));
+            ImageView imageViewClothes = (ImageView) convertView.findViewById(R.id.imageview_clothes);
+            TextView textViewDescription = (TextView) convertView.findViewById(R.id.textview_description);
+
+            imageViewClothes.setBackgroundColor(Color.WHITE);
+            imageViewClothes.setImageBitmap(BitmapFactory.decodeFile(item.getImageLocation()));
+            textViewDescription.setText(item.getName());
             if (sourceList != null)
             {
                 for (int i = 0; i < sourceList.size(); i++)
@@ -404,7 +411,7 @@ public class ClosetDetailsActivity extends Activity {
                 }
             }
 
-            return photoView;
+            return convertView;
         }
 
         public void updateView(ArrayList newSourceList)

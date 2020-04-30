@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:textSize="50sp"
         android:background="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
         android:gravity="center"/>
 
     <GridView
