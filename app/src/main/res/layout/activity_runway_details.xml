@@ -17,6 +17,7 @@
         android:scrollbars="vertical" />
 
     <RelativeLayout
+        android:id="@+id/drag_view"
         android:layout_width="220dp"
         android:layout_height="500dp"
         android:layout_marginTop="130dp"

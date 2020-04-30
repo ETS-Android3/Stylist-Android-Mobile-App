@@ -40,12 +40,13 @@ public class RunwayDetailsActivity extends MainActivity {
     private ImageView accessories_img;
     private RelativeLayout top_view;
     private RelativeLayout bottom_view;
+    private RelativeLayout drag_view;
     private boolean inTop;
     private boolean inBottom;
     private float imgTouchX;
     private float imgTouchY;
-    ArrayList<Top> tops;
-    ArrayList<Bottom> bottoms;
+    private ArrayList<Top> tops;
+    private ArrayList<Bottom> bottoms;
     ScaleGestureDetector scaleGestureDetector;
     Matrix matrix;
     float scaleFactor;
@@ -60,6 +61,7 @@ public class RunwayDetailsActivity extends MainActivity {
         imgTouchY = 0.0f;
         top_view = (RelativeLayout) findViewById(R.id.my_top_view);
         bottom_view = (RelativeLayout) findViewById(R.id.my_bottom_view);
+        drag_view = (RelativeLayout) findViewById(R.id.drag_view);
         top_img = (ImageView) findViewById(R.id.top_image);
         bottom_img = (ImageView) findViewById(R.id.bottom_image);
 
@@ -132,8 +134,6 @@ public class RunwayDetailsActivity extends MainActivity {
                 return true;
             }
         });
-
-
     }
 
     @Override
@@ -160,7 +160,6 @@ public class RunwayDetailsActivity extends MainActivity {
                 Intent backIntent = new Intent(this, MainActivity.class);
                 startActivity(backIntent);
             case R.id.top_button:
-
                 // if the recycler view is showing tops, make it invisible
                 // otherwise, show the list of tops
                 if (!inTop) {
@@ -190,8 +189,8 @@ public class RunwayDetailsActivity extends MainActivity {
             case R.id.dress_button:
                 break;
             case R.id.accessories_button:
-                // save outfit
                 break;
+                // save outfit
             case R.id.save_button:
                 break;
         }
