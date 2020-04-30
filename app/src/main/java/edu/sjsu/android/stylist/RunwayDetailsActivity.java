@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Bundle;
@@ -228,6 +229,14 @@ public class RunwayDetailsActivity extends MainActivity {
             return true;
         }
         return false;
+    }
+
+    private static Bitmap takeScreenshot(View v)
+    {
+        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+        v.draw(c);
+        return b;
     }
 
     @SuppressLint("ClickableViewAccessibility")
