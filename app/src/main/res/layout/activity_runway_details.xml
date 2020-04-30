@@ -33,12 +33,18 @@
             android:id="@+id/my_top_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
                 android:id="@+id/top_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/top2"
                 android:onClick="onClick"/>
-            <!--                android:scaleType="matrix"/>-->
+
+<!--                android:scaleType="matrix"/>-->
         </RelativeLayout>
 
         <RelativeLayout

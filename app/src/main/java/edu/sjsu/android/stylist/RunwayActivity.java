@@ -48,7 +48,6 @@ public class RunwayActivity extends MainActivity {
                 break;
             case R.id.top_button:
                 Intent topIntent = new Intent(RunwayActivity.this, RunwayDetailsActivity.class);
-                Log.d("test", "work");
                 topIntent.putExtra("tag", 0);
                 startActivity(topIntent);
                 break;
