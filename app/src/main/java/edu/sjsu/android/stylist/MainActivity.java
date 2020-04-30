@@ -40,7 +40,6 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
         button_runway.setOnClickListener(this);
         button_collection.setOnClickListener(this);
 
-
     }
 
     @Override
@@ -58,8 +57,7 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
                 Intent runwayIntent = new Intent(this, RunwayActivity.class);
                 startActivity(runwayIntent);
             } else if (itemId == R.id.action_collection) {
-                Intent collectionIntent = new Intent(this, CollectionActivity.class);
-                startActivity(collectionIntent);
+
             }
         return true;
     }
