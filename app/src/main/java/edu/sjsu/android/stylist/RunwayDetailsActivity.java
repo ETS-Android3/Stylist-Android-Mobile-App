@@ -185,6 +185,8 @@ public class RunwayDetailsActivity extends MainActivity {
                 break;
             case R.id.dress_button:
             case R.id.accessories_button:
+                // save outfit
+            case R.id.save_button:
                 break;
         }
     }
