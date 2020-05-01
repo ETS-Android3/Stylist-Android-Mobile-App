@@ -3,16 +3,11 @@ package edu.sjsu.android.stylist;
 public class Outfit
 {
     String name;
-    Top top;
-    Bottom bottom;
-    DatabaseHelper dh;
-
-    public Outfit(String n, Top t, Bottom b, DatabaseHelper d)
+    String filepath;
+    public Outfit(String n, String f)
     {
         name = n;
-        top = t;
-        bottom = b;
-        dh = d;
+        filepath = f;
     }
 
     public String getName()
@@ -20,13 +15,5 @@ public class Outfit
         return name;
     }
 
-    public Top getTop()
-    {
-        return top;
-    }
-
-    public Bottom getBottom()
-    {
-        return bottom;
-    }
+    public String getFilepath() { return filepath; }
 }

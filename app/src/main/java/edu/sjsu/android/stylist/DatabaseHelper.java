@@ -12,6 +12,8 @@ public class DatabaseHelper extends SQLiteOpenHelper
     private static final String DATABASE_NAME = "stylist-database.db";
     private static final String TOPS_TABLE = "tops";
     private static final String BOTTOMS_TABLE = "bottoms";
+    private static final String OUTFITS_TABLE = "outfits";
+
     private static final int DATABASE_VERSION = 1;
 
     public DatabaseHelper(Context context)
@@ -36,6 +38,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
     {
         database.execSQL("CREATE TABLE IF NOT EXISTS " + TOPS_TABLE + "(Name VARCHAR, FilePath VARCHAR);");
         database.execSQL("CREATE TABLE IF NOT EXISTS " + BOTTOMS_TABLE + "(Name VARCHAR, FilePath VARCHAR);");
+
+        database.execSQL("CREATE TABLE IF NOT EXISTS " + OUTFITS_TABLE + "(Name VARCHAR, FilePath VARCHAR);");
+
     }
 
     public void insertIntoTops(String name, String filepath)
@@ -49,6 +54,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
     {
         SQLiteDatabase database = getWritableDatabase();
         database.execSQL("INSERT INTO " + BOTTOMS_TABLE + " VALUES('" + name + "', '" + filepath + "');");
+        database.close();
+    }
+
+
+    public void insertIntoOutfits(String name, String filepath)
+    {
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL("INSERT INTO " + OUTFITS_TABLE + " VALUES('" + name + "', '" + filepath + "');");
         database.close();
     }
 
@@ -90,4 +103,22 @@ public class DatabaseHelper extends SQLiteOpenHelper
         return bottoms;
     }
 
+    public ArrayList<Outfit> getAllOutfits()
+    {
+        SQLiteDatabase database = getWritableDatabase();
+        ArrayList<Outfit> outfits = new ArrayList<>();
+
+        Cursor resultSet = database.rawQuery("SELECT * FROM " + OUTFITS_TABLE, null);
+        resultSet.moveToFirst();
+
+        while(!resultSet.isAfterLast())
+        {
+            outfits.add(new Outfit(resultSet.getString(0), resultSet.getString(1)));
+            resultSet.moveToNext();
+        }
+        resultSet.close();
+        database.close();
+
+        return outfits;
+    }
 }

@@ -1,8 +1,13 @@
 package edu.sjsu.android.stylist;
 
 import java.util.List;
+
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +15,8 @@ import android.widget.ImageView;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     // Other types of clothes inherited from Clothing, so they all can use this adapter
-    private List<Clothing> list;
+    private List list;
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
         public View layout;
@@ -22,8 +28,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         }
     }
 
-    public void add(int position, Top item) {
-//        list.add(position, item);
+    public void add(int position, Clothing item) {
+        list.add(position, item);
+
         notifyItemInserted(position);
     }
 
@@ -32,7 +39,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         notifyItemRemoved(position);
     }
 
-    public MyAdapter(List<Clothing> myDataset) {
+    public MyAdapter(List myDataset) {
+
         list = myDataset;
     }
 
@@ -40,27 +48,28 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.row_layout, parent, false);
-        ViewHolder vh = new ViewHolder(v);
+        final ViewHolder vh = new ViewHolder(v);
+        final View image = vh.imageView;
+        vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Clothing item = (Clothing) list.get(vh.getAdapterPosition());
+                DragData state = new DragData(item, image.getWidth(), image.getHeight());
+                View.DragShadowBuilder shadow = new View.DragShadowBuilder(image);
+                ViewCompat.startDragAndDrop(image, null, shadow, state, 0);
+                return true;
+            }
+        });
+
         return vh;
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        final Clothing clothing = list.get(position);
+        final Clothing clothing = (Clothing) list.get(position);
+//        holder.imageView.setImageResource(clothing.getImage());
+            Bitmap myBitmap = BitmapFactory.decodeFile(clothing.getImageLocation());
+            holder.imageView.setImageBitmap(myBitmap);
 
-//        holder.imageView.setImageResource(top.getFilename());
-        holder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                // let user drag and drop item on model
-                // create a copy of the image?
-                // let user drag the image and delete it from the list, put it back to the list when user choose different item from the list
-                // let user resize item
-//                final Intent i = new Intent(v.getContext(), );
-//                i.putExtra("position", position);
-//                v.getContext().startActivity(i);
-
-            }
-        });
     }
 
     @Override

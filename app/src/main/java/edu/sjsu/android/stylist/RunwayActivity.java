@@ -1,11 +1,10 @@
 package edu.sjsu.android.stylist;
 
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.content.Intent;
@@ -81,7 +80,7 @@ public class RunwayActivity extends MainActivity {
                 break;
             case R.id.top_button:
                 Intent topIntent = new Intent(RunwayActivity.this, RunwayDetailsActivity.class);
-                Log.d("test", "work");
+
                 topIntent.putExtra("tag", 0);
                 startActivity(topIntent);
                 break;
@@ -92,6 +91,7 @@ public class RunwayActivity extends MainActivity {
                 break;
             case R.id.dress_button:
                 break;
+
             case R.id.accessories_button:
                 break;
         }
