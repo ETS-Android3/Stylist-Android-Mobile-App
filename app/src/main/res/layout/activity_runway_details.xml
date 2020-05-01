@@ -16,6 +16,7 @@
         android:scrollbars="vertical" />
 
     <RelativeLayout
+        android:id="@+id/drag_view"
         android:layout_width="220dp"
         android:layout_height="500dp"
         android:layout_marginTop="130dp"
@@ -36,12 +37,9 @@
 
             <ImageView
                 android:id="@+id/top_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:scaleType="centerInside"
-                android:onClick="onClick"/>
-
-<!--                android:scaleType="matrix"/>-->
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"/>
         </RelativeLayout>
 
         <RelativeLayout

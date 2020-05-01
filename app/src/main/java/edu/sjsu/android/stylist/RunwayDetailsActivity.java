@@ -42,6 +42,7 @@ public class RunwayDetailsActivity extends MainActivity {
     private ImageView accessories_img;
     private RelativeLayout top_view;
     private RelativeLayout bottom_view;
+    private RelativeLayout drag_view;
     private boolean inTop;
     private boolean inBottom;
     private float imgTouchX;
@@ -56,6 +57,7 @@ public class RunwayDetailsActivity extends MainActivity {
 
         imgTouchX = 0.0f;
         imgTouchY = 0.0f;
+        drag_view = (RelativeLayout) findViewById(R.id.drag_view);
         top_view = (RelativeLayout) findViewById(R.id.my_top_view);
         bottom_view = (RelativeLayout) findViewById(R.id.my_bottom_view);
         top_img = (ImageView) findViewById(R.id.top_image);
@@ -206,10 +208,10 @@ public class RunwayDetailsActivity extends MainActivity {
         if (isInView(view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
             // need to load image in here
 //            item_img.setImageResource(state.item.getImage());
-            //PhotoViewAttacher mAttacher = new PhotoViewAttacher(item_img);
+            PhotoViewAttacher mAttacher = new PhotoViewAttacher(item_img);
             Bitmap myBitmap = BitmapFactory.decodeFile(state.item.getImageLocation());
             item_img.setImageBitmap(myBitmap);
-//            mAttacher.update();
+            mAttacher.update();
             item_img.setX(dropX - (float) item_img.getWidth() / 2.0f);
             item_img.setY(dropY - (float) item_img.getHeight() / 2.0f);
 
