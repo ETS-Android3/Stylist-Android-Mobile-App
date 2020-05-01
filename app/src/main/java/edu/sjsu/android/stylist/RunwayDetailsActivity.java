@@ -8,6 +8,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -20,7 +22,13 @@ import android.widget.RelativeLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.view.MotionEvent.ACTION_MASK;
@@ -193,6 +201,7 @@ public class RunwayDetailsActivity extends MainActivity {
                 break;
                 // save outfit
             case R.id.save_button:
+                takeScreenshot();
                 break;
         }
     }
@@ -230,12 +239,63 @@ public class RunwayDetailsActivity extends MainActivity {
         return false;
     }
 
-    private static Bitmap takeScreenshot(View v)
-    {
-        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+
+    private void takeScreenshot(){
+        Bitmap b = Bitmap.createBitmap(drag_view.getWidth(), drag_view.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
-        v.draw(c);
-        return b;
+        drag_view.draw(c);
+
+        FileOutputStream fOut = null;
+        File photo= null;
+
+        try
+        {
+            photo = createPhotoFile();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        try
+        {
+            fOut = new FileOutputStream(photo);
+        }
+        catch(FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        b.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+
+        try
+        {
+            fOut.close();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        DatabaseHelper dh = new DatabaseHelper(this);
+        dh.insertIntoOutfits("outfit", photo.getPath());
+
+    }
+
+    // Create a photo file in the chosen storage directory and return the file
+    private File createPhotoFile() throws IOException
+    {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String photoFileName = "JPG_stylist_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File photo = null;
+        try {
+            photo =  File.createTempFile(photoFileName, ".jpg", storageDir);
+        } catch (IOException e)
+        {
+            Log.d("log", "Exception" + e.toString());
+        }
+        return photo;
     }
 
     @SuppressLint("ClickableViewAccessibility")

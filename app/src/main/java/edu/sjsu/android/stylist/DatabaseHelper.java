@@ -39,7 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         database.execSQL("CREATE TABLE IF NOT EXISTS " + TOPS_TABLE + "(Name VARCHAR, FilePath VARCHAR);");
         database.execSQL("CREATE TABLE IF NOT EXISTS " + BOTTOMS_TABLE + "(Name VARCHAR, FilePath VARCHAR);");
 
-        database.execSQL("CREATE TABLE IF NOT EXISTS " + OUTFITS_TABLE + "(Name VARCHAR, Top VARCHAR, Bottom VARCHAR);");
+        database.execSQL("CREATE TABLE IF NOT EXISTS " + OUTFITS_TABLE + "(Name VARCHAR, FilePath VARCHAR);");
 
     }
 
@@ -58,10 +58,10 @@ public class DatabaseHelper extends SQLiteOpenHelper
     }
 
 
-    public void insertIntoOutfits(String name, Top top, Bottom bottom)
+    public void insertIntoOutfits(String name, String filepath)
     {
         SQLiteDatabase database = getWritableDatabase();
-        database.execSQL("INSERT INTO " + OUTFITS_TABLE + " VALUES('" + name + "', '" + top.getName() + "', '" + bottom.getName() +"');");
+        database.execSQL("INSERT INTO " + OUTFITS_TABLE + " VALUES('" + name + "', '" + filepath + "');");
         database.close();
     }
 
@@ -105,46 +105,19 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
     public ArrayList<Outfit> getAllOutfits()
     {
-        ArrayList<Top> tops = getAllTops();
-        ArrayList<Bottom> bottoms = getAllBottoms();
-        ArrayList<Outfit> outfits = new ArrayList<>();
         SQLiteDatabase database = getWritableDatabase();
+        ArrayList<Outfit> outfits = new ArrayList<>();
 
         Cursor resultSet = database.rawQuery("SELECT * FROM " + OUTFITS_TABLE, null);
         resultSet.moveToFirst();
 
         while(!resultSet.isAfterLast())
         {
-            Top top = null;
-            Bottom bottom = null;
-
-            for(int x = 0; x < tops.size(); x++)
-            {
-                top = tops.get(x);
-                if(top.getName().equals(resultSet.getString(1)))
-                {
-                    x = tops.size();
-                }
-                else
-                {
-                    top = null;
-                }
-            }
-            for(int x = 0; x < bottoms.size(); x++)
-            {
-                bottom = bottoms.get(x);
-                if(bottom.getName().equals(resultSet.getString(2)))
-                {
-                    x = bottoms.size();
-                }
-                else
-                {
-                    bottom = null;
-                }
-            }
-
-            outfits.add(new Outfit(resultSet.getString(0), top, bottom));
+            outfits.add(new Outfit(resultSet.getString(0), resultSet.getString(1)));
+            resultSet.moveToNext();
         }
+        resultSet.close();
+        database.close();
 
         return outfits;
     }
