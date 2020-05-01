@@ -5,6 +5,7 @@ import android.app.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +38,10 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
         button_runway.setOnClickListener(this);
         button_collection.setOnClickListener(this);
 
+        Menu menu = bottomNavigation.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+
     }
 
     @Override
@@ -46,12 +51,12 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
 
             }
             else if (itemId == R.id.action_closet) {
-                Intent closetIntent = new Intent(this, ClosetActivity.class);
+                Intent closetIntent = new Intent(MainActivity.this, ClosetActivity.class);
                 startActivity(closetIntent);
-            } else if (itemId == R.id.action_model) {
+//            } else if (itemId == R.id.action_model) {
 
             } else if (itemId == R.id.action_runway) {
-                Intent runwayIntent = new Intent(this, RunwayActivity.class);
+                Intent runwayIntent = new Intent(MainActivity.this, RunwayActivity.class);
                 startActivity(runwayIntent);
             } else if (itemId == R.id.action_collection) {
 

@@ -16,11 +16,11 @@
         android:icon="@drawable/closet"
         app:showAsAction="ifRoom"/>
 
-    <item
-        android:id="@+id/action_model"
-        android:title="@string/model_text"
-        android:icon="@drawable/model"
-        app:showAsAction="ifRoom"/>
+<!--    <item-->
+<!--        android:id="@+id/action_model"-->
+<!--        android:title="@string/model_text"-->
+<!--        android:icon="@drawable/model"-->
+<!--        app:showAsAction="ifRoom"/>-->
 
 
     <item

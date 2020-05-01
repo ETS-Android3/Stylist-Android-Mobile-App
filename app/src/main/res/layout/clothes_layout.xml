@@ -11,7 +11,7 @@
             android:id="@+id/imageview_clothes"
             android:layout_width="433px"
             android:layout_height="577px"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerInside"/>
 
     </FrameLayout>
     <TextView
