@@ -2,12 +2,19 @@ package edu.sjsu.android.stylist;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ClosetActivity extends MainActivity {
     Button button_tops;
     Button button_bottoms;
+    BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +23,29 @@ public class ClosetActivity extends MainActivity {
 
         button_tops = (Button)findViewById(R.id.button_closet_tops);
         button_bottoms = (Button)findViewById(R.id.button_closet_bottoms);
+        bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_bar);
+
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.action_home) {
+                    Intent closetIntent = new Intent(ClosetActivity.this, MainActivity.class);
+                    startActivity(closetIntent);
+                }
+                else if (itemId == R.id.action_closet) {
+
+//            } else if (itemId == R.id.action_model) {
+
+                } else if (itemId == R.id.action_runway) {
+                    Intent runwayIntent = new Intent(ClosetActivity.this, RunwayActivity.class);
+                    startActivity(runwayIntent);
+                } else if (itemId == R.id.action_collection) {
+
+                }
+                return true;
+            }
+        });
 
         button_tops.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +64,10 @@ public class ClosetActivity extends MainActivity {
                 startActivity(closetDetailIntent);
             }
         });
+
+        Menu menu = bottomNavigation.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
     }
 
 }

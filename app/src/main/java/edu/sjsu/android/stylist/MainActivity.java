@@ -5,6 +5,7 @@ import android.app.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +16,6 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
 
     BottomNavigationView bottomNavigation;
     Button button_closet;
-    Button button_model;
     Button button_runway;
     Button button_collection;
     DatabaseHelper dh;
@@ -28,7 +28,6 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
         bottomNavigation.setOnNavigationItemSelectedListener(this);
 
         button_closet = (Button) findViewById(R.id.closet_button);
-        button_model = (Button) findViewById(R.id.model_button);
         button_runway = (Button) findViewById(R.id.runway_button);
         button_collection = (Button) findViewById(R.id.collection_button);
 
@@ -36,9 +35,12 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
 
         // Attach listeners to buttons
         button_closet.setOnClickListener(this);
-        button_model.setOnClickListener(this);
         button_runway.setOnClickListener(this);
         button_collection.setOnClickListener(this);
+
+        Menu menu = bottomNavigation.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
 
     }
 
@@ -49,12 +51,12 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
 
             }
             else if (itemId == R.id.action_closet) {
-                Intent closetIntent = new Intent(this, ClosetActivity.class);
+                Intent closetIntent = new Intent(MainActivity.this, ClosetActivity.class);
                 startActivity(closetIntent);
-            } else if (itemId == R.id.action_model) {
+//            } else if (itemId == R.id.action_model) {
 
             } else if (itemId == R.id.action_runway) {
-                Intent runwayIntent = new Intent(this, RunwayActivity.class);
+                Intent runwayIntent = new Intent(MainActivity.this, RunwayActivity.class);
                 startActivity(runwayIntent);
             } else if (itemId == R.id.action_collection) {
 
@@ -74,8 +76,6 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
                 startActivity(closetIntent);
                 break;
             }
-            case R.id.model_button:
-                break;
             case R.id.runway_button:
                 Intent runwayIntent = new Intent(this, RunwayActivity.class);
                 startActivity(runwayIntent);

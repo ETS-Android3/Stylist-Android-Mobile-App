@@ -9,7 +9,7 @@
         android:layout_alignParentTop="true"
         android:text="@string/photo"
         android:textSize="50sp"
-        android:background="@color/main_color"
+        android:background="@color/colorPrimary"
         android:gravity="center"/>
 
     <ImageView
