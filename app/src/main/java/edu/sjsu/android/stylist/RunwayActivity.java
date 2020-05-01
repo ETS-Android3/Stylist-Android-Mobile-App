@@ -2,17 +2,11 @@ package edu.sjsu.android.stylist;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.content.Intent;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class RunwayActivity extends MainActivity {
     private ImageButton backButton;
@@ -21,8 +15,6 @@ public class RunwayActivity extends MainActivity {
     private ImageButton button_bottom;
     private ImageButton button_dress;
     private ImageButton button_accessories;
-
-    BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,37 +36,6 @@ public class RunwayActivity extends MainActivity {
         button_dress.setOnClickListener(this);
         button_bottom.setOnClickListener(this);
         button_top.setOnClickListener(this);
-
-        bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_bar);
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.action_home) {
-                    Intent homeIntent = new Intent(RunwayActivity.this, MainActivity.class);
-                    startActivity(homeIntent);
-                }
-                else if (itemId == R.id.action_closet) {
-                    Intent runwayIntent = new Intent(RunwayActivity.this, ClosetActivity.class);
-                    startActivity(runwayIntent);
-
-//                } else if (itemId == R.id.action_model) {
-
-                } else if (itemId == R.id.action_runway) {
-
-                } else if (itemId == R.id.action_collection) {
-
-//            Intent collectionIntent = new Intent(this, CollectionActivity.class);
-//            startActivity(collectionIntent);
-
-                }
-                return true;
-            }
-        });
-
-        Menu menu = bottomNavigation.getMenu();
-        MenuItem menuItem = menu.getItem(3);
-        menuItem.setChecked(true);
     }
 
     @Override

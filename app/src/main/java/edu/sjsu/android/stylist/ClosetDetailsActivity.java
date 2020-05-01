@@ -299,8 +299,6 @@ public class ClosetDetailsActivity extends Activity {
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("size", "preview")
-                .addFormDataPart("crop", "true")
-                .addFormDataPart("crop_margin", "5px")
                 .addFormDataPart("image_file", "image_file", filePart).build();
 
         // Build POST call with URL, API key and RequestBody

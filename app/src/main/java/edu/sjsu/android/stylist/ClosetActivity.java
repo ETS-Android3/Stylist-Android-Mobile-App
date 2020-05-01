@@ -2,19 +2,13 @@ package edu.sjsu.android.stylist;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ClosetActivity extends MainActivity {
     Button button_tops;
     Button button_bottoms;
-    BottomNavigationView bottomNavigation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,35 +34,6 @@ public class ClosetActivity extends MainActivity {
                 startActivity(closetDetailIntent);
             }
         });
-
-        bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_bar);
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.action_home) {
-                    Intent homeIntent = new Intent(ClosetActivity.this, MainActivity.class);
-                    startActivity(homeIntent);
-                }
-                else if (itemId == R.id.action_closet) {
-
-//                } else if (itemId == R.id.action_model) {
-
-                } else if (itemId == R.id.action_runway) {
-                    Intent runwayIntent = new Intent(ClosetActivity.this, RunwayActivity.class);
-                    startActivity(runwayIntent);
-                } else if (itemId == R.id.action_collection) {
-
-//            Intent collectionIntent = new Intent(this, CollectionActivity.class);
-//            startActivity(collectionIntent);
-
-                }
-                return true;
-            }
-        });
-
-        Menu menu = bottomNavigation.getMenu();
-        MenuItem menuItem = menu.getItem(1);
-        menuItem.setChecked(true);
     }
+
 }
