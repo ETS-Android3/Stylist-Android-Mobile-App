@@ -1,5 +1,6 @@
 package edu.sjsu.android.stylist;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class RunwayDetailsActivity extends MainActivity {
+public class RunwayDetailsActivity extends Activity implements View.OnClickListener{
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
