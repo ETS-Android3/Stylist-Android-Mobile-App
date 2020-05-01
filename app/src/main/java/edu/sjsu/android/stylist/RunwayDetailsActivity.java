@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.chrisbanes.photoview.PhotoView;
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
 
 import java.util.ArrayList;
@@ -49,26 +48,18 @@ public class RunwayDetailsActivity extends MainActivity {
     private float imgTouchY;
     ArrayList<Top> tops;
     ArrayList<Bottom> bottoms;
-    ScaleGestureDetector scaleGestureDetector;
-    Matrix matrix;
-    float scaleFactor;
-    private PhotoViewAttacher top_attacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runway_details);
 
-        matrix = new Matrix();
         imgTouchX = 0.0f;
         imgTouchY = 0.0f;
         top_view = (RelativeLayout) findViewById(R.id.my_top_view);
         bottom_view = (RelativeLayout) findViewById(R.id.my_bottom_view);
         top_img = (ImageView) findViewById(R.id.top_image);
-        top_attacher = new PhotoViewAttacher(top_img);
         bottom_img = (ImageView) findViewById(R.id.bottom_image);
-
-        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
         backButton = (ImageButton) findViewById(R.id.back_button);
         button_top = (ImageButton) findViewById(R.id.top_button);
@@ -124,10 +115,10 @@ public class RunwayDetailsActivity extends MainActivity {
                         final float dropY = event.getY();
                         final DragData state = (DragData) event.getLocalState();
                         if (inTop) {
-                            dragItem(top_view, top_img, dropX, dropY, state, top_attacher);
+                            dragItem(top_view, top_img, dropX, dropY, state);
                         }
                         if (inBottom) {
-                            dragItem(bottom_view, bottom_img, dropX, dropY, state, top_attacher);
+                            dragItem(bottom_view, bottom_img, dropX, dropY, state);
                         }
                         break;
                     }
@@ -138,23 +129,6 @@ public class RunwayDetailsActivity extends MainActivity {
             }
         });
 
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        scaleGestureDetector.onTouchEvent(event);
-        return true;
-    }
-
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-        @Override
-        public boolean onScale(ScaleGestureDetector detector) {
-            scaleFactor = detector.getScaleFactor();
-            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 0.5f));
-            matrix.setScale(scaleFactor, scaleFactor);
-//            model_img.setImageMatrix(matrix);
-            return true;
-        }
     }
 
     @Override
@@ -228,7 +202,7 @@ public class RunwayDetailsActivity extends MainActivity {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void dragItem(final RelativeLayout view, final ImageView item_img, float dropX, float dropY, DragData state, PhotoViewAttacher mAttacher) {
+    private void dragItem(final RelativeLayout view, final ImageView item_img, float dropX, float dropY, DragData state) {
         if (isInView(view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
             // need to load image in here
 //            item_img.setImageResource(state.item.getImage());
