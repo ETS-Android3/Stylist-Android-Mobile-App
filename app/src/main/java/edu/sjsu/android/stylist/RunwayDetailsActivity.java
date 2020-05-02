@@ -13,6 +13,7 @@ import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -36,7 +37,6 @@ public class RunwayDetailsActivity extends MainActivity {
     private ImageButton button_bottom;
     private ImageButton button_dress;
     private ImageButton button_accessories;
-    private ImageView model_img;
     private ImageView top_img;
     private ImageView bottom_img;
     private ImageView accessories_img;
@@ -49,12 +49,23 @@ public class RunwayDetailsActivity extends MainActivity {
     private float imgTouchY;
     ArrayList<Top> tops;
     ArrayList<Bottom> bottoms;
+    private float firstStartTouchEventX = -1;
+    private float firstStartTouchEventY = -1;
+    private float secondStartTouchEventX = -1;
+    private float secondStartTouchEventY = -1;
+    private float startTouchDistance = 0;
+    private float moveTouchDistance = 0;
+    private int mViewScaledTouchSlop;
+    final int MAX_BITMAP_SIZE = 150;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runway_details);
 
+        final ViewConfiguration viewConfig = ViewConfiguration.get(this);
+        mViewScaledTouchSlop = viewConfig.getScaledTouchSlop();
+        
         imgTouchX = 0.0f;
         imgTouchY = 0.0f;
         drag_view = (RelativeLayout) findViewById(R.id.drag_view);
@@ -81,9 +92,15 @@ public class RunwayDetailsActivity extends MainActivity {
         button_bottom.setOnClickListener(this);
         button_top.setOnClickListener(this);
 
-        // the selected model is loaded into this image view
-        model_img = (ImageView) findViewById(R.id.model_runway);
-//        model_img.setImageResource(R.drawable.my_model);
+        final ScaleGestureDetector mScaleDetector = new ScaleGestureDetector(this, new MyPinchListener());
+        top_img.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final boolean scaleEvent = mScaleDetector.onTouchEvent(event);
+                return true;
+            }
+        });
 
         populateTops();
         populateBottoms();
@@ -203,15 +220,74 @@ public class RunwayDetailsActivity extends MainActivity {
         return false;
     }
 
+    // calculating distance between 2 fingers
+    public float distance(MotionEvent event, int first, int second) {
+        if (event.getPointerCount() >= 2) {
+            final float x = event.getX(first) - event.getX(second);
+            final float y = event.getY(first) - event.getY(second);
+            return (float) Math.sqrt(x * x + y * y);
+        } else {
+            return 0;
+        }
+    }
+
+    private boolean isScrollGesture(MotionEvent event, int ptrIndex, float originalX, float originalY){
+        float moveX = Math.abs(event.getX(ptrIndex) - originalX);
+        float moveY = Math.abs(event.getY(ptrIndex) - originalY);
+
+        if (moveX > mViewScaledTouchSlop || moveY > mViewScaledTouchSlop) {
+            return true;
+        }
+        return false;
+    }
+
+    // detect pinch gesture
+    private boolean isPinchGesture(MotionEvent event) {
+        if (event.getPointerCount() == 2) {
+            final float distanceCurrent = distance(event, 0, 1);
+            final float diffPrimX = firstStartTouchEventX - event.getX(0);
+            final float diffPrimY = firstStartTouchEventY - event.getY(0);
+            final float diffSecX = secondStartTouchEventX - event.getX(1);
+            final float diffSecY = secondStartTouchEventY - event.getY(1);
+            // if the distance between the two fingers has increased past our threshold
+            // and the fingers are moving in opposing directions
+            if (Math.abs(distanceCurrent - startTouchDistance) > mViewScaledTouchSlop
+                    && (diffPrimY * diffSecY) <= 0
+                    && (diffPrimX * diffSecX) <= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static class MyPinchListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            Log.d("TAG", "PINCH! OUCH!");
+            return true;
+        }
+    }
+
+    private Bitmap scaleDown(Bitmap realImage, boolean filter) {
+//        float ratio = Math.min((float) maxImageSize / realImage.getWidth(), (float) maxImageSize / realImage.getHeight());
+        Log.d("TAG", Float.toString(moveTouchDistance/startTouchDistance));
+        float ratio = (float) Math.max(Math.min(moveTouchDistance/startTouchDistance, 2.0), 0.5);
+//        float ratio = 1;
+        int width = Math.round((float) ratio * realImage.getWidth());
+        int height = Math.round((float) ratio * realImage.getHeight());
+
+        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width, height, filter);
+        return newBitmap;
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private void dragItem(final RelativeLayout view, final ImageView item_img, float dropX, float dropY, DragData state) {
         if (isInView(view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
             // need to load image in here
-//            item_img.setImageResource(state.item.getImage());
-            PhotoViewAttacher mAttacher = new PhotoViewAttacher(item_img);
-            Bitmap myBitmap = BitmapFactory.decodeFile(state.item.getImageLocation());
+            final Bitmap myBitmap = BitmapFactory.decodeFile(state.item.getImageLocation());
+//            Bitmap newBitmap = Bitmap.createScaledBitmap(myBitmap, myBitmap.getWidth()*2, myBitmap.getHeight()*2, true);
             item_img.setImageBitmap(myBitmap);
-            mAttacher.update();
+
             item_img.setX(dropX - (float) item_img.getWidth() / 2.0f);
             item_img.setY(dropY - (float) item_img.getHeight() / 2.0f);
 
@@ -220,6 +296,23 @@ public class RunwayDetailsActivity extends MainActivity {
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction() & ACTION_MASK) {
                         case MotionEvent.ACTION_DOWN:
+                            // detect 2 fingers
+                            if (event.getPointerCount() == 1) {
+                                firstStartTouchEventX = event.getX(0);
+                                firstStartTouchEventY = event.getY(0);
+                                Log.d("TAG", String.format("POINTER ONE X = %.5f, Y = %.5f", firstStartTouchEventX, firstStartTouchEventY));
+                            }
+
+
+//                            if (event.getPointerCount() == 2) {
+//                                // Starting distance between fingers
+//                                secondStartTouchEventX = event.getX(1);
+//                                secondStartTouchEventY = event.getY(1);
+//                                startTouchDistance = distance(event, 0, 1);
+//                                Log.d("TAG", String.format("POINTER TWO X = %.5f, Y = %.5f", secondStartTouchEventX, secondStartTouchEventY));
+//                            }
+
+
                             // bring image to front on click
                             view.bringToFront();
                             view.invalidate();
@@ -231,6 +324,16 @@ public class RunwayDetailsActivity extends MainActivity {
                             imgTouchY = yValOrig - imgVals[1];
                             break;
                         case MotionEvent.ACTION_UP:
+                            if (event.getPointerCount() < 2) {
+                                secondStartTouchEventX = -1;
+                                secondStartTouchEventY = -1;
+                            }
+                            if (event.getPointerCount() < 1) {
+                                firstStartTouchEventX = -1;
+                                firstStartTouchEventY = -1;
+                            }
+                            startTouchDistance = 0;
+                            moveTouchDistance = 0;
                             break;
                         case MotionEvent.ACTION_MOVE:
                             float xVal = event.getRawX();
@@ -256,9 +359,34 @@ public class RunwayDetailsActivity extends MainActivity {
                             if (yVal - imgTouchY + item_img.getHeight() > relVals[1] + top_view.getHeight()) {
                                 newY = top_view.getHeight() - item_img.getHeight();
                             }
+//                            item_img.setX(newX);
+//                            item_img.setY(newY);
 
-                            item_img.setX(newX);
-                            item_img.setY(newY);
+
+                            // pinch
+                            boolean isFirstMoving = isScrollGesture(event, 0, firstStartTouchEventX, firstStartTouchEventY);
+                            boolean isSecondMoving = (event.getPointerCount() > 1 && isScrollGesture(event, 1, secondStartTouchEventX, secondStartTouchEventY));
+
+                            // There is a chance that the gesture may be a scroll
+                            if (event.getPointerCount() > 1) {
+                                Log.d("TAG", "PINCH! OUCH!");
+                                startTouchDistance = moveTouchDistance;
+                                moveTouchDistance = distance(event, 0, 1);
+                                if (startTouchDistance == 0) {
+                                    startTouchDistance = moveTouchDistance;
+                                }
+                                Bitmap scaleBitmap = scaleDown(myBitmap, true);
+                                item_img.setImageBitmap(scaleBitmap);
+                            } else if (isFirstMoving || isSecondMoving) {
+                                // A 1 finger or 2 finger scroll.
+                                if (isFirstMoving && isSecondMoving) {
+                                    Log.d("TAG", "Two finger scroll");
+                                } else {
+                                    Log.d("TAG", "One finger scroll");
+                                }
+                            }
+//
+
                             break;
                     }
                     return true;
