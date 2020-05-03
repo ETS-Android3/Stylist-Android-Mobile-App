@@ -268,25 +268,32 @@ public class RunwayDetailsActivity extends MainActivity {
         }
     }
 
-    private Bitmap scaleDown(Bitmap realImage, boolean filter) {
+    private Bitmap scaleBitmap(Bitmap realImage, boolean filter) {
 //        float ratio = Math.min((float) maxImageSize / realImage.getWidth(), (float) maxImageSize / realImage.getHeight());
         Log.d("TAG", Float.toString(moveTouchDistance/startTouchDistance));
         float ratio = (float) Math.max(Math.min(moveTouchDistance/startTouchDistance, 2.0), 0.5);
-//        float ratio = 1;
         int width = Math.round((float) ratio * realImage.getWidth());
         int height = Math.round((float) ratio * realImage.getHeight());
-
+        Log.d("TAG", "width " + width);
+        Log.d("TAG", "height " + height);
         Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width, height, filter);
         return newBitmap;
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void dragItem(final RelativeLayout view, final ImageView item_img, float dropX, float dropY, DragData state) {
+        final float[] imgPosition = new float[2];
+        final int[] imgDimension = new int[2];
         if (isInView(view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
             // need to load image in here
             final Bitmap myBitmap = BitmapFactory.decodeFile(state.item.getImageLocation());
 //            Bitmap newBitmap = Bitmap.createScaledBitmap(myBitmap, myBitmap.getWidth()*2, myBitmap.getHeight()*2, true);
             item_img.setImageBitmap(myBitmap);
+
+            imgPosition[0] = dropX - (float) item_img.getWidth() / 2.0f;
+            imgPosition[1] = dropY - (float) item_img.getHeight() / 2.0f;
+            imgDimension[0] = item_img.getWidth();
+            imgDimension[1] = item_img.getHeight();
 
             item_img.setX(dropX - (float) item_img.getWidth() / 2.0f);
             item_img.setY(dropY - (float) item_img.getHeight() / 2.0f);
@@ -336,57 +343,58 @@ public class RunwayDetailsActivity extends MainActivity {
                             moveTouchDistance = 0;
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            float xVal = event.getRawX();
-                            float yVal = event.getRawY();
-                            int[] relVals = new int[2];
-                            top_view.getLocationOnScreen(relVals);
+                            if (event.getPointerCount() == 1) {
+                                float xVal = event.getRawX();
+                                float yVal = event.getRawY();
+                                int[] relVals = new int[2];
+                                view.getLocationOnScreen(relVals);
 
-                            float newX = xVal - relVals[0] - imgTouchX;
-                            float newY = yVal - relVals[1] - imgTouchY;
-                            // if touch position is out of left bound, set x to left edge of parent view
-                            if (xVal - imgTouchX < relVals[0]) {
-                                newX = 0;
+                                float newX = xVal - relVals[0] - imgTouchX;
+                                float newY = yVal - relVals[1] - imgTouchY;
+                                // if touch position is out of left bound, set x to left edge of parent view
+                                if (xVal - imgTouchX < relVals[0]) {
+                                    newX = 0;
+                                }
+                                // if touch position is out of right bound, set x to right edge of parent view
+                                if (xVal - imgTouchX + item_img.getWidth() > relVals[0] + view.getWidth()) {
+                                    newX = view.getWidth() - item_img.getWidth();
+                                }
+                                // if touch position is out of top bound, set y to top edge of parent view
+                                if (yVal - imgTouchY < relVals[1]) {
+                                    newY = 0;
+                                }
+                                // if touch position is out of bottom bound, set y to bottom edge of parent view
+                                if (yVal - imgTouchY + item_img.getHeight() > relVals[1] + view.getHeight()) {
+                                    newY = view.getHeight() - item_img.getHeight();
+                                }
+                                imgPosition[0] = newX;
+                                imgPosition[1] = newY;
+                                item_img.setX(newX);
+                                item_img.setY(newY);
                             }
-                            // if touch position is out of right bound, set x to right edge of parent view
-                            if (xVal - imgTouchX + item_img.getWidth() > relVals[0] + top_view.getWidth()) {
-                                newX = top_view.getWidth() - item_img.getWidth();
-                            }
-                            // if touch position is out of top bound, set y to top edge of parent view
-                            if (yVal - imgTouchY < relVals[1]) {
-                                newY = 0;
-                            }
-                            // if touch position is out of bottom bound, set y to bottom edge of parent view
-                            if (yVal - imgTouchY + item_img.getHeight() > relVals[1] + top_view.getHeight()) {
-                                newY = top_view.getHeight() - item_img.getHeight();
-                            }
-//                            item_img.setX(newX);
-//                            item_img.setY(newY);
-
 
                             // pinch
                             boolean isFirstMoving = isScrollGesture(event, 0, firstStartTouchEventX, firstStartTouchEventY);
                             boolean isSecondMoving = (event.getPointerCount() > 1 && isScrollGesture(event, 1, secondStartTouchEventX, secondStartTouchEventY));
 
                             // There is a chance that the gesture may be a scroll
-                            if (event.getPointerCount() > 1) {
-                                Log.d("TAG", "PINCH! OUCH!");
+                            if (event.getPointerCount() > 1 && isScrollGesture(event, 0, firstStartTouchEventX, firstStartTouchEventY)
+                                && isScrollGesture(event, 1, secondStartTouchEventX, secondStartTouchEventY)) {
                                 startTouchDistance = moveTouchDistance;
                                 moveTouchDistance = distance(event, 0, 1);
                                 if (startTouchDistance == 0) {
                                     startTouchDistance = moveTouchDistance;
                                 }
-                                Bitmap scaleBitmap = scaleDown(myBitmap, true);
-                                item_img.setImageBitmap(scaleBitmap);
-                            } else if (isFirstMoving || isSecondMoving) {
-                                // A 1 finger or 2 finger scroll.
-                                if (isFirstMoving && isSecondMoving) {
-                                    Log.d("TAG", "Two finger scroll");
-                                } else {
-                                    Log.d("TAG", "One finger scroll");
-                                }
-                            }
-//
 
+                                Bitmap scaleBitmap = scaleBitmap(myBitmap, true);
+                                item_img.setImageBitmap(scaleBitmap);
+                                float xDiff = imgDimension[0] - item_img.getWidth();
+                                float yDiff = imgDimension[1] - item_img.getHeight();
+
+//                                item_img.setX(imgPosition[0] - xDiff/2);
+//                                item_img.setX(imgPosition[1] - yDiff/2);
+
+                            }
                             break;
                     }
                     return true;
