@@ -363,11 +363,17 @@ public class RunwayDetailsActivity extends MainActivity {
 
                                 float oldWidth = item_img.getWidth();
                                 float oldHeight = item_img.getHeight();
+                                float ratio = oldWidth/oldHeight;
+
                                 Bitmap scaleBitmap = scaleBitmap(myBitmap, imgDimension[0], imgDimension[1], true);
 
-                                if (scaleBitmap.getWidth() > MAX_BITMAP_WIDTH || scaleBitmap.getHeight() > MAX_BITMAP_HEIGHT) {
-                                    scaleBitmap = scaleBitmap(myBitmap, MAX_BITMAP_WIDTH, MAX_BITMAP_HEIGHT, true);
-                                }
+//                                if (scaleBitmap.getHeight() > MAX_BITMAP_HEIGHT && scaleBitmap.getWidth() > MAX_BITMAP_WIDTH) {
+//                                    scaleBitmap = scaleBitmap(myBitmap, (int) (MAX_BITMAP_HEIGHT*ratio), MAX_BITMAP_HEIGHT, true);
+//                                } else if (scaleBitmap.getWidth() > MAX_BITMAP_WIDTH) {
+//                                    scaleBitmap = scaleBitmap(myBitmap, MAX_BITMAP_WIDTH, (int)(MAX_BITMAP_WIDTH/ratio), true);
+//                                } else if (scaleBitmap.getHeight() > MAX_BITMAP_HEIGHT) {
+//                                    scaleBitmap = scaleBitmap(myBitmap, (int)(MAX_BITMAP_HEIGHT*ratio), MAX_BITMAP_HEIGHT, true);
+//                                }
 
                                 item_img.setImageBitmap(scaleBitmap);
                                 float xDiff = oldWidth - scaleBitmap.getWidth();
@@ -375,13 +381,22 @@ public class RunwayDetailsActivity extends MainActivity {
 
                                 Log.d("TAG", "x: " + xDiff);
                                 Log.d("TAG", "y: " + yDiff);
-                                if (item_img.getX() + xDiff/4 >= relVals[0] && item_img.getX() <= relVals[0] + view.getWidth()
-                                    && item_img.getY() + yDiff/2 >= relVals[1] && item_img.getY() + yDiff/2 <= relVals[1] + view.getHeight()) {
-//                                    item_img.setX(item_img.getX() + xDiff/4);
-//                                    item_img.setY(item_img.getY() + yDiff/2);
+                                if (item_img.getX() < relVals[0]) {
+                                    item_img.setX(0);
+                                    item_img.setY(item_img.getY() + yDiff / 2);
+                                } else if (item_img.getX() > relVals[0] + view.getWidth()) {
+                                    item_img.setX(view.getWidth() - item_img.getWidth());
+                                    item_img.setY(item_img.getY() + yDiff/2);
+                                } else if (item_img.getY() + yDiff/2 < relVals[1]) {
+                                    item_img.setY(0);
+                                } else if (item_img.getY() + yDiff/2 > relVals[1] + view.getHeight()) {
+                                    item_img.setY(view.getHeight() - item_img.getHeight());
+                                } else {
+                                    item_img.setY(item_img.getY() + yDiff/2);
                                 }
-                                item_img.setX(item_img.getX() + xDiff/4);
-                                item_img.setY(item_img.getY() + yDiff/2);
+//                                item_img.setX(item_img.getX() + xDiff/8);
+//                                item_img.setY(item_img.getY() + yDiff/2);
+
 
                             }
                             break;
