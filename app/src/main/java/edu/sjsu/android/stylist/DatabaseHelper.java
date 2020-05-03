@@ -9,12 +9,12 @@ import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper
 {
-    private static final String DATABASE_NAME = "stylist-database.db";
+    private static final String DATABASE_NAME = "stylist-database-v2.db";
     private static final String TOPS_TABLE = "tops";
     private static final String BOTTOMS_TABLE = "bottoms";
     private static final String OUTFITS_TABLE = "outfits";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public DatabaseHelper(Context context)
     {
@@ -38,7 +38,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
     {
         database.execSQL("CREATE TABLE IF NOT EXISTS " + TOPS_TABLE + "(Name VARCHAR, FilePath VARCHAR);");
         database.execSQL("CREATE TABLE IF NOT EXISTS " + BOTTOMS_TABLE + "(Name VARCHAR, FilePath VARCHAR);");
-
         database.execSQL("CREATE TABLE IF NOT EXISTS " + OUTFITS_TABLE + "(Name VARCHAR, FilePath VARCHAR);");
 
     }

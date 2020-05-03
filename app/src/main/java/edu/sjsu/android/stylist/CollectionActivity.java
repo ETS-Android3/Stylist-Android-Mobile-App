@@ -32,7 +32,9 @@ public class CollectionActivity extends AppCompatActivity
         gatherPictures();
 
         iterator = 0;
-        getCurrentPicture();
+
+        if(pictures.size() > 0)
+            getCurrentPicture();
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
