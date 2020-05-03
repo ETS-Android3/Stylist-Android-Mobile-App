@@ -41,6 +41,8 @@ public class ClosetActivity extends MainActivity {
                     Intent runwayIntent = new Intent(ClosetActivity.this, RunwayActivity.class);
                     startActivity(runwayIntent);
                 } else if (itemId == R.id.action_collection) {
+                    Intent collectionIntent = new Intent(ClosetActivity.this, CollectionActivity.class);
+                    startActivity(collectionIntent);
 
                 }
                 return true;
