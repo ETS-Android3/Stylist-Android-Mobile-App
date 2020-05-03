@@ -269,13 +269,10 @@ public class RunwayDetailsActivity extends MainActivity {
     }
 
     private Bitmap scaleBitmap(Bitmap realImage, int width, int height, boolean filter) {
-//        float ratio = Math.min((float) maxImageSize / realImage.getWidth(), (float) maxImageSize / realImage.getHeight());
-        Log.d("TAG", Float.toString(moveTouchDistance/startTouchDistance));
         float ratio = (float) Math.max(Math.min(moveTouchDistance/startTouchDistance, 2.0), 0.5);
         int w = Math.round((float) ratio * width);
         int h = Math.round((float) ratio * height);
-        Log.d("TAG", "width " + width);
-        Log.d("TAG", "height " + height);
+
         Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, w, h, filter);
         return newBitmap;
     }
@@ -310,7 +307,6 @@ public class RunwayDetailsActivity extends MainActivity {
                                 Log.d("TAG", String.format("POINTER ONE X = %.5f, Y = %.5f", firstStartTouchEventX, firstStartTouchEventY));
                             }
 
-
 //                            if (event.getPointerCount() == 2) {
 //                                // Starting distance between fingers
 //                                secondStartTouchEventX = event.getX(1);
@@ -318,7 +314,6 @@ public class RunwayDetailsActivity extends MainActivity {
 //                                startTouchDistance = distance(event, 0, 1);
 //                                Log.d("TAG", String.format("POINTER TWO X = %.5f, Y = %.5f", secondStartTouchEventX, secondStartTouchEventY));
 //                            }
-
 
                             // bring image to front on click
                             view.bringToFront();
@@ -387,13 +382,18 @@ public class RunwayDetailsActivity extends MainActivity {
                                     imgDimension[1] = item_img.getHeight();
                                 }
 
+                                float oldWidth = item_img.getWidth();
+                                float oldHeight = item_img.getHeight();
                                 Bitmap scaleBitmap = scaleBitmap(myBitmap, imgDimension[0], imgDimension[1], true);
-                                item_img.setImageBitmap(scaleBitmap);
-                                float xDiff = imgDimension[0] - item_img.getWidth();
-                                float yDiff = imgDimension[1] - item_img.getHeight();
 
-//                                item_img.setX(imgPosition[0] - xDiff/2);
-//                                item_img.setX(imgPosition[1] - yDiff/2);
+                                item_img.setImageBitmap(scaleBitmap);
+                                float xDiff = oldWidth - scaleBitmap.getWidth();
+                                float yDiff = oldHeight - scaleBitmap.getHeight();
+
+                                Log.d("TAG", "x: " + xDiff);
+                                Log.d("TAG", "y: " + yDiff);
+//                                item_img.setX(item_img.getX() - xDiff/2);
+                                item_img.setY(item_img.getY() + yDiff/2);
 
                             }
                             break;
