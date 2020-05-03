@@ -268,15 +268,15 @@ public class RunwayDetailsActivity extends MainActivity {
         }
     }
 
-    private Bitmap scaleBitmap(Bitmap realImage, boolean filter) {
+    private Bitmap scaleBitmap(Bitmap realImage, int width, int height, boolean filter) {
 //        float ratio = Math.min((float) maxImageSize / realImage.getWidth(), (float) maxImageSize / realImage.getHeight());
         Log.d("TAG", Float.toString(moveTouchDistance/startTouchDistance));
         float ratio = (float) Math.max(Math.min(moveTouchDistance/startTouchDistance, 2.0), 0.5);
-        int width = Math.round((float) ratio * realImage.getWidth());
-        int height = Math.round((float) ratio * realImage.getHeight());
+        int w = Math.round((float) ratio * width);
+        int h = Math.round((float) ratio * height);
         Log.d("TAG", "width " + width);
         Log.d("TAG", "height " + height);
-        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width, height, filter);
+        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, w, h, filter);
         return newBitmap;
     }
 
@@ -380,13 +380,14 @@ public class RunwayDetailsActivity extends MainActivity {
                             // There is a chance that the gesture may be a scroll
                             if (event.getPointerCount() > 1 && isScrollGesture(event, 0, firstStartTouchEventX, firstStartTouchEventY)
                                 && isScrollGesture(event, 1, secondStartTouchEventX, secondStartTouchEventY)) {
-                                startTouchDistance = moveTouchDistance;
                                 moveTouchDistance = distance(event, 0, 1);
                                 if (startTouchDistance == 0) {
                                     startTouchDistance = moveTouchDistance;
+                                    imgDimension[0] = item_img.getWidth();
+                                    imgDimension[1] = item_img.getHeight();
                                 }
 
-                                Bitmap scaleBitmap = scaleBitmap(myBitmap, true);
+                                Bitmap scaleBitmap = scaleBitmap(myBitmap, imgDimension[0], imgDimension[1], true);
                                 item_img.setImageBitmap(scaleBitmap);
                                 float xDiff = imgDimension[0] - item_img.getWidth();
                                 float yDiff = imgDimension[1] - item_img.getHeight();
