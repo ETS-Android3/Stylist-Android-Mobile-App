@@ -60,7 +60,7 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
                 startActivity(runwayIntent);
             } else if (itemId == R.id.action_collection) {
 
-                Intent collectionIntent = new Intent(this, CollectionActivity.class);
+                Intent collectionIntent = new Intent(MainActivity.this, CollectionActivity.class);
                 startActivity(collectionIntent);
 
             }
@@ -81,6 +81,8 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
                 startActivity(runwayIntent);
                 break;
             case R.id.collection_button:
+                Intent collectionIntent = new Intent(this, CollectionActivity.class);
+                startActivity(collectionIntent);
                 break;
         }
     }

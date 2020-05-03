@@ -14,6 +14,7 @@ import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -59,6 +60,7 @@ public class RunwayDetailsActivity extends MainActivity {
     ScaleGestureDetector scaleGestureDetector;
     Matrix matrix;
     float scaleFactor;
+    Button button_save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,8 @@ public class RunwayDetailsActivity extends MainActivity {
         button_bottom = (ImageButton) findViewById(R.id.bottom_button);
         button_dress = (ImageButton) findViewById(R.id.dress_button);
         button_accessories = (ImageButton) findViewById(R.id.accessories_button);
+        button_save = (Button) findViewById(R.id.save_button);
+
 
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -92,6 +96,7 @@ public class RunwayDetailsActivity extends MainActivity {
         button_dress.setOnClickListener(this);
         button_bottom.setOnClickListener(this);
         button_top.setOnClickListener(this);
+        button_save.setOnClickListener(this);
 
         // the selected model is loaded into this image view
         model_img = (ImageView) findViewById(R.id.model_runway);

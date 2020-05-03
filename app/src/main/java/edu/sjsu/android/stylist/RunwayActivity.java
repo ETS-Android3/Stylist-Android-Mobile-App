@@ -60,6 +60,8 @@ public class RunwayActivity extends MainActivity {
                 } else if (itemId == R.id.action_runway) {
 
                 } else if (itemId == R.id.action_collection) {
+                    Intent collectionIntent = new Intent(RunwayActivity.this, CollectionActivity.class);
+                    startActivity(collectionIntent);
 
                 }
                 return true;
