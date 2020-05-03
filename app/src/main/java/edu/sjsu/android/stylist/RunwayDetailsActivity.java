@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -61,7 +62,6 @@ public class RunwayDetailsActivity extends MainActivity {
     Matrix matrix;
     float scaleFactor;
     Button button_save;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,6 +207,7 @@ public class RunwayDetailsActivity extends MainActivity {
                 // save outfit
             case R.id.save_button:
                 takeScreenshot();
+                Toast.makeText(getBaseContext(), "Outfit saved", Toast.LENGTH_LONG).show();
                 break;
         }
     }
