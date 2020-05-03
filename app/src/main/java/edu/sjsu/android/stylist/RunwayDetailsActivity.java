@@ -56,7 +56,8 @@ public class RunwayDetailsActivity extends MainActivity {
     private float startTouchDistance = 0;
     private float moveTouchDistance = 0;
     private int mViewScaledTouchSlop;
-    final int MAX_BITMAP_SIZE = 150;
+    final int MAX_BITMAP_WIDTH = 280;
+    final int MAX_BITMAP_HEIGHT = 480;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,29 +242,9 @@ public class RunwayDetailsActivity extends MainActivity {
         return false;
     }
 
-    // detect pinch gesture
-    private boolean isPinchGesture(MotionEvent event) {
-        if (event.getPointerCount() == 2) {
-            final float distanceCurrent = distance(event, 0, 1);
-            final float diffPrimX = firstStartTouchEventX - event.getX(0);
-            final float diffPrimY = firstStartTouchEventY - event.getY(0);
-            final float diffSecX = secondStartTouchEventX - event.getX(1);
-            final float diffSecY = secondStartTouchEventY - event.getY(1);
-            // if the distance between the two fingers has increased past our threshold
-            // and the fingers are moving in opposing directions
-            if (Math.abs(distanceCurrent - startTouchDistance) > mViewScaledTouchSlop
-                    && (diffPrimY * diffSecY) <= 0
-                    && (diffPrimX * diffSecX) <= 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     static class MyPinchListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            Log.d("TAG", "PINCH! OUCH!");
             return true;
         }
     }
@@ -272,7 +253,6 @@ public class RunwayDetailsActivity extends MainActivity {
         float ratio = (float) Math.max(Math.min(moveTouchDistance/startTouchDistance, 2.0), 0.5);
         int w = Math.round((float) ratio * width);
         int h = Math.round((float) ratio * height);
-
         Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, w, h, filter);
         return newBitmap;
     }
@@ -304,7 +284,6 @@ public class RunwayDetailsActivity extends MainActivity {
                             if (event.getPointerCount() == 1) {
                                 firstStartTouchEventX = event.getX(0);
                                 firstStartTouchEventY = event.getY(0);
-                                Log.d("TAG", String.format("POINTER ONE X = %.5f, Y = %.5f", firstStartTouchEventX, firstStartTouchEventY));
                             }
 
 //                            if (event.getPointerCount() == 2) {
@@ -338,12 +317,12 @@ public class RunwayDetailsActivity extends MainActivity {
                             moveTouchDistance = 0;
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            if (event.getPointerCount() == 1) {
-                                float xVal = event.getRawX();
-                                float yVal = event.getRawY();
-                                int[] relVals = new int[2];
-                                view.getLocationOnScreen(relVals);
+                            float xVal = event.getRawX();
+                            float yVal = event.getRawY();
+                            int[] relVals = new int[2];
+                            view.getLocationOnScreen(relVals);
 
+                            if (event.getPointerCount() == 1) {
                                 float newX = xVal - relVals[0] - imgTouchX;
                                 float newY = yVal - relVals[1] - imgTouchY;
                                 // if touch position is out of left bound, set x to left edge of parent view
@@ -386,13 +365,22 @@ public class RunwayDetailsActivity extends MainActivity {
                                 float oldHeight = item_img.getHeight();
                                 Bitmap scaleBitmap = scaleBitmap(myBitmap, imgDimension[0], imgDimension[1], true);
 
+                                if (scaleBitmap.getWidth() > MAX_BITMAP_WIDTH || scaleBitmap.getHeight() > MAX_BITMAP_HEIGHT) {
+                                    scaleBitmap = scaleBitmap(myBitmap, MAX_BITMAP_WIDTH, MAX_BITMAP_HEIGHT, true);
+                                }
+
                                 item_img.setImageBitmap(scaleBitmap);
                                 float xDiff = oldWidth - scaleBitmap.getWidth();
                                 float yDiff = oldHeight - scaleBitmap.getHeight();
 
                                 Log.d("TAG", "x: " + xDiff);
                                 Log.d("TAG", "y: " + yDiff);
-//                                item_img.setX(item_img.getX() - xDiff/2);
+                                if (item_img.getX() + xDiff/4 >= relVals[0] && item_img.getX() <= relVals[0] + view.getWidth()
+                                    && item_img.getY() + yDiff/2 >= relVals[1] && item_img.getY() + yDiff/2 <= relVals[1] + view.getHeight()) {
+//                                    item_img.setX(item_img.getX() + xDiff/4);
+//                                    item_img.setY(item_img.getY() + yDiff/2);
+                                }
+                                item_img.setX(item_img.getX() + xDiff/4);
                                 item_img.setY(item_img.getY() + yDiff/2);
 
                             }
