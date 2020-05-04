@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
+import android.view.ViewConfiguration;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -31,7 +32,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static android.view.MotionEvent.ACTION_MASK;
 
@@ -45,7 +45,6 @@ public class RunwayDetailsActivity extends MainActivity {
     private ImageButton button_bottom;
     private ImageButton button_dress;
     private ImageButton button_accessories;
-    private ImageView model_img;
     private ImageView top_img;
     private ImageView bottom_img;
     private ImageView accessories_img;
@@ -62,21 +61,32 @@ public class RunwayDetailsActivity extends MainActivity {
     Matrix matrix;
     float scaleFactor;
     Button button_save;
+    private float firstStartTouchEventX = -1;
+    private float firstStartTouchEventY = -1;
+    private float secondStartTouchEventX = -1;
+    private float secondStartTouchEventY = -1;
+    private float startTouchDistance = 0;
+    private float moveTouchDistance = 0;
+    private int mViewScaledTouchSlop;
+    final int MAX_BITMAP_WIDTH = 560;
+    final int MAX_BITMAP_HEIGHT = 800;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runway_details);
 
-        matrix = new Matrix();
+        final ViewConfiguration viewConfig = ViewConfiguration.get(this);
+        mViewScaledTouchSlop = viewConfig.getScaledTouchSlop();
+        
         imgTouchX = 0.0f;
         imgTouchY = 0.0f;
+        drag_view = (RelativeLayout) findViewById(R.id.drag_view);
         top_view = (RelativeLayout) findViewById(R.id.my_top_view);
         bottom_view = (RelativeLayout) findViewById(R.id.my_bottom_view);
         drag_view = (RelativeLayout) findViewById(R.id.drag_view);
         top_img = (ImageView) findViewById(R.id.top_image);
         bottom_img = (ImageView) findViewById(R.id.bottom_image);
-
-        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
         backButton = (ImageButton) findViewById(R.id.back_button);
         button_top = (ImageButton) findViewById(R.id.top_button);
@@ -98,9 +108,24 @@ public class RunwayDetailsActivity extends MainActivity {
         button_top.setOnClickListener(this);
         button_save.setOnClickListener(this);
 
-        // the selected model is loaded into this image view
-        model_img = (ImageView) findViewById(R.id.model_runway);
-//        model_img.setImageResource(R.drawable.my_model);
+        final ScaleGestureDetector mScaleDetector = new ScaleGestureDetector(this, new MyPinchListener());
+        top_img.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final boolean scaleEvent = mScaleDetector.onTouchEvent(event);
+                return true;
+            }
+        });
+
+        bottom_img.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final boolean scaleEvent = mScaleDetector.onTouchEvent(event);
+                return true;
+            }
+        });
 
 
         populateTops();
@@ -148,23 +173,6 @@ public class RunwayDetailsActivity extends MainActivity {
                 return true;
             }
         });
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        scaleGestureDetector.onTouchEvent(event);
-        return true;
-    }
-
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-        @Override
-        public boolean onScale(ScaleGestureDetector detector) {
-            scaleFactor = detector.getScaleFactor();
-            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 0.5f));
-            matrix.setScale(scaleFactor, scaleFactor);
-//            model_img.setImageMatrix(matrix);
-            return true;
-        }
     }
 
     @Override
@@ -245,7 +253,6 @@ public class RunwayDetailsActivity extends MainActivity {
         return false;
     }
 
-
     private void takeScreenshot(){
         Bitmap b = Bitmap.createBitmap(drag_view.getWidth(), drag_view.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
@@ -302,15 +309,74 @@ public class RunwayDetailsActivity extends MainActivity {
             Log.d("log", "Exception" + e.toString());
         }
         return photo;
+
+    // calculating distance between 2 fingers
+    public float distance(MotionEvent event, int first, int second) {
+        if (event.getPointerCount() >= 2) {
+            final float x = event.getX(first) - event.getX(second);
+            final float y = event.getY(first) - event.getY(second);
+            return (float) Math.sqrt(x * x + y * y);
+        } else {
+            return 0;
+        }
+    }
+
+    private boolean isScrollGesture(MotionEvent event, int ptrIndex, float originalX, float originalY){
+        float moveX = Math.abs(event.getX(ptrIndex) - originalX);
+        float moveY = Math.abs(event.getY(ptrIndex) - originalY);
+
+        if (moveX > mViewScaledTouchSlop || moveY > mViewScaledTouchSlop) {
+            return true;
+        }
+        return false;
+    }
+
+    static class MyPinchListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            return true;
+        }
+    }
+
+    private Bitmap scaleBitmap(Bitmap realImage, int width, int height, int maxWidth, int maxHeight, boolean filter) {
+        float ratio = (float) Math.max(Math.min(moveTouchDistance/startTouchDistance, 2.0), 0.5);
+        float aspectRatio = (float) realImage.getWidth() / realImage.getHeight();
+        int w = Math.round((float) ratio * width);
+        int h = Math.round((float) ratio * height);
+        Bitmap newBitmap = realImage;
+
+        if (w <= maxWidth && h <= maxHeight) {
+            newBitmap = Bitmap.createScaledBitmap(realImage, w, h, filter);
+        } else {
+            // if calculated width is greater than max width, use max width to scale bitmap
+            if (w > maxWidth) {
+                newBitmap = Bitmap.createScaledBitmap(realImage, maxWidth, Math.round(maxWidth / aspectRatio), filter);
+            }
+            // if calculated height is greater than max height, use max height to scale bitmap
+            if (h > maxHeight) {
+                newBitmap = Bitmap.createScaledBitmap(realImage, Math.round(maxHeight * aspectRatio), maxHeight, filter);
+            }
+        }
+        return newBitmap;
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void dragItem(final RelativeLayout view, final ImageView item_img, float dropX, float dropY, DragData state) {
         if (isInView(view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
-            // need to load image in here
-//            item_img.setImageResource(state.item.getImage());
-            Bitmap myBitmap = BitmapFactory.decodeFile(state.item.getImageLocation());
+        final float[] imgPosition = new float[2];
+        final int[] maxDimension = new int[2];
+        final int[] imgDimension = new int[2];
+        if (isInView(view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
+            final Bitmap myBitmap = BitmapFactory.decodeFile(state.item.getImageLocation());
             item_img.setImageBitmap(myBitmap);
+
+            imgPosition[0] = dropX - (float) item_img.getWidth() / 2.0f;
+            imgPosition[1] = dropY - (float) item_img.getHeight() / 2.0f;
+            imgDimension[0] = item_img.getWidth();
+            imgDimension[1] = item_img.getHeight();
+            maxDimension[0] = imgDimension[0] * 2;
+            maxDimension[1] = imgDimension[1] * 2;
+
             item_img.setX(dropX - (float) item_img.getWidth() / 2.0f);
             item_img.setY(dropY - (float) item_img.getHeight() / 2.0f);
 
@@ -319,6 +385,12 @@ public class RunwayDetailsActivity extends MainActivity {
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction() & ACTION_MASK) {
                         case MotionEvent.ACTION_DOWN:
+                            if (event.getPointerCount() == 1) {
+                                firstStartTouchEventX = event.getX(0);
+                                firstStartTouchEventY = event.getY(0);
+                            }
+
+
                             // bring image to front on click
                             view.bringToFront();
                             view.invalidate();
@@ -330,34 +402,78 @@ public class RunwayDetailsActivity extends MainActivity {
                             imgTouchY = yValOrig - imgVals[1];
                             break;
                         case MotionEvent.ACTION_UP:
+                            if (event.getPointerCount() < 2) {
+                                secondStartTouchEventX = -1;
+                                secondStartTouchEventY = -1;
+                            }
+                            if (event.getPointerCount() < 1) {
+                                firstStartTouchEventX = -1;
+                                firstStartTouchEventY = -1;
+                            }
+                            startTouchDistance = 0;
+                            moveTouchDistance = 0;
                             break;
                         case MotionEvent.ACTION_MOVE:
                             float xVal = event.getRawX();
                             float yVal = event.getRawY();
                             int[] relVals = new int[2];
-                            top_view.getLocationOnScreen(relVals);
+                            view.getLocationOnScreen(relVals);
 
-                            float newX = xVal - relVals[0] - imgTouchX;
-                            float newY = yVal - relVals[1] - imgTouchY;
-                            // if touch position is out of left bound, set x to left edge of parent view
-                            if (xVal - imgTouchX < relVals[0]) {
-                                newX = 0;
-                            }
-                            // if touch position is out of right bound, set x to right edge of parent view
-                            if (xVal - imgTouchX + item_img.getWidth() > relVals[0] + top_view.getWidth()) {
-                                newX = top_view.getWidth() - item_img.getWidth();
-                            }
-                            // if touch position is out of top bound, set y to top edge of parent view
-                            if (yVal - imgTouchY < relVals[1]) {
-                                newY = 0;
-                            }
-                            // if touch position is out of bottom bound, set y to bottom edge of parent view
-                            if (yVal - imgTouchY + item_img.getHeight() > relVals[1] + top_view.getHeight()) {
-                                newY = top_view.getHeight() - item_img.getHeight();
+                            if (event.getPointerCount() == 1) {
+                                float newX = xVal - relVals[0] - imgTouchX;
+                                float newY = yVal - relVals[1] - imgTouchY;
+                                // if touch position is out of left bound, set x to left edge of parent view
+                                if (xVal - imgTouchX < relVals[0]) {
+                                    newX = 0;
+                                }
+                                // if touch position is out of right bound, set x to right edge of parent view
+                                if (xVal - imgTouchX + item_img.getWidth() > relVals[0] + view.getWidth()) {
+                                    newX = view.getWidth() - item_img.getWidth();
+                                }
+                                // if touch position is out of top bound, set y to top edge of parent view
+                                if (yVal - imgTouchY < relVals[1]) {
+                                    newY = 0;
+                                }
+                                // if touch position is out of bottom bound, set y to bottom edge of parent view
+                                if (yVal - imgTouchY + item_img.getHeight() > relVals[1] + view.getHeight()) {
+                                    newY = view.getHeight() - item_img.getHeight();
+                                }
+                                imgPosition[0] = newX;
+                                imgPosition[1] = newY;
+                                item_img.setX(newX);
+                                item_img.setY(newY);
                             }
 
-                            item_img.setX(newX);
-                            item_img.setY(newY);
+                            // There is a chance that the gesture may be a scroll
+                            if (event.getPointerCount() > 1 && isScrollGesture(event, 0, firstStartTouchEventX, firstStartTouchEventY)
+                                && isScrollGesture(event, 1, secondStartTouchEventX, secondStartTouchEventY)) {
+                                moveTouchDistance = distance(event, 0, 1);
+                                if (startTouchDistance == 0) {
+                                    startTouchDistance = moveTouchDistance;
+                                    imgDimension[0] = item_img.getWidth();
+                                    imgDimension[1] = item_img.getHeight();
+                                }
+
+                                float oldHeight = item_img.getHeight();
+
+                                Bitmap scaleBitmap = scaleBitmap(myBitmap, imgDimension[0], imgDimension[1], MAX_BITMAP_WIDTH, MAX_BITMAP_HEIGHT, true);
+                                item_img.setImageBitmap(scaleBitmap);
+                                float yDiff = oldHeight - scaleBitmap.getHeight();
+
+                                if (item_img.getX() < relVals[0]) {
+                                    item_img.setX(0);
+                                    item_img.setY(item_img.getY() + yDiff / 2);
+                                } else if (item_img.getX() > relVals[0] + view.getWidth()) {
+                                    item_img.setX(view.getWidth() - item_img.getWidth());
+                                    item_img.setY(item_img.getY() + yDiff/2);
+                                } else if (item_img.getY() + item_img.getHeight() < relVals[1]) {
+                                    item_img.setY(0);
+                                } else if (item_img.getY() + item_img.getHeight() > relVals[1] + view.getHeight()) {
+                                    item_img.setY(view.getHeight() - item_img.getHeight());
+                                } else {
+                                    item_img.setY(item_img.getY() + yDiff/2);
+                                }
+                            }
                             break;
                     }
                     return true;
