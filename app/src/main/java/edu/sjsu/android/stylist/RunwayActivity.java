@@ -18,6 +18,7 @@ public class RunwayActivity extends MainActivity {
     private ImageButton button_bottom;
     private ImageButton button_dress;
     private ImageButton button_accessories;
+    private BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +43,12 @@ public class RunwayActivity extends MainActivity {
                     Intent closetIntent = new Intent(RunwayActivity.this, MainActivity.class);
                     startActivity(closetIntent);
                 } else if (itemId == R.id.action_closet) {
-                    Intent runwayIntent = new Intent(RunwayActivity.this, ClosetActivity.class);
-                    startActivity(runwayIntent);
+                    Intent closetIntent = new Intent(RunwayActivity.this, ClosetActivity.class);
+                    startActivity(closetIntent);
                 } else if (itemId == R.id.action_runway) {
-
                 } else if (itemId == R.id.action_collection) {
                     Intent collectionIntent = new Intent(RunwayActivity.this, CollectionActivity.class);
                     startActivity(collectionIntent);
-
                 }
                 return true;
             }

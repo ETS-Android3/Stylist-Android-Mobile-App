@@ -1,23 +1,31 @@
 package edu.sjsu.android.stylist;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.io.File;
 import java.util.ArrayList;
 
-public class CollectionActivity extends AppCompatActivity
+public class CollectionActivity extends MainActivity
 {
     ArrayList<File> pictures;
     int iterator;
     Button nextButton, previousButton;
     ImageView outfitPicture;
+    BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -27,6 +35,7 @@ public class CollectionActivity extends AppCompatActivity
         nextButton = findViewById(R.id.nextOutfit);
         previousButton = findViewById(R.id.previousOutfit);
         outfitPicture = findViewById(R.id.outfitView);
+        bottomNavigation = findViewById(R.id.bottom_bar);
 
         pictures = new ArrayList<>();
         gatherPictures();
@@ -57,6 +66,29 @@ public class CollectionActivity extends AppCompatActivity
                 }
             }
         });
+
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.action_home) {
+                    Intent closetIntent = new Intent(CollectionActivity.this, MainActivity.class);
+                    startActivity(closetIntent);
+                } else if (itemId == R.id.action_closet) {
+                    Intent closetIntent = new Intent(CollectionActivity.this, ClosetActivity.class);
+                    startActivity(closetIntent);
+                } else if (itemId == R.id.action_runway) {
+                    Intent runwayIntent = new Intent(CollectionActivity.this, RunwayActivity.class);
+                    startActivity(runwayIntent);
+                } else if (itemId == R.id.action_collection) {
+                }
+                return true;
+            }
+        });
+
+        Menu menu = bottomNavigation.getMenu();
+        MenuItem menuItem = menu.getItem(3);
+        menuItem.setChecked(true);
     }
 
     private void getCurrentPicture()

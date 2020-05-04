@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -22,8 +24,11 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,7 +45,6 @@ public class RunwayDetailsActivity extends MainActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ImageButton backButton;
     private ImageButton button_top;
     private ImageButton button_bottom;
     private ImageButton button_dress;
@@ -68,15 +72,39 @@ public class RunwayDetailsActivity extends MainActivity {
     private float startTouchDistance = 0;
     private float moveTouchDistance = 0;
     private int mViewScaledTouchSlop;
-//    final int MAX_BITMAP_WIDTH = 560;
-//    final int MAX_BITMAP_HEIGHT = 800;
     private int MAX_BITMAP_WIDTH;
     private int MAX_BITMAP_HEIGHT;
+    private BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runway_details);
+
+        bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_bar);
+
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.action_home) {
+                    Intent closetIntent = new Intent(RunwayDetailsActivity.this, MainActivity.class);
+                    startActivity(closetIntent);
+                } else if (itemId == R.id.action_closet) {
+                    Intent runwayIntent = new Intent(RunwayDetailsActivity.this, ClosetActivity.class);
+                    startActivity(runwayIntent);
+                } else if (itemId == R.id.action_runway) {
+                } else if (itemId == R.id.action_collection) {
+                    Intent collectionIntent = new Intent(RunwayDetailsActivity.this, CollectionActivity.class);
+                    startActivity(collectionIntent);
+                }
+                return true;
+            }
+        });
+
+        Menu menu = bottomNavigation.getMenu();
+        MenuItem menuItem = menu.getItem(2);
+        menuItem.setChecked(true);
 
         final ViewConfiguration viewConfig = ViewConfiguration.get(this);
         mViewScaledTouchSlop = viewConfig.getScaledTouchSlop();
@@ -102,7 +130,6 @@ public class RunwayDetailsActivity extends MainActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        backButton.setOnClickListener(this);
         button_accessories.setOnClickListener(this);
         button_dress.setOnClickListener(this);
         button_bottom.setOnClickListener(this);
@@ -337,13 +364,13 @@ public class RunwayDetailsActivity extends MainActivity {
             newBitmap = Bitmap.createScaledBitmap(realImage, w, h, filter);
         } else {
             // if calculated width is greater than max width, use max width to scale bitmap
-            if (w > maxWidth) {
+            if (w > maxWidth || h > maxHeight) {
                 newBitmap = Bitmap.createScaledBitmap(realImage, maxWidth, Math.round(maxWidth / aspectRatio), filter);
             }
             // if calculated height is greater than max height, use max height to scale bitmap
-            if (h > maxHeight) {
-                newBitmap = Bitmap.createScaledBitmap(realImage, Math.round(maxHeight * aspectRatio), maxHeight, filter);
-            }
+//            if (h > maxHeight) {
+//                newBitmap = Bitmap.createScaledBitmap(realImage, Math.round(maxHeight * aspectRatio), maxHeight, filter);
+//            }
         }
         return newBitmap;
     }

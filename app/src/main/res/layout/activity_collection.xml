@@ -12,6 +12,7 @@
         android:textSize="50sp"
         android:background="@color/colorPrimary"
         android:gravity="center"
+        android:textColor="@color/colorWhite"
         android:fontFamily="@font/college_regular"/>
 
     <ImageView
@@ -45,6 +46,14 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:text="Previous Outfit" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorWhite"
+        app:menu="@menu/toolbar" />
 
 
 </RelativeLayout>

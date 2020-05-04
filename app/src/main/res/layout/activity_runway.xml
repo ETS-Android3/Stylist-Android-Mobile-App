@@ -26,9 +26,7 @@
 
     <ImageButton
         android:id="@+id/top_button"
-
         android:layout_width="70dp"
-
         android:layout_height="65dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
@@ -38,15 +36,11 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:scaleType="fitCenter"
-        android:padding="7dp"
-
-        android:onClick="onClick"/>
+        android:padding="7dp"/>
 
     <ImageButton
         android:id="@+id/bottom_button"
-
         android:layout_width="70dp"
-
         android:layout_height="65dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
@@ -56,34 +50,25 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:scaleType="fitCenter"
-        android:padding="7dp"
-
-        android:onClick="onClick"/>
+        android:padding="7dp"/>
 
     <ImageButton
         android:id="@+id/dress_button"
-
         android:layout_width="70dp"
-
         android:layout_height="65dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
         android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/dress"
         android:layout_below="@+id/bottom_button"
-
         android:layout_marginBottom="20dp"
-
         android:gravity="center"
         android:scaleType="fitCenter"
-        android:padding="5dp"
-        android:onClick="onClick"/>
+        android:padding="5dp"/>
 
     <ImageButton
         android:id="@+id/accessories_button"
-
         android:layout_width="70dp"
-
         android:layout_height="65dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
@@ -92,8 +77,7 @@
         android:layout_below="@+id/dress_button"
         android:gravity="center"
         android:scaleType="fitCenter"
-        android:padding="12dp"
-        android:onClick="onClick"/>
+        android:padding="12dp"/>
     
     <Button
         android:id="@+id/save_button"
