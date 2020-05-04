@@ -1,5 +1,7 @@
 package edu.sjsu.android.stylist;
 
+import android.util.Log;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +37,9 @@ public class CountingFileRequestBody extends RequestBody {
         Source source = null;
         try
         {
+            Log.d("log", "is file empty " + (file == null));
             source = Okio.source(file);
+            Log.d("log", "is source null " + (source == null));
             long total = 0;
             long read = -1;
 
@@ -47,6 +51,7 @@ public class CountingFileRequestBody extends RequestBody {
             }
 
         } finally {
+            Log.d("log", "is source null in finally " + (source == null));
             Util.closeQuietly(source);
         }
 

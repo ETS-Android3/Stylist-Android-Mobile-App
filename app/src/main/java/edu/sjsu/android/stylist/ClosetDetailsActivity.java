@@ -169,7 +169,7 @@ public class ClosetDetailsActivity extends Activity {
             if (photoFile != null)
             {
                 pathToFile = photoFile.getAbsolutePath();
-                Log.d("log", photoFile.getAbsolutePath());
+                //Log.d("log", photoFile.getAbsolutePath());
                 Uri photoUri = FileProvider.getUriForFile(this, "edu.sjsu.android.stylist.fileprovider", photoFile);
                 takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(takePhotoIntent, REQUEST_IMAGE_CAPTURE);
@@ -250,14 +250,14 @@ public class ClosetDetailsActivity extends Activity {
         tops = dh.getAllTops();
         if (tops.size() > 0 && tops.get(0) != null)
         {
-            Log.d("log", tops.get(0).getName());
+            //Log.d("log", tops.get(0).getName());
         }
         // TODO Do something with tops
     }
 
     private void populateBottoms()
     {
-        Log.d("log", "Populate bottoms");
+        //Log.d("log", "Populate bottoms");
         DatabaseHelper dh = new DatabaseHelper(this);
         bottoms = dh.getAllBottoms();
 
@@ -266,7 +266,7 @@ public class ClosetDetailsActivity extends Activity {
 
     private void populateGridview()
     {
-        Log.d("log", "source from populateGridView " + source);
+        //Log.d("log", "source from populateGridView " + source);
         if (getIntent() != null)
         {
             if ((getIntent().getStringExtra("Source")) != null)
@@ -277,13 +277,13 @@ public class ClosetDetailsActivity extends Activity {
         if (source.equals("ButtonTops")) {
             populateTops();
             gridviewAdapter.updateView(tops);
-            Log.d("log", "source from Tops");
+            //Log.d("log", "source from Tops");
             viewTitle.setText("Tops");
         } else if (source.equals("ButtonBottoms")) {
             populateBottoms();
             gridviewAdapter.updateView(bottoms);
             viewTitle.setText("Bottoms");
-            Log.d("log", "source from Bottoms");
+            //Log.d("log", "source from Bottoms");
         }
     }
 
@@ -294,7 +294,10 @@ public class ClosetDetailsActivity extends Activity {
     private void removeBackground()
     {
         // Create RequestBody using image file
+        Log.d("log", pathToFile);
         CountingFileRequestBody filePart = new CountingFileRequestBody(new File(pathToFile), "image/jpg");
+        Log.d("log", "is filePart null " + (filePart == null));
+
 
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -337,7 +340,7 @@ public class ClosetDetailsActivity extends Activity {
                 }
                 else
                 {
-                    Log.d("log", response.body().toString());
+                    Log.d("log", response.body().string());
 
                 }
 
@@ -385,15 +388,7 @@ public class ClosetDetailsActivity extends Activity {
             {
                 LayoutInflater layoutInflater = LayoutInflater.from(context);
                 convertView = layoutInflater.inflate(R.layout.clothes_layout, null);
-//                photoView = new ImageView(context);
-//                photoView.setLayoutParams(new GridView.LayoutParams(433, 577));
-//                photoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//                photoView.setPadding(16, 16, 16, 16);
             }
-//            else
-//            {
-//                photoView = (ImageView) convertView;
-//            }
 
             Clothing item = (Clothing) sourceList.get(position);
             ImageView imageViewClothes = (ImageView) convertView.findViewById(R.id.imageview_clothes);
@@ -407,7 +402,7 @@ public class ClosetDetailsActivity extends Activity {
                 for (int i = 0; i < sourceList.size(); i++)
                 {
                     Clothing clothing = (Clothing) sourceList.get(i);
-                    Log.d("log", "item " + clothing.getName() + " " + clothing.getImageLocation());
+                    //Log.d("log", "item " + clothing.getName() + " " + clothing.getImageLocation());
                 }
             }
 
