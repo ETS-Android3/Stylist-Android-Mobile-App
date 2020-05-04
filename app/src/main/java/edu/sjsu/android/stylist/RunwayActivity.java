@@ -49,6 +49,9 @@ public class RunwayActivity extends MainActivity {
                 } else if (itemId == R.id.action_collection) {
                     Intent collectionIntent = new Intent(RunwayActivity.this, CollectionActivity.class);
                     startActivity(collectionIntent);
+                } else if (itemId == R.id.action_info) {
+                    Intent infoIntent = new Intent(RunwayActivity.this, AboutUsActivity.class);
+                    startActivity(infoIntent);
                 }
                 return true;
             }

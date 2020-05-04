@@ -69,11 +69,9 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.closet_button:
-            {
                 Intent closetIntent = new Intent(this, ClosetActivity.class);
                 startActivity(closetIntent);
                 break;
-            }
             case R.id.runway_button:
                 Intent runwayIntent = new Intent(this, RunwayActivity.class);
                 startActivity(runwayIntent);

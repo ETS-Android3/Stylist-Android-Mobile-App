@@ -35,4 +35,10 @@
         android:icon="@drawable/collection"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/action_info"
+        android:title="@string/info_text"
+        android:icon="@drawable/info"
+        app:showAsAction="ifRoom"/>
+
 </menu>

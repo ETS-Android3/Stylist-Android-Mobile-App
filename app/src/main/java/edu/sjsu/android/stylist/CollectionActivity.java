@@ -81,6 +81,9 @@ public class CollectionActivity extends MainActivity
                     Intent runwayIntent = new Intent(CollectionActivity.this, RunwayActivity.class);
                     startActivity(runwayIntent);
                 } else if (itemId == R.id.action_collection) {
+                } else if (itemId == R.id.action_info) {
+                    Intent infoIntent = new Intent(CollectionActivity.this, AboutUsActivity.class);
+                    startActivity(infoIntent);
                 }
                 return true;
             }

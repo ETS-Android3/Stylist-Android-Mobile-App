@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".AboutUsActivity">
 
     <TextView
@@ -26,5 +27,13 @@
         android:textSize="20dp"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/raleway_regular"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorWhite"
+        app:menu="@menu/toolbar" />
 
 </RelativeLayout>
