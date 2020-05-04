@@ -11,7 +11,8 @@
         android:text="@string/collection"
         android:textSize="50sp"
         android:background="@color/colorPrimary"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:fontFamily="@font/college_regular"/>
 
     <ImageView
         android:id="@+id/outfitView"

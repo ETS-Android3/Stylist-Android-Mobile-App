@@ -13,7 +13,8 @@
         android:textColor="@color/colorWhite"
         android:textSize="50sp"
         android:background="@color/colorPrimary"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:fontFamily="@font/college_regular"/>
     <Button
         android:id="@+id/button_closet_tops"
         android:text="@string/tops_text"

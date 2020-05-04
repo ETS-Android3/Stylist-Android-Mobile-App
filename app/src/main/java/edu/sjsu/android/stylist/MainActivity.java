@@ -5,6 +5,7 @@ import android.app.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,8 +54,6 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
             else if (itemId == R.id.action_closet) {
                 Intent closetIntent = new Intent(MainActivity.this, ClosetActivity.class);
                 startActivity(closetIntent);
-//            } else if (itemId == R.id.action_model) {
-
             } else if (itemId == R.id.action_runway) {
                 Intent runwayIntent = new Intent(MainActivity.this, RunwayActivity.class);
                 startActivity(runwayIntent);
@@ -82,6 +81,10 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
             case R.id.collection_button:
                 Intent collectionIntent = new Intent(this, CollectionActivity.class);
                 startActivity(collectionIntent);
+                break;
+            case R.id.aboutUs_button:
+                Intent aboutUsIntent = new Intent(this, AboutUsActivity.class);
+                startActivity(aboutUsIntent);
                 break;
         }
     }

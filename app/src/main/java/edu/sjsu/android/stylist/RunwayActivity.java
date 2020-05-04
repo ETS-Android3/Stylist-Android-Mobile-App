@@ -15,7 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class RunwayActivity extends MainActivity {
     private ImageButton backButton;
-    private ImageView model_image;
     private ImageButton button_top;
     private ImageButton button_bottom;
     private ImageButton button_dress;
@@ -31,11 +30,6 @@ public class RunwayActivity extends MainActivity {
         button_dress = (ImageButton) findViewById(R.id.dress_button);
         button_accessories = (ImageButton) findViewById(R.id.accessories_button);
 
-        // the selected model is loaded into this image view
-        model_image = (ImageView) findViewById(R.id.model_runway);
-        // Image loaded_image =
-        // model_image.setImage(loaded_image);
-
         backButton.setOnClickListener(this);
         button_accessories.setOnClickListener(this);
         button_dress.setOnClickListener(this);
@@ -50,13 +44,9 @@ public class RunwayActivity extends MainActivity {
                 if (itemId == R.id.action_home) {
                     Intent closetIntent = new Intent(RunwayActivity.this, MainActivity.class);
                     startActivity(closetIntent);
-                }
-                else if (itemId == R.id.action_closet) {
+                } else if (itemId == R.id.action_closet) {
                     Intent runwayIntent = new Intent(RunwayActivity.this, ClosetActivity.class);
                     startActivity(runwayIntent);
-
-//            } else if (itemId == R.id.action_model) {
-
                 } else if (itemId == R.id.action_runway) {
 
                 } else if (itemId == R.id.action_collection) {
@@ -91,8 +81,6 @@ public class RunwayActivity extends MainActivity {
                 startActivity(bottomIntent);
                 break;
             case R.id.dress_button:
-                break;
-
             case R.id.accessories_button:
                 break;
         }

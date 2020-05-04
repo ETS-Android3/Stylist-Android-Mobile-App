@@ -17,41 +17,80 @@
 
     <Button
         android:id="@+id/closet_button"
-        android:layout_width="300dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="-20dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/button_bordered_rounded"
-        android:layout_below="@id/view_logo"
-        android:text="@string/closet"
+        android:layout_width="130dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="200dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/hexagon"
+        android:text="Closet"
         android:textColor="@color/colorWhite"
-        android:textSize="25sp" />
-
-
-    <Button
-        android:id="@+id/runway_button"
-        android:layout_width="300dp"
-        android:layout_height="75dp"
-        android:layout_below="@+id/closet_button"
-        android:layout_marginStart="50dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/button_bordered_rounded"
-        android:text="@string/runway_text"
-        android:textColor="@color/colorWhite"
-        android:textSize="25sp" />
+        android:textSize="22dp"
+        android:fontFamily="@font/college_regular"
+        android:onClick="onClick"/>
 
     <Button
         android:id="@+id/collection_button"
-        android:layout_width="300dp"
-        android:layout_height="75dp"
-        android:layout_below="@+id/runway_button"
-        android:layout_marginStart="50dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/button_bordered_rounded"
-        android:text="@string/collection_text"
+        android:layout_width="130dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="380dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/hexagon"
+        android:text="Collection"
         android:textColor="@color/colorWhite"
-        android:textSize="25sp" />
+        android:textSize="21.5dp"
+        android:fontFamily="@font/college_regular"
+        android:onClick="onClick"/>
+
+    <Button
+        android:id="@+id/runway_button"
+        android:layout_width="130dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="380dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/hexagon"
+        android:text="Runway"
+        android:textColor="@color/colorWhite"
+        android:textSize="22dp"
+        android:fontFamily="@font/college_regular"
+        android:onClick="onClick"/>
+
+    <Button
+        android:id="@+id/aboutUs_button"
+        android:layout_width="130dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="320dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/hexagon"
+        android:text="About us"
+        android:textColor="@color/colorWhite"
+        android:textSize="22dp"
+        android:fontFamily="@font/college_regular"
+        android:onClick="onClick"/>
+
+    <ImageView
+        android:layout_width="130dp"
+        android:layout_height="110dp"
+        android:src="@drawable/hexagon_img"
+        android:layout_marginTop="260dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="30dp"/>
+
+    <ImageView
+        android:layout_width="130dp"
+        android:layout_height="110dp"
+        android:src="@drawable/hexagon_img"
+        android:layout_marginTop="260dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"/>
+
+    <ImageView
+        android:layout_width="130dp"
+        android:layout_height="110dp"
+        android:src="@drawable/hexagon_img"
+        android:layout_marginTop="440dp"
+        android:layout_centerHorizontal="true"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_bar"
