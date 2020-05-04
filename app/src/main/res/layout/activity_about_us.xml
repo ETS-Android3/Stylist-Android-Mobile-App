@@ -6,7 +6,7 @@
     tools:context=".AboutUsActivity">
 
     <TextView
-        android:id="@+id/runway_title"
+        android:id="@+id/about_us_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/about_us"

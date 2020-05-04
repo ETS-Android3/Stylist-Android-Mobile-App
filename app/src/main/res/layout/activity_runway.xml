@@ -25,16 +25,6 @@
         android:fontFamily="@font/college_regular"/>
 
     <ImageButton
-        android:id="@+id/back_button"
-        android:layout_width="55dp"
-        android:layout_height="40dp"
-        android:src="@drawable/back_arrow"
-        android:layout_toLeftOf="@+id/runway_title"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="-70dp"
-        android:background="@null"/>
-
-    <ImageButton
         android:id="@+id/top_button"
 
         android:layout_width="70dp"

@@ -90,7 +90,6 @@ public class RunwayDetailsActivity extends MainActivity {
         top_img = (ImageView) findViewById(R.id.top_image);
         bottom_img = (ImageView) findViewById(R.id.bottom_image);
 
-        backButton = (ImageButton) findViewById(R.id.back_button);
         button_top = (ImageButton) findViewById(R.id.top_button);
         button_bottom = (ImageButton) findViewById(R.id.bottom_button);
         button_dress = (ImageButton) findViewById(R.id.dress_button);
@@ -180,9 +179,6 @@ public class RunwayDetailsActivity extends MainActivity {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.back_button:
-                Intent backIntent = new Intent(this, MainActivity.class);
-                startActivity(backIntent);
             case R.id.top_button:
                 // if the recycler view is showing tops, make it invisible
                 // otherwise, show the list of tops

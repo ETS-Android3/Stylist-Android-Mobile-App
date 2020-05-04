@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class RunwayActivity extends MainActivity {
-    private ImageButton backButton;
     private ImageButton button_top;
     private ImageButton button_bottom;
     private ImageButton button_dress;
@@ -24,13 +23,11 @@ public class RunwayActivity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runway);
-        backButton = (ImageButton) findViewById(R.id.back_button);
         button_top = (ImageButton) findViewById(R.id.top_button);
         button_bottom = (ImageButton) findViewById(R.id.bottom_button);
         button_dress = (ImageButton) findViewById(R.id.dress_button);
         button_accessories = (ImageButton) findViewById(R.id.accessories_button);
 
-        backButton.setOnClickListener(this);
         button_accessories.setOnClickListener(this);
         button_dress.setOnClickListener(this);
         button_bottom.setOnClickListener(this);
@@ -66,10 +63,6 @@ public class RunwayActivity extends MainActivity {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.back_button:
-                Intent homeIntent = new Intent(this, MainActivity.class);
-                startActivity(homeIntent);
-                break;
             case R.id.top_button:
                 Intent topIntent = new Intent(RunwayActivity.this, RunwayDetailsActivity.class);
                 topIntent.putExtra("tag", 0);
