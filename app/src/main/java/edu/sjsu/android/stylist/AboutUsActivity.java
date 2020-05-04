@@ -3,6 +3,7 @@ package edu.sjsu.android.stylist;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -24,25 +25,27 @@ public class AboutUsActivity extends MainActivity {
 
         bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_bar);
 
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.action_home) {
-                    Intent closetIntent = new Intent(AboutUsActivity.this, MainActivity.class);
-                    startActivity(closetIntent);
-                }
-                else if (itemId == R.id.action_closet) {
-                } else if (itemId == R.id.action_runway) {
-                    Intent runwayIntent = new Intent(AboutUsActivity.this, RunwayActivity.class);
-                    startActivity(runwayIntent);
-                } else if (itemId == R.id.action_collection) {
-                    Intent collectionIntent = new Intent(AboutUsActivity.this, CollectionActivity.class);
-                    startActivity(collectionIntent);
-
-                }
-                return true;
-            }
-        });
+//        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                int itemId = item.getItemId();
+//                if (itemId == R.id.action_home) {
+//                    Intent closetIntent = new Intent(AboutUsActivity.this, MainActivity.class);
+//                    startActivity(closetIntent);
+//                }
+//                else if (itemId == R.id.action_closet) {
+//                } else if (itemId == R.id.action_runway) {
+//                    Intent runwayIntent = new Intent(AboutUsActivity.this, RunwayActivity.class);
+//                    startActivity(runwayIntent);
+//                } else if (itemId == R.id.action_collection) {
+//                    Intent collectionIntent = new Intent(AboutUsActivity.this, CollectionActivity.class);
+//                    startActivity(collectionIntent);
+//
+//                }
+//                return true;
+//            }
+//        });
+//
+//        Menu menu = bottomNavigation.getMenu();
     }
 }
