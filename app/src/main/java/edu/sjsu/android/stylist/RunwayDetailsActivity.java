@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Bundle;
@@ -20,8 +21,6 @@ import android.widget.RelativeLayout;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.github.chrisbanes.photoview.PhotoViewAttacher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +55,8 @@ public class RunwayDetailsActivity extends MainActivity {
     private float startTouchDistance = 0;
     private float moveTouchDistance = 0;
     private int mViewScaledTouchSlop;
-    final int MAX_BITMAP_WIDTH = 280;
-    final int MAX_BITMAP_HEIGHT = 480;
+    final int MAX_BITMAP_WIDTH = 570;
+    final int MAX_BITMAP_HEIGHT = 800;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +94,15 @@ public class RunwayDetailsActivity extends MainActivity {
 
         final ScaleGestureDetector mScaleDetector = new ScaleGestureDetector(this, new MyPinchListener());
         top_img.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final boolean scaleEvent = mScaleDetector.onTouchEvent(event);
+                return true;
+            }
+        });
+
+        bottom_img.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -249,17 +257,35 @@ public class RunwayDetailsActivity extends MainActivity {
         }
     }
 
-    private Bitmap scaleBitmap(Bitmap realImage, int width, int height, boolean filter) {
+    private Bitmap scaleBitmap(Bitmap realImage, int width, int height, int maxWidth, int maxHeight, boolean filter) {
         float ratio = (float) Math.max(Math.min(moveTouchDistance/startTouchDistance, 2.0), 0.5);
+        float aspectRatio = (float) realImage.getWidth() / realImage.getHeight();
+        Log.d("TAG", "ratio " + aspectRatio);
+        Log.d("TAG", "org W: " + realImage.getWidth() + " org H: " + realImage.getHeight());
         int w = Math.round((float) ratio * width);
         int h = Math.round((float) ratio * height);
-        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, w, h, filter);
+        Bitmap newBitmap = realImage;
+        Log.d("TAG", "width: " + w + " max: " + maxWidth);
+        Log.d("TAG", "height: " + h + " max: " + maxHeight);
+
+        if (w <= maxWidth && h <= maxHeight) {
+            newBitmap = Bitmap.createScaledBitmap(realImage, w, h, filter);
+        } else {
+            if (w > maxWidth) {
+                newBitmap = Bitmap.createScaledBitmap(realImage, maxWidth, Math.round(maxWidth / aspectRatio), filter);
+            }
+            if (h > maxHeight) {
+                newBitmap = Bitmap.createScaledBitmap(realImage, Math.round(maxHeight * aspectRatio), maxHeight, filter);
+            }
+        }
+//        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, w, h, filter);
         return newBitmap;
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void dragItem(final RelativeLayout view, final ImageView item_img, float dropX, float dropY, DragData state) {
         final float[] imgPosition = new float[2];
+        final int[] maxDimension = new int[2];
         final int[] imgDimension = new int[2];
         if (isInView(view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
             // need to load image in here
@@ -271,6 +297,8 @@ public class RunwayDetailsActivity extends MainActivity {
             imgPosition[1] = dropY - (float) item_img.getHeight() / 2.0f;
             imgDimension[0] = item_img.getWidth();
             imgDimension[1] = item_img.getHeight();
+            maxDimension[0] = imgDimension[0] * 2;
+            maxDimension[1] = imgDimension[1] * 2;
 
             item_img.setX(dropX - (float) item_img.getWidth() / 2.0f);
             item_img.setY(dropY - (float) item_img.getHeight() / 2.0f);
@@ -363,9 +391,12 @@ public class RunwayDetailsActivity extends MainActivity {
 
                                 float oldWidth = item_img.getWidth();
                                 float oldHeight = item_img.getHeight();
-                                float ratio = oldWidth/oldHeight;
+                                float ratio = oldWidth / oldHeight;
 
-                                Bitmap scaleBitmap = scaleBitmap(myBitmap, imgDimension[0], imgDimension[1], true);
+                                Bitmap scaleBitmap = scaleBitmap(myBitmap, imgDimension[0], imgDimension[1], MAX_BITMAP_WIDTH, MAX_BITMAP_HEIGHT, true);
+                                Log.d("TAG", "WIDTH: " + scaleBitmap.getWidth());
+                                Log.d("TAG", "HEIGHT: " + scaleBitmap.getHeight());
+
 
 //                                if (scaleBitmap.getHeight() > MAX_BITMAP_HEIGHT && scaleBitmap.getWidth() > MAX_BITMAP_WIDTH) {
 //                                    scaleBitmap = scaleBitmap(myBitmap, (int) (MAX_BITMAP_HEIGHT*ratio), MAX_BITMAP_HEIGHT, true);
@@ -375,29 +406,40 @@ public class RunwayDetailsActivity extends MainActivity {
 //                                    scaleBitmap = scaleBitmap(myBitmap, (int)(MAX_BITMAP_HEIGHT*ratio), MAX_BITMAP_HEIGHT, true);
 //                                }
 
+//                                if (scaleBitmap.getWidth() < MAX_BITMAP_WIDTH && scaleBitmap.getHeight() < MAX_BITMAP_HEIGHT) {
+//                                    item_img.setImageBitmap(scaleBitmap);
+//                                } else {
+//                                    if (scaleBitmap.getWidth() >= MAX_BITMAP_WIDTH && scaleBitmap.getHeight() >= MAX_BITMAP_HEIGHT) {
+//
+//                                    } else if (scaleBitmap.getWidth() >= MAX_BITMAP_WIDTH) {
+//
+//                                    } else if (scaleBitmap.getHeight() >= MAX_BITMAP_HEIGHT) {
+//
+//                                    }
+//                                }
+
                                 item_img.setImageBitmap(scaleBitmap);
                                 float xDiff = oldWidth - scaleBitmap.getWidth();
                                 float yDiff = oldHeight - scaleBitmap.getHeight();
 
-                                Log.d("TAG", "x: " + xDiff);
-                                Log.d("TAG", "y: " + yDiff);
-                                if (item_img.getX() < relVals[0]) {
-                                    item_img.setX(0);
-                                    item_img.setY(item_img.getY() + yDiff / 2);
-                                } else if (item_img.getX() > relVals[0] + view.getWidth()) {
-                                    item_img.setX(view.getWidth() - item_img.getWidth());
-                                    item_img.setY(item_img.getY() + yDiff/2);
-                                } else if (item_img.getY() + yDiff/2 < relVals[1]) {
-                                    item_img.setY(0);
-                                } else if (item_img.getY() + yDiff/2 > relVals[1] + view.getHeight()) {
-                                    item_img.setY(view.getHeight() - item_img.getHeight());
-                                } else {
-                                    item_img.setY(item_img.getY() + yDiff/2);
-                                }
+//                                Log.d("TAG", "x: " + xDiff);
+//                                Log.d("TAG", "y: " + yDiff);
+//                                if (item_img.getX() < relVals[0]) {
+//                                    item_img.setX(0);
+//                                    item_img.setY(item_img.getY() + yDiff / 2);
+//                                } else if (item_img.getX() > relVals[0] + view.getWidth()) {
+//                                    item_img.setX(view.getWidth() - item_img.getWidth());
+//                                    item_img.setY(item_img.getY() + yDiff/2);
+//                                } else if (item_img.getY() + item_img.getHeight() < relVals[1]) {
+//                                    item_img.setY(0);
+//                                } else if (item_img.getY() + item_img.getHeight() > relVals[1] + view.getHeight()) {
+//                                    item_img.setY(view.getHeight() - item_img.getHeight());
+//                                } else {
+//                                    item_img.setY(item_img.getY() + yDiff/2);
+//                                }
+
 //                                item_img.setX(item_img.getX() + xDiff/8);
-//                                item_img.setY(item_img.getY() + yDiff/2);
-
-
+                                item_img.setY(item_img.getY() + yDiff/2);
                             }
                             break;
                     }
