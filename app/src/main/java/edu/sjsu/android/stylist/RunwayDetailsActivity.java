@@ -204,9 +204,9 @@ public class RunwayDetailsActivity extends MainActivity {
 
         populateTops();
         populateBottoms();
-//        populateDresses();
-//        populateShoes();
-//        populateAccessories();
+        populateDresses();
+        populateShoes();
+        populateAccessories();
 
         Intent intent = getIntent();
         int tag = intent.getIntExtra("tag", 0);
