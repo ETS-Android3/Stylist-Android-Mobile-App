@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@android:drawable/dialog_holo_light_frame">
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -11,7 +12,8 @@
             android:id="@+id/imageview_clothes"
             android:layout_width="433px"
             android:layout_height="577px"
-            android:scaleType="centerInside"/>
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
 
     </FrameLayout>
     <TextView
