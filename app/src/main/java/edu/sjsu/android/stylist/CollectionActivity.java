@@ -53,6 +53,10 @@ public class CollectionActivity extends MainActivity
                     iterator = 0;
                     getCurrentPicture();
                 }
+                else {
+                    iterator++;
+                    getCurrentPicture();
+                }
             }
         });
 
@@ -62,6 +66,11 @@ public class CollectionActivity extends MainActivity
                 if(iterator == 0)
                 {
                     iterator = pictures.size() - 1;
+                    getCurrentPicture();
+                }
+                else
+                {
+                    iterator--;
                     getCurrentPicture();
                 }
             }
