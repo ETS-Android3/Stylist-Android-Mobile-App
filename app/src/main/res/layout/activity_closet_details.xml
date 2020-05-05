@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorGray">
+    android:layout_height="match_parent">
     <TextView
         android:id="@+id/title_closet_details"
         android:layout_width="match_parent"
@@ -22,7 +21,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
         android:gravity="center"
-        android:columnWidth="128dp"
+        android:columnWidth="433px"
         android:numColumns="auto_fit"
         android:verticalSpacing="24dp"
         android:horizontalSpacing="5dp"

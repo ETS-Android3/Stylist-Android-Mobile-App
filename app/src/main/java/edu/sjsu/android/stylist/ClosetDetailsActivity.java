@@ -434,7 +434,6 @@ public class ClosetDetailsActivity extends Activity {
             ImageView imageViewClothes = (ImageView) convertView.findViewById(R.id.imageview_clothes);
             TextView textViewDescription = (TextView) convertView.findViewById(R.id.textview_description);
 
-            imageViewClothes.setBackgroundColor(Color.WHITE);
             imageViewClothes.setImageBitmap(BitmapFactory.decodeFile(item.getImageLocation()));
             textViewDescription.setText(item.getName());
             if (sourceList != null)
