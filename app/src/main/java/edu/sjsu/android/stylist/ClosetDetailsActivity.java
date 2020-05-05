@@ -60,6 +60,10 @@ public class ClosetDetailsActivity extends Activity {
     TextView viewTitle;
     ArrayList<Top> tops;
     ArrayList<Bottom> bottoms;
+    //ArrayList<Dress> dresses;
+    //ArrayList<Shoes> shoes;
+    //ArrayList<Accessory> accessories;
+
     Bitmap updatedImage = null;
     String source;
     GridviewAdapter gridviewAdapter;
@@ -245,28 +249,37 @@ public class ClosetDetailsActivity extends Activity {
 
     private void populateTops()
     {
-        Log.d("log", "Populate tops");
         DatabaseHelper dh = new DatabaseHelper(this);
         tops = dh.getAllTops();
-        if (tops.size() > 0 && tops.get(0) != null)
-        {
-            //Log.d("log", tops.get(0).getName());
-        }
+
         // TODO Do something with tops
     }
 
     private void populateBottoms()
     {
-        //Log.d("log", "Populate bottoms");
         DatabaseHelper dh = new DatabaseHelper(this);
         bottoms = dh.getAllBottoms();
 
         // TODO Do something with bottoms
     }
 
+    private void populateDresses()
+    {
+
+    }
+
+    private void populateShoes()
+    {
+
+    }
+
+    private void populateAccessories()
+    {
+
+    }
+
     private void populateGridview()
     {
-        //Log.d("log", "source from populateGridView " + source);
         if (getIntent() != null)
         {
             if ((getIntent().getStringExtra("Source")) != null)
@@ -277,14 +290,25 @@ public class ClosetDetailsActivity extends Activity {
         if (source.equals("ButtonTops")) {
             populateTops();
             gridviewAdapter.updateView(tops);
-            //Log.d("log", "source from Tops");
             viewTitle.setText("Tops");
         } else if (source.equals("ButtonBottoms")) {
             populateBottoms();
             gridviewAdapter.updateView(bottoms);
             viewTitle.setText("Bottoms");
-            //Log.d("log", "source from Bottoms");
+        } else if (source.equals("ButtonShoes")) {
+            populateShoes();
+            //gridviewAdapter.updateView(shoes);
+            viewTitle.setText("Shoes");
+        } else if (source.equals("ButtonDresses")) {
+            populateDresses();
+            //gridviewAdapter.updateView(dresses);
+            viewTitle.setText("Dresses");
+        } else if (source.equals("ButtonAccessories")) {
+            populateAccessories();
+            //gridviewAdapter.updateView(accessories);
+            viewTitle.setText("Accessories");
         }
+
     }
 
     // Create a requestbody from the chosen image using its path
@@ -366,6 +390,18 @@ public class ClosetDetailsActivity extends Activity {
             {
                 sourceList = tops;
             }
+            else if (source.equals("ButtonShoes"))
+            {
+                //sourceList = shoes;
+            }
+            else if (source.equals("ButtonDresses"))
+            {
+                //sourceList = dresses;
+            }
+            else if (source.equals("ButtonAccessories"))
+            {
+                //sourceList = accessories;
+            }
             else if (source.equals("ButtonBottoms"))
             {
                 sourceList = bottoms;
@@ -403,7 +439,6 @@ public class ClosetDetailsActivity extends Activity {
                 for (int i = 0; i < sourceList.size(); i++)
                 {
                     Clothing clothing = (Clothing) sourceList.get(i);
-                    //Log.d("log", "item " + clothing.getName() + " " + clothing.getImageLocation());
                 }
             }
 
