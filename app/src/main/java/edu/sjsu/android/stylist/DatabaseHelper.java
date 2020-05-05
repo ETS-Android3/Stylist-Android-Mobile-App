@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper
 {
-    private static final String DATABASE_NAME = "stylist-database-v2.db";
+    private static final String DATABASE_NAME = "stylist-database-v3.db";
     private static final String TOPS_TABLE = "tops";
     private static final String BOTTOMS_TABLE = "bottoms";
     private static final String OUTFITS_TABLE = "outfits";
