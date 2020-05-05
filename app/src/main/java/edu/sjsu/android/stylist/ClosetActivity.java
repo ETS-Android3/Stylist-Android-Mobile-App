@@ -14,6 +14,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class ClosetActivity extends MainActivity {
     Button button_tops;
     Button button_bottoms;
+    Button button_dresses;
+    Button button_shoes;
+    Button button_accessories;
     BottomNavigationView bottomNavigation;
 
     @Override
@@ -23,6 +26,9 @@ public class ClosetActivity extends MainActivity {
 
         button_tops = (Button)findViewById(R.id.button_closet_tops);
         button_bottoms = (Button)findViewById(R.id.button_closet_bottoms);
+        button_dresses = (Button) findViewById(R.id.button_closet_dresses);
+        button_shoes = (Button) findViewById(R.id.button_closet_shoes);
+        button_accessories = (Button) findViewById(R.id.button_closet_accessories);
         bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_bar);
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -66,6 +72,27 @@ public class ClosetActivity extends MainActivity {
                 Intent closetDetailIntent = new Intent(ClosetActivity.this, ClosetDetailsActivity.class);
                 closetDetailIntent.putExtra("Source", "ButtonBottoms");
                 startActivity(closetDetailIntent);
+            }
+        });
+
+        button_dresses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        button_shoes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        button_accessories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
