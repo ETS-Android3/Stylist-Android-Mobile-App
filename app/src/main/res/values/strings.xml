@@ -15,5 +15,8 @@
     <string name="info_text">About us</string>
     <string name="tops_text">Tops</string>
     <string name="bottoms_text">Bottoms</string>
+    <string name="dresses_text">Dresses</string>
+    <string name="shoes_text">Shoes</string>
+    <string name="accessories_text">Accessories</string>
     <string name="photo">PHOTO</string>
 </resources>

@@ -45,26 +45,36 @@ public class RunwayDetailsActivity extends MainActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ImageButton button_top;
-    private ImageButton button_bottom;
-    private ImageButton button_dress;
-    private ImageButton button_accessories;
-    private ImageView top_img;
-    private ImageView bottom_img;
-    private ImageView accessories_img;
-    private RelativeLayout top_view;
-    private RelativeLayout bottom_view;
-    private RelativeLayout drag_view;
+    private ImageButton buttonTop;
+    private ImageButton buttonBottom;
+    private ImageButton buttonDress;
+    private ImageButton buttonShoes;
+    private ImageButton buttonAccessories;
+    private ImageView topImg;
+    private ImageView bottomImg;
+    private ImageView dressImg;
+    private ImageView shoesImg;
+    private ImageView accessoriesImg;
+    private RelativeLayout topView;
+    private RelativeLayout bottomView;
+    private RelativeLayout dressView;
+    private RelativeLayout shoesView;
+    private RelativeLayout accessoriesView;
+    private RelativeLayout dragView;
     private boolean inTop;
     private boolean inBottom;
+    private boolean inDress;
+    private boolean inShoes;
+    private boolean inAccessories;
     private float imgTouchX;
     private float imgTouchY;
     private ArrayList<Top> tops;
     private ArrayList<Bottom> bottoms;
+    private ArrayList<Bottom> dresses;
+    private ArrayList<Bottom> shoes;
+    private ArrayList<Bottom> accessories;
     ScaleGestureDetector scaleGestureDetector;
-    Matrix matrix;
-    float scaleFactor;
-    Button button_save;
+    private Button buttonSave;
     private float firstStartTouchEventX = -1;
     private float firstStartTouchEventY = -1;
     private float secondStartTouchEventX = -1;
@@ -114,32 +124,39 @@ public class RunwayDetailsActivity extends MainActivity {
 
         imgTouchX = 0.0f;
         imgTouchY = 0.0f;
-        drag_view = (RelativeLayout) findViewById(R.id.drag_view);
-        top_view = (RelativeLayout) findViewById(R.id.my_top_view);
-        bottom_view = (RelativeLayout) findViewById(R.id.my_bottom_view);
-        drag_view = (RelativeLayout) findViewById(R.id.drag_view);
-        top_img = (ImageView) findViewById(R.id.top_image);
-        bottom_img = (ImageView) findViewById(R.id.bottom_image);
+        dragView = (RelativeLayout) findViewById(R.id.drag_view);
+        topView = (RelativeLayout) findViewById(R.id.my_top_view);
+        bottomView = (RelativeLayout) findViewById(R.id.my_bottom_view);
+        dressView = (RelativeLayout) findViewById(R.id.my_dress_view);
+        shoesView = (RelativeLayout) findViewById(R.id.my_shoes_view);
+        accessoriesView = (RelativeLayout) findViewById(R.id.my_accessories_view);
+        topImg = (ImageView) findViewById(R.id.top_image);
+        bottomImg = (ImageView) findViewById(R.id.bottom_image);
+        shoesImg = (ImageView) findViewById(R.id.shoes_image);
+        dressImg = (ImageView) findViewById(R.id.dress_image);
+        accessoriesImg = (ImageView) findViewById(R.id.accessories_image);
 
-        button_top = (ImageButton) findViewById(R.id.top_button);
-        button_bottom = (ImageButton) findViewById(R.id.bottom_button);
-        button_dress = (ImageButton) findViewById(R.id.dress_button);
-        button_accessories = (ImageButton) findViewById(R.id.accessories_button);
-        button_save = (Button) findViewById(R.id.save_button);
+        buttonTop = (ImageButton) findViewById(R.id.top_button);
+        buttonBottom = (ImageButton) findViewById(R.id.bottom_button);
+        buttonDress = (ImageButton) findViewById(R.id.dress_button);
+        buttonShoes = (ImageButton) findViewById(R.id.shoes_button);
+        buttonAccessories = (ImageButton) findViewById(R.id.accessories_button);
+        buttonSave = (Button) findViewById(R.id.save_button);
 
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        button_accessories.setOnClickListener(this);
-        button_dress.setOnClickListener(this);
-        button_bottom.setOnClickListener(this);
-        button_top.setOnClickListener(this);
-        button_save.setOnClickListener(this);
+        buttonAccessories.setOnClickListener(this);
+        buttonDress.setOnClickListener(this);
+        buttonShoes.setOnClickListener(this);
+        buttonBottom.setOnClickListener(this);
+        buttonTop.setOnClickListener(this);
+        buttonSave.setOnClickListener(this);
 
         final ScaleGestureDetector mScaleDetector = new ScaleGestureDetector(this, new MyPinchListener());
-        top_img.setOnTouchListener(new View.OnTouchListener() {
+        topImg.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -148,7 +165,34 @@ public class RunwayDetailsActivity extends MainActivity {
             }
         });
 
-        bottom_img.setOnTouchListener(new View.OnTouchListener() {
+        bottomImg.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final boolean scaleEvent = mScaleDetector.onTouchEvent(event);
+                return true;
+            }
+        });
+
+        dressImg.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final boolean scaleEvent = mScaleDetector.onTouchEvent(event);
+                return true;
+            }
+        });
+
+        shoesImg.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final boolean scaleEvent = mScaleDetector.onTouchEvent(event);
+                return true;
+            }
+        });
+
+        accessoriesImg.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -160,6 +204,9 @@ public class RunwayDetailsActivity extends MainActivity {
 
         populateTops();
         populateBottoms();
+        //populateDresses();
+        //populateShoes();
+        //populateAccessories();
 
         Intent intent = getIntent();
         int tag = intent.getIntExtra("tag", 0);
@@ -167,16 +214,46 @@ public class RunwayDetailsActivity extends MainActivity {
         if (tag == 0) {
             inTop = true;
             inBottom = false;
+            inDress = false;
+            inShoes = false;
+            inAccessories = false;
             mAdapter = new MyAdapter(tops);
             recyclerView.setAdapter(mAdapter);
         } else if (tag == 1) {
             inBottom = true;
             inTop = false;
+            inDress = false;
+            inShoes = false;
+            inAccessories = false;
             mAdapter = new MyAdapter(bottoms);
+            recyclerView.setAdapter(mAdapter);
+        } else if (tag == 2) {
+            inDress = true;
+            inBottom = false;
+            inTop = false;
+            inShoes = false;
+            inAccessories = false;
+            mAdapter = new MyAdapter(dresses);
+            recyclerView.setAdapter(mAdapter);
+        } else if (tag == 3) {
+            inShoes = true;
+            inDress = false;
+            inBottom = false;
+            inTop = false;
+            inAccessories = false;
+            mAdapter = new MyAdapter(shoes);
+            recyclerView.setAdapter(mAdapter);
+        } else if (tag == 4) {
+            inAccessories = true;
+            inDress = false;
+            inBottom = false;
+            inTop = false;
+            inShoes = false;
+            mAdapter = new MyAdapter(accessories);
             recyclerView.setAdapter(mAdapter);
         }
 
-        top_view.setOnDragListener(new View.OnDragListener() {
+        dragView.setOnDragListener(new View.OnDragListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onDrag(final View v, DragEvent event) {
@@ -190,10 +267,19 @@ public class RunwayDetailsActivity extends MainActivity {
                         final float dropY = event.getY();
                         final DragData state = (DragData) event.getLocalState();
                         if (inTop) {
-                            dragItem(top_view, top_img, dropX, dropY, state);
+                            dragItem(topView, topImg, dropX, dropY, state);
                         }
                         if (inBottom) {
-                            dragItem(bottom_view, bottom_img, dropX, dropY, state);
+                            dragItem(bottomView, bottomImg, dropX, dropY, state);
+                        }
+                        if (inDress) {
+                            dragItem(dressView, dressImg, dropX, dropY, state);
+                        }
+                        if (inShoes) {
+                            dragItem(shoesView, shoesImg, dropX, dropY, state);
+                        }
+                        if (inAccessories) {
+                            dragItem(accessoriesView, accessoriesImg, dropX, dropY, state);
                         }
                         break;
                     }
@@ -214,6 +300,9 @@ public class RunwayDetailsActivity extends MainActivity {
                 if (!inTop) {
                     inTop = true;
                     inBottom = false;
+                    inDress = false;
+                    inShoes = false;
+                    inAccessories = false;
                     mAdapter = new MyAdapter(tops);
                     recyclerView.setAdapter(mAdapter);
                     recyclerView.setVisibility(View.VISIBLE);
@@ -222,11 +311,13 @@ public class RunwayDetailsActivity extends MainActivity {
                     recyclerView.setVisibility(View.INVISIBLE);
                 }
                 break;
-
             case R.id.bottom_button:
                 if (!inBottom) {
                     inBottom = true;
                     inTop = false;
+                    inDress = false;
+                    inShoes = false;
+                    inAccessories = false;
                     mAdapter = new MyAdapter(bottoms);
                     recyclerView.setAdapter(mAdapter);
                     recyclerView.setVisibility(View.VISIBLE);
@@ -236,8 +327,49 @@ public class RunwayDetailsActivity extends MainActivity {
                 }
                 break;
             case R.id.dress_button:
+                if (!inDress) {
+                    inDress = true;
+                    inTop = false;
+                    inBottom = false;
+                    inShoes = false;
+                    inAccessories = false;
+                    mAdapter = new MyAdapter(dresses);
+                    recyclerView.setAdapter(mAdapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    inDress = false;
+                    recyclerView.setVisibility(View.INVISIBLE);
+                }
+                break;
+            case R.id.shoes_button:
+                if (!inShoes) {
+                    inShoes = true;
+                    inDress = false;
+                    inTop = false;
+                    inBottom = false;
+                    inAccessories = false;
+                    mAdapter = new MyAdapter(shoes);
+                    recyclerView.setAdapter(mAdapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    inShoes = false;
+                    recyclerView.setVisibility(View.INVISIBLE);
+                }
                 break;
             case R.id.accessories_button:
+                if (!inAccessories) {
+                    inAccessories = true;
+                    inDress = false;
+                    inTop = false;
+                    inBottom = false;
+                    inShoes = false;
+                    mAdapter = new MyAdapter(accessories);
+                    recyclerView.setAdapter(mAdapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    inAccessories = false;
+                    recyclerView.setVisibility(View.INVISIBLE);
+                }
                 break;
             // save outfit
             case R.id.save_button:
@@ -262,6 +394,24 @@ public class RunwayDetailsActivity extends MainActivity {
         // TODO pull bottoms from the database
     }
 
+//    private void populateDresses() {
+//        DatabaseHelper dh = new DatabaseHelper(this);
+//        dresses = dh.getAllDresses();
+//        // TODO pull bottoms from the database
+//    }
+//
+//    private void populateShoes() {
+//        DatabaseHelper dh = new DatabaseHelper(this);
+//        shoes = dh.getAllShoes();
+//        // TODO pull bottoms from the database
+//    }
+//
+//    private void populateAccessories() {
+//        DatabaseHelper dh = new DatabaseHelper(this);
+//        accessories = dh.getAllAccessories();
+//        // TODO pull bottoms from the database
+//    }
+
     private boolean isInView(View view, float x, float y, int imgWidth, int imgHeight) {
         int[] l = new int[2];
         view.getLocationOnScreen(l);
@@ -281,9 +431,9 @@ public class RunwayDetailsActivity extends MainActivity {
     }
 
     private void takeScreenshot() {
-        Bitmap b = Bitmap.createBitmap(drag_view.getWidth(), drag_view.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap b = Bitmap.createBitmap(dragView.getWidth(), dragView.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
-        drag_view.draw(c);
+        dragView.draw(c);
 
         FileOutputStream fOut = null;
         File photo = null;

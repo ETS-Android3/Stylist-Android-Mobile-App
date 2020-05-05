@@ -15,33 +15,86 @@
         android:background="@color/colorPrimary"
         android:gravity="center"
         android:fontFamily="@font/college_regular"/>
+
     <Button
         android:id="@+id/button_closet_tops"
-        android:text="@string/tops_text"
         android:layout_width="300dp"
         android:layout_height="75dp"
-        android:padding="20dp"
         android:layout_gravity="center"
-        android:background="@drawable/button_bordered_rounded"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="30dp"
-        android:textColor="@color/colorWhite"
-        android:textSize="20sp"
+        android:background="@drawable/button_bordered_rounded"
+        android:drawableLeft="@drawable/small_top"
+        android:fontFamily="@font/college_regular"
+        android:layout_marginBottom="20dp"
+        android:padding="20dp"
+        android:text="@string/tops_text"
         android:layout_above="@+id/button_closet_bottoms"
-        android:drawableLeft="@drawable/shirt" />
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/button_closet_bottoms"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_bordered_rounded"
+        android:drawableLeft="@drawable/small_bottom"
+        android:fontFamily="@font/college_regular"
+        android:padding="20dp"
         android:text="@string/bottoms_text"
+        android:textColor="@color/colorWhite"
+        android:layout_above="@+id/button_closet_dresses"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/button_closet_dresses"
+        android:text="@string/dresses_text"
         android:layout_width="300dp"
         android:layout_height="75dp"
         android:padding="20dp"
         android:layout_gravity="center"
         android:background="@drawable/button_bordered_rounded"
         android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
-        android:drawableLeft="@drawable/bottom"/>
+        android:fontFamily="@font/college_regular"
+        android:layout_above="@+id/button_closet_shoes"
+        android:drawableLeft="@drawable/small_dress"/>
+
+    <Button
+        android:id="@+id/button_closet_shoes"
+        android:text="@string/shoes_text"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:padding="20dp"
+        android:layout_gravity="center"
+        android:background="@drawable/button_bordered_rounded"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:fontFamily="@font/college_regular"
+        android:layout_above="@+id/button_closet_accessories"
+        android:drawableLeft="@drawable/small_shoes"/>
+
+    <Button
+        android:id="@+id/button_closet_accessories"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="56dp"
+        android:background="@drawable/button_bordered_rounded"
+        android:drawableLeft="@drawable/small_accessories"
+        android:fontFamily="@font/college_regular"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="120dp"
+        android:padding="20dp"
+        android:text="@string/accessories_text"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_bar"

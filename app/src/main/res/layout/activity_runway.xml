@@ -64,6 +64,20 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:scaleType="fitCenter"
+        android:padding="8dp"/>
+
+    <ImageButton
+        android:id="@+id/shoes_button"
+        android:layout_width="70dp"
+        android:layout_height="65dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/button_rounded"
+        android:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/shoes"
+        android:layout_below="@+id/dress_button"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:scaleType="fitCenter"
         android:padding="5dp"/>
 
     <ImageButton
@@ -73,11 +87,11 @@
         android:layout_alignParentRight="true"
         android:background="@drawable/button_rounded"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/purse"
-        android:layout_below="@+id/dress_button"
+        android:src="@drawable/accessories"
+        android:layout_below="@+id/shoes_button"
         android:gravity="center"
         android:scaleType="fitCenter"
-        android:padding="12dp"/>
+        android:padding="10dp"/>
     
     <Button
         android:id="@+id/save_button"

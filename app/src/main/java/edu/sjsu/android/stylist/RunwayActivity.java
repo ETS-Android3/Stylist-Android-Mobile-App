@@ -76,7 +76,19 @@ public class RunwayActivity extends MainActivity {
                 startActivity(bottomIntent);
                 break;
             case R.id.dress_button:
+                Intent dressIntent = new Intent(RunwayActivity.this, RunwayDetailsActivity.class);
+                dressIntent.putExtra("tag", 2);
+                startActivity(dressIntent);
+                break;
+            case R.id.shoes_button:
+                Intent shoesIntent = new Intent(RunwayActivity.this, RunwayDetailsActivity.class);
+                shoesIntent.putExtra("tag", 3);
+                startActivity(shoesIntent);
+                break;
             case R.id.accessories_button:
+                Intent accessoriesIntent = new Intent(RunwayActivity.this, RunwayDetailsActivity.class);
+                accessoriesIntent.putExtra("tag", 4);
+                startActivity(accessoriesIntent);
                 break;
         }
     }
