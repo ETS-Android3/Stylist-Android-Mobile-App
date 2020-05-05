@@ -95,6 +95,21 @@ public class PhotoDisplayActivity extends Activity implements AdapterView.OnItem
             Log.d("log", "inserting to bottoms" + clothingType);
             dh.insertIntoBottoms(name, photoPath);
         }
+        else if (clothingType == 2)
+        {
+            Log.d("log", "inserting to dresses" + clothingType);
+            //dh.insertIntoBottoms(name, photoPath);
+        }
+        else if (clothingType == 3)
+        {
+            Log.d("log", "inserting to shoes" + clothingType);
+            //dh.insertIntoBottoms(name, photoPath);
+        }
+        else if (clothingType == 4)
+        {
+            Log.d("log", "inserting to accessories" + clothingType);
+            //dh.insertIntoBottoms(name, photoPath);
+        }
     }
 
     // Populate spinner with types of clothing
@@ -103,6 +118,10 @@ public class PhotoDisplayActivity extends Activity implements AdapterView.OnItem
         clothingTypes = new ArrayList<String>();
         clothingTypes.add("Top");
         clothingTypes.add("Bottom");
+        clothingTypes.add("Dress");
+        clothingTypes.add("Shoes");
+        clothingTypes.add("Accessories");
+
     }
 
     @Override
@@ -115,6 +134,18 @@ public class PhotoDisplayActivity extends Activity implements AdapterView.OnItem
         else if (clothingTypeString.equals("Bottom"))
         {
             clothingType = 1;
+        }
+        else if (clothingTypeString.equals("Dress"))
+        {
+            clothingType = 2;
+        }
+        else if (clothingTypeString.equals("Shoes"))
+        {
+            clothingType = 3;
+        }
+        else if (clothingTypeString.equals("Accessories"))
+        {
+            clothingType = 4;
         }
 
     }

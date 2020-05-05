@@ -78,6 +78,9 @@ public class ClosetActivity extends MainActivity {
         button_dresses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent closetDetailIntent = new Intent(ClosetActivity.this, ClosetDetailsActivity.class);
+                closetDetailIntent.putExtra("Source", "ButtonDresses");
+                startActivity(closetDetailIntent);
 
             }
         });
@@ -85,6 +88,9 @@ public class ClosetActivity extends MainActivity {
         button_shoes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent closetDetailIntent = new Intent(ClosetActivity.this, ClosetDetailsActivity.class);
+                closetDetailIntent.putExtra("Source", "ButtonShoes");
+                startActivity(closetDetailIntent);
 
             }
         });
@@ -92,6 +98,9 @@ public class ClosetActivity extends MainActivity {
         button_accessories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent closetDetailIntent = new Intent(ClosetActivity.this, ClosetDetailsActivity.class);
+                closetDetailIntent.putExtra("Source", "ButtonAccessories");
+                startActivity(closetDetailIntent);
 
             }
         });
