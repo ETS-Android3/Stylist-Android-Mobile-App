@@ -25,7 +25,7 @@
         android:columnWidth="128dp"
         android:numColumns="auto_fit"
         android:verticalSpacing="24dp"
-        android:horizontalSpacing="10dp"
+        android:horizontalSpacing="5dp"
         android:stretchMode="spacingWidthUniform"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

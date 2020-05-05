@@ -33,4 +33,5 @@ dependencies {
     implementation group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
 
     implementation("com.squareup.okhttp3:okhttp:4.4.0")
+    implementation 'com.android.support:cardview-v7:28.0.0'
 }

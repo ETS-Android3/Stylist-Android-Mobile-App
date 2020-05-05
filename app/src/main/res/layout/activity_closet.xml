@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <TextView
         android:id="@+id/closet_title"
@@ -30,7 +31,12 @@
         android:text="@string/tops_text"
         android:layout_above="@+id/button_closet_bottoms"
         android:textColor="@color/colorWhite"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:elevation="5dp"
+        android:translationZ="5dp"
+        android:stateListAnimator="@null"
+
+        />
 
     <Button
         android:id="@+id/button_closet_bottoms"
@@ -46,7 +52,10 @@
         android:text="@string/bottoms_text"
         android:textColor="@color/colorWhite"
         android:layout_above="@+id/button_closet_dresses"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:elevation="5dp"
+        android:translationZ="5dp"
+        android:stateListAnimator="@null"/>
 
     <Button
         android:id="@+id/button_closet_dresses"
