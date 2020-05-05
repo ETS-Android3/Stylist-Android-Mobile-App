@@ -60,9 +60,9 @@ public class ClosetDetailsActivity extends Activity {
     TextView viewTitle;
     ArrayList<Top> tops;
     ArrayList<Bottom> bottoms;
-    //ArrayList<Dress> dresses;
-    //ArrayList<Shoes> shoes;
-    //ArrayList<Accessory> accessories;
+    ArrayList<Dress> dresses;
+    ArrayList<Shoe> shoes;
+    ArrayList<Accessory> accessories;
 
     Bitmap updatedImage = null;
     String source;
@@ -265,17 +265,20 @@ public class ClosetDetailsActivity extends Activity {
 
     private void populateDresses()
     {
-
+        DatabaseHelper dh = new DatabaseHelper(this);
+        dresses = dh.getAllDresses();
     }
 
     private void populateShoes()
     {
-
+        DatabaseHelper dh = new DatabaseHelper(this);
+        shoes = dh.getAllShoes();
     }
 
     private void populateAccessories()
     {
-
+        DatabaseHelper dh = new DatabaseHelper(this);
+        accessories = dh.getAllAccessories();
     }
 
     private void populateGridview()
@@ -297,15 +300,15 @@ public class ClosetDetailsActivity extends Activity {
             viewTitle.setText("Bottoms");
         } else if (source.equals("ButtonShoes")) {
             populateShoes();
-            //gridviewAdapter.updateView(shoes);
+            gridviewAdapter.updateView(shoes);
             viewTitle.setText("Shoes");
         } else if (source.equals("ButtonDresses")) {
             populateDresses();
-            //gridviewAdapter.updateView(dresses);
+            gridviewAdapter.updateView(dresses);
             viewTitle.setText("Dresses");
         } else if (source.equals("ButtonAccessories")) {
             populateAccessories();
-            //gridviewAdapter.updateView(accessories);
+            gridviewAdapter.updateView(accessories);
             viewTitle.setText("Accessories");
         }
 
@@ -392,15 +395,15 @@ public class ClosetDetailsActivity extends Activity {
             }
             else if (source.equals("ButtonShoes"))
             {
-                //sourceList = shoes;
+                sourceList = shoes;
             }
             else if (source.equals("ButtonDresses"))
             {
-                //sourceList = dresses;
+                sourceList = dresses;
             }
             else if (source.equals("ButtonAccessories"))
             {
-                //sourceList = accessories;
+                sourceList = accessories;
             }
             else if (source.equals("ButtonBottoms"))
             {

@@ -98,17 +98,17 @@ public class PhotoDisplayActivity extends Activity implements AdapterView.OnItem
         else if (clothingType == 2)
         {
             Log.d("log", "inserting to dresses" + clothingType);
-            //dh.insertIntoBottoms(name, photoPath);
+            dh.insertIntoDresses(name, photoPath);
         }
         else if (clothingType == 3)
         {
             Log.d("log", "inserting to shoes" + clothingType);
-            //dh.insertIntoBottoms(name, photoPath);
+            dh.insertIntoShoes(name, photoPath);
         }
         else if (clothingType == 4)
         {
             Log.d("log", "inserting to accessories" + clothingType);
-            //dh.insertIntoBottoms(name, photoPath);
+            dh.insertIntoAccessories(name, photoPath);
         }
     }
 
