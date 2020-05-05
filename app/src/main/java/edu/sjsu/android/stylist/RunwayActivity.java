@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
@@ -17,6 +16,7 @@ public class RunwayActivity extends MainActivity {
     private ImageButton button_top;
     private ImageButton button_bottom;
     private ImageButton button_dress;
+    private ImageButton button_shoes;
     private ImageButton button_accessories;
     private BottomNavigationView bottomNavigation;
 
@@ -27,10 +27,12 @@ public class RunwayActivity extends MainActivity {
         button_top = (ImageButton) findViewById(R.id.top_button);
         button_bottom = (ImageButton) findViewById(R.id.bottom_button);
         button_dress = (ImageButton) findViewById(R.id.dress_button);
+        button_shoes = (ImageButton) findViewById(R.id.shoes_button);
         button_accessories = (ImageButton) findViewById(R.id.accessories_button);
 
         button_accessories.setOnClickListener(this);
         button_dress.setOnClickListener(this);
+        button_shoes.setOnClickListener(this);
         button_bottom.setOnClickListener(this);
         button_top.setOnClickListener(this);
         bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_bar);

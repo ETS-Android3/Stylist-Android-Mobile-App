@@ -70,9 +70,9 @@ public class RunwayDetailsActivity extends MainActivity {
     private float imgTouchY;
     private ArrayList<Top> tops;
     private ArrayList<Bottom> bottoms;
-    private ArrayList<Bottom> dresses;
-    private ArrayList<Bottom> shoes;
-    private ArrayList<Bottom> accessories;
+    private ArrayList<Dress> dresses;
+    private ArrayList<Shoe> shoes;
+    private ArrayList<Accessory> accessories;
     ScaleGestureDetector scaleGestureDetector;
     private Button buttonSave;
     private float firstStartTouchEventX = -1;
@@ -204,9 +204,9 @@ public class RunwayDetailsActivity extends MainActivity {
 
         populateTops();
         populateBottoms();
-        //populateDresses();
-        //populateShoes();
-        //populateAccessories();
+//        populateDresses();
+//        populateShoes();
+//        populateAccessories();
 
         Intent intent = getIntent();
         int tag = intent.getIntExtra("tag", 0);
@@ -394,23 +394,23 @@ public class RunwayDetailsActivity extends MainActivity {
         // TODO pull bottoms from the database
     }
 
-//    private void populateDresses() {
-//        DatabaseHelper dh = new DatabaseHelper(this);
-//        dresses = dh.getAllDresses();
-//        // TODO pull bottoms from the database
-//    }
-//
-//    private void populateShoes() {
-//        DatabaseHelper dh = new DatabaseHelper(this);
-//        shoes = dh.getAllShoes();
-//        // TODO pull bottoms from the database
-//    }
-//
-//    private void populateAccessories() {
-//        DatabaseHelper dh = new DatabaseHelper(this);
-//        accessories = dh.getAllAccessories();
-//        // TODO pull bottoms from the database
-//    }
+    private void populateDresses() {
+        DatabaseHelper dh = new DatabaseHelper(this);
+        dresses = dh.getAllDresses();
+        // TODO pull bottoms from the database
+    }
+
+    private void populateShoes() {
+        DatabaseHelper dh = new DatabaseHelper(this);
+        shoes = dh.getAllShoes();
+        // TODO pull bottoms from the database
+    }
+
+    private void populateAccessories() {
+        DatabaseHelper dh = new DatabaseHelper(this);
+        accessories = dh.getAllAccessories();
+        // TODO pull bottoms from the database
+    }
 
     private boolean isInView(View view, float x, float y, int imgWidth, int imgHeight) {
         int[] l = new int[2];
