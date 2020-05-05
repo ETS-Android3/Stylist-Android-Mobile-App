@@ -89,14 +89,4 @@
                 android:scaleType="centerInside"/>
         </RelativeLayout>
     </RelativeLayout>
-
-<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--        android:id="@+id/bottom_bar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:background="@color/colorWhite"-->
-<!--        app:menu="@menu/toolbar" />-->
-
-
 </RelativeLayout>
