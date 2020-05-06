@@ -155,6 +155,8 @@ public class RunwayDetailsActivity extends MainActivity {
         buttonTop.setOnClickListener(this);
         buttonSave.setOnClickListener(this);
 
+        // https://medium.com/@ali.muzaffar/android-detecting-a-pinch-gesture-64a0a0ed4b41
+        // source that I viewed to detect 2 fingers scroll on screen
         final ScaleGestureDetector mScaleDetector = new ScaleGestureDetector(this, new MyPinchListener());
         topImg.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
@@ -515,14 +517,10 @@ public class RunwayDetailsActivity extends MainActivity {
         if (w <= maxWidth && h <= maxHeight) {
             newBitmap = Bitmap.createScaledBitmap(realImage, w, h, filter);
         } else {
-            // if calculated width is greater than max width, use max width to scale bitmap
+            // if calculated width is greater than max width or calculated height is greater than max height, use max width to scale bitmap
             if (w > maxWidth || h > maxHeight) {
                 newBitmap = Bitmap.createScaledBitmap(realImage, maxWidth, Math.round(maxWidth / aspectRatio), filter);
             }
-            // if calculated height is greater than max height, use max height to scale bitmap
-//            if (h > maxHeight) {
-//                newBitmap = Bitmap.createScaledBitmap(realImage, Math.round(maxHeight * aspectRatio), maxHeight, filter);
-//            }
         }
         return newBitmap;
     }
