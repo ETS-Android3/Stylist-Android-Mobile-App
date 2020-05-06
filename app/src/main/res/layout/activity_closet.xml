@@ -32,10 +32,6 @@
         android:layout_above="@+id/button_closet_bottoms"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
-        android:elevation="5dp"
-        android:translationZ="5dp"
-        android:stateListAnimator="@null"
-
         />
 
     <Button
@@ -52,10 +48,7 @@
         android:text="@string/bottoms_text"
         android:textColor="@color/colorWhite"
         android:layout_above="@+id/button_closet_dresses"
-        android:textSize="20sp"
-        android:elevation="5dp"
-        android:translationZ="5dp"
-        android:stateListAnimator="@null"/>
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/button_closet_dresses"

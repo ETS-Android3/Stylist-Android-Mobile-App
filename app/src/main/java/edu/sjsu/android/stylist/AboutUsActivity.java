@@ -21,7 +21,10 @@ public class AboutUsActivity extends MainActivity {
         setContentView(R.layout.activity_about_us);
 
         textView = (TextView) findViewById(R.id.about_us__text);
-        textView.setText("Authors: Nhu Nguyen, Thanh Tran, Nick Fulton");
+        textView.setText("Authors: Nhu Nguyen, Thanh Tran, Nick Fulton\n" +
+                "Our Mission: Everyone wants to dress well and appropriately.\n"
+        + "Therefore, coordinating an outfit in the morning can take time, efforts and causes needless frustration.\n"
+        + "Introducing our solution - Stylist - a virtual catalogue of clothes from which uses can put together an outfit without physically trying them on.");
 
         bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_bar);
 
