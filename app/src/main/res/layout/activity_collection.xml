@@ -33,9 +33,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/outfitView"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
-        android:text="Next Outfit" />
+        android:text="Next Outfit"/>
 
     <Button
         android:id="@+id/previousOutfit"
@@ -44,8 +44,8 @@
         android:layout_below="@+id/outfitView"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:text="Previous Outfit" />
+        android:layout_marginTop="30dp"
+        android:text="Previous Outfit"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_bar"

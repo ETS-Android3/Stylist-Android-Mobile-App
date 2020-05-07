@@ -73,7 +73,6 @@ public class RunwayDetailsActivity extends MainActivity {
     private ArrayList<Dress> dresses;
     private ArrayList<Shoe> shoes;
     private ArrayList<Accessory> accessories;
-    ScaleGestureDetector scaleGestureDetector;
     private Button buttonSave;
     private float firstStartTouchEventX = -1;
     private float firstStartTouchEventY = -1;
@@ -119,6 +118,8 @@ public class RunwayDetailsActivity extends MainActivity {
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
 
+        // create threshold of number of pixels so that finger moves won't be
+        // triggered at slight movements
         final ViewConfiguration viewConfig = ViewConfiguration.get(this);
         mViewScaledTouchSlop = viewConfig.getScaledTouchSlop();
 
@@ -490,6 +491,7 @@ public class RunwayDetailsActivity extends MainActivity {
         }
     }
 
+    // check if the gesture is scroll gesture
     private boolean isScrollGesture(MotionEvent event, int ptrIndex, float originalX, float originalY) {
         float moveX = Math.abs(event.getX(ptrIndex) - originalX);
         float moveY = Math.abs(event.getY(ptrIndex) - originalY);
@@ -507,6 +509,7 @@ public class RunwayDetailsActivity extends MainActivity {
         }
     }
 
+    // scale bitmap based on distance between 2 fingers
     private Bitmap scaleBitmap(Bitmap realImage, int width, int height, int maxWidth, int maxHeight, boolean filter) {
         float ratio = (float) Math.max(Math.min(moveTouchDistance / startTouchDistance, 2.0), 0.5);
         float aspectRatio = (float) realImage.getWidth() / realImage.getHeight();
@@ -530,19 +533,13 @@ public class RunwayDetailsActivity extends MainActivity {
         if (isInView(view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
             MAX_BITMAP_WIDTH = view.getWidth() - 20;
             MAX_BITMAP_HEIGHT = view.getHeight() - 20;
-            final float[] imgPosition = new float[2];
-            final int[] maxDimension = new int[2];
             final int[] imgDimension = new int[2];
             if (isInView(view, dropX, dropY, item_img.getWidth(), item_img.getHeight())) {
                 final Bitmap myBitmap = BitmapFactory.decodeFile(state.item.getImageLocation());
                 item_img.setImageBitmap(myBitmap);
 
-                imgPosition[0] = dropX - (float) item_img.getWidth() / 2.0f;
-                imgPosition[1] = dropY - (float) item_img.getHeight() / 2.0f;
                 imgDimension[0] = item_img.getWidth();
                 imgDimension[1] = item_img.getHeight();
-                maxDimension[0] = imgDimension[0] * 2;
-                maxDimension[1] = imgDimension[1] * 2;
 
                 item_img.setX(dropX - (float) item_img.getWidth() / 2.0f);
                 item_img.setY(dropY - (float) item_img.getHeight() / 2.0f);
@@ -556,7 +553,6 @@ public class RunwayDetailsActivity extends MainActivity {
                                     firstStartTouchEventX = event.getX(0);
                                     firstStartTouchEventY = event.getY(0);
                                 }
-
 
                                 // bring image to front on click
                                 view.bringToFront();
@@ -605,8 +601,6 @@ public class RunwayDetailsActivity extends MainActivity {
                                     if (yVal - imgTouchY + item_img.getHeight() > relVals[1] + view.getHeight()) {
                                         newY = view.getHeight() - item_img.getHeight();
                                     }
-                                    imgPosition[0] = newX;
-                                    imgPosition[1] = newY;
                                     item_img.setX(newX);
                                     item_img.setY(newY);
                                 }
